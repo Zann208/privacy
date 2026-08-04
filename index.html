@@ -342,6 +342,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
   <span class="navsep"></span>
   <button class="tabbtn on" data-tab="home">HOME</button>
   <button class="tabbtn" data-tab="notes">NOTES</button>
+  <button class="tabbtn" data-tab="calc">CALC</button>
   <button class="tabbtn" data-tab="cases">CASES</button>
   <button class="tabbtn" data-tab="drills">DRILLS</button>
   <button class="tabbtn" data-tab="cheat">CHEATSHEET</button>
@@ -373,6 +374,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     <span class="chip">36 cards</span>
     <span class="chip">20-question mock exam</span>
     <span class="chip">11 case files</span>
+    <span class="chip">worked calculations</span>
     <span class="chip">works offline</span>
   </div>
 
@@ -718,6 +720,195 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
   </div>
 </div></section>
 
+<!-- ============ CALC ============ -->
+<section class="tab" id="calc"><div class="wrap">
+  <h1><span class="pre">// SHOW YOUR WORKING</span>Calculations</h1>
+  <p class="lede">Every number this course asks you to produce, with every line of working. The exam gives marks for the steps, not just the answer — so these are laid out the way you should write them on paper.</p>
+
+  <div class="box wild"><b>The six things you can be asked to compute</b>
+  <b>H(X)</b> entropy · <b>H(X,Y)</b> joint entropy · <b>H(X|Y)</b> conditional entropy · <b>IG</b> information gain · <b>RIG</b> relative information gain · <b>k</b> and <b>l</b> from a table. Everything else is reading a definition.</div>
+
+  <details class="note" open>
+    <summary><span class="num n2">1</span> The log₂ toolkit — no calculator needed</summary>
+    <div class="body">
+      <p>Every probability in this course is a small fraction, so you only ever need a handful of logs. Three tools cover all of it.</p>
+
+      <h4>Tool 1 — powers of two are exact</h4>
+      <div class="formula">log₂(1/2) = −1 &nbsp;·&nbsp; log₂(1/4) = −2 &nbsp;·&nbsp; log₂(1/8) = −3 &nbsp;·&nbsp; log₂(1/16) = −4</div>
+      <p>Any probability that is 1 over a power of 2 gives a whole number. <b>If every group in your table has size 1/2, 1/4 or 1/8 of the total, you never need a decimal at all.</b></p>
+
+      <h4>Tool 2 — the division rule</h4>
+      <div class="formula">log₂(a/b) = log₂ a − log₂ b</div>
+      <p>So log₂(3/10) = log₂3 − log₂10 = 1.585 − 3.322 = <b>−1.737</b>. Useful when the fraction is not a tenth.</p>
+
+      <h4>Tool 3 — the tenths table</h4>
+      <div class="tscroll"><table>
+        <tr><th>p</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th></tr>
+        <tr><td><b>log₂ p</b></td><td>−3.322</td><td>−2.322</td><td>−1.737</td><td>−1.322</td><td>−1.000</td><td>−0.737</td><td>−0.515</td><td>−0.322</td><td>−0.152</td></tr>
+        <tr><td><b>−p·log₂ p</b></td><td>0.332</td><td>0.464</td><td>0.521</td><td>0.529</td><td>0.500</td><td>0.442</td><td>0.360</td><td>0.258</td><td>0.137</td></tr>
+      </table></div>
+      <div class="tip t-good"><b>Use the bottom row</b>It already has the minus sign folded in, so <b>H is simply the sum of those numbers</b>. Adding positives is far harder to get wrong than juggling negatives.</div>
+      <p class="mini">Memory aid: doubling p subtracts exactly 1 from log₂ p. 0.1 → 0.2 → 0.4 → 0.8 reads −3.322, −2.322, −1.322, −0.322. Same for 0.3 → 0.6.</p>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">2</span> H(X) — entropy of one attribute</summary>
+    <div class="body">
+      <div class="formula">H(X) = − Σ p(x) · log₂ p(x)</div>
+      <h4>Recipe</h4>
+      <ol>
+        <li>Group the records by the value of X. Count each group.</li>
+        <li>p = count ÷ total.</li>
+        <li>Look up −p·log₂p for each group.</li>
+        <li>Add them. That sum <b>is</b> H(X). Units: <b>bits</b>.</li>
+      </ol>
+
+      <h4>Worked — Alejandra, TM 1 (postcode)</h4>
+      <p>Ten records. Postcode 2015 appears 3 times, 2016 six times, 2017 once.</p>
+      <div class="formula">p(2015) = 3/10 = 0.3 &nbsp;→&nbsp; 0.521<br>p(2016) = 6/10 = 0.6 &nbsp;→&nbsp; 0.442<br>p(2017) = 1/10 = 0.1 &nbsp;→&nbsp; 0.332<br>─────────────────────────<br>H(X) = 0.521 + 0.442 + 0.332 = <b>1.295 bits</b></div>
+
+      <h4>Worked — Alejandra, TM 2 (medical code)</h4>
+      <p>A appears 5 times, B four times, C once.</p>
+      <div class="formula">0.5 → 0.500 &nbsp;·&nbsp; 0.4 → 0.529 &nbsp;·&nbsp; 0.1 → 0.332<br>H(X) = 0.500 + 0.529 + 0.332 = <b>1.361 bits</b></div>
+
+      <div class="tip t-info"><b>Sanity range</b>H is <b>0</b> when one value is certain, and maximum at <b>log₂(number of distinct values)</b> when they are all equally likely. Three values → H can never exceed log₂3 = 1.585. Both answers above sit under it. ✓</div>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">3</span> H(X,Y) — joint entropy of two attributes</summary>
+    <div class="body">
+      <p>When the adversary knows <b>both</b> attributes, one "value" is the <b>pair</b>. Nothing else about the method changes.</p>
+      <div class="formula">H(X,Y) = − Σ p(x,y) · log₂ p(x,y)</div>
+      <h4>Recipe</h4>
+      <ol>
+        <li>Write out the pair for every record: (postcode, medical code).</li>
+        <li>Count identical pairs. These counts must still total the number of records.</li>
+        <li>Same formula, same table, same sum.</li>
+      </ol>
+      <h4>Then run the two checks</h4>
+      <ol class="clean">
+        <li><b>Marginal check.</b> Add the pair counts down one attribute — you must recover the single-attribute counts exactly. Do it in both directions.</li>
+        <li><b>Bound check.</b> <span class="kbd">max(H(X), H(Y)) ≤ H(X,Y) ≤ H(X) + H(Y)</span> — adding an attribute can only raise uncertainty or leave it unchanged, never lower it.</li>
+      </ol>
+      <div class="tip t-warn"><b>Known error in the circulated example</b>The TM 3 pairs <span class="kbd">(2015,A) 3 · (2016,A) 3 · (2016,B) 3 · (2017,C) 1</span> giving 1.895 bits <b>fail the marginal check</b> — they imply A = 6, B = 3, while TM 2 states A = 5, B = 4. The lecturer has confirmed this is a mistake. Note that 1.895 <i>passes</i> the bound check, so only the marginal check catches it. Recompute from the corrected pairs.</div>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">4</span> H(X|Y) — conditional entropy, the one everyone skips</summary>
+    <div class="body">
+      <p>This is the step the IG formula depends on, and it is where marks are lost. <b>H(X|Y)</b> asks: once the adversary has seen the de-identified value Y, how much uncertainty about the real X is <b>left</b>?</p>
+      <div class="formula">H(X|Y) = Σ p(y) · H(X | Y = y)</div>
+      <p>In words: for each possible Y, work out the entropy of X <i>within that group only</i>, then average those, weighted by how common each Y is.</p>
+
+      <h4>Recipe</h4>
+      <ol>
+        <li><b>Group the records by Y</b> — one group per de-identified value.</li>
+        <li>For each group, find <b>p(y)</b> = group size ÷ total.</li>
+        <li>Inside that group, look at the original X values and compute <b>H(X|Y=y)</b> using the ordinary entropy formula, but with probabilities <i>within the group</i>.</li>
+        <li>Multiply each group's entropy by its p(y), and add.</li>
+      </ol>
+      <div class="tip t-good"><b>The shortcut worth knowing</b>If a group contains only <b>one</b> distinct original value, its entropy is <b>0</b> — that record is fully exposed and contributes nothing. Only mixed groups add uncertainty. This is often most of the work done in one glance.</div>
+
+      <h4>Method 2 — the chain rule</h4>
+      <div class="formula">H(X|Y) = H(X,Y) − H(Y)</div>
+      <p>Use whichever is faster, and if you have time <b>use both</b> — they must agree, which makes it a free check on your own arithmetic.</p>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">5</span> IG and RIG — worked end to end</summary>
+    <div class="body">
+      <div class="formula">IG = H(X) − H(X|Y) &nbsp;&nbsp;&nbsp;&nbsp; RIG = IG / H(X)</div>
+      <p><b>IG</b> = how many bits about the original data the adversary gains by seeing the de-identified version. <b>Lower is safer.</b> <b>RIG</b> rescales it to 0–1 so it lines up with the privacy spectrum.</p>
+
+      <h4>The slide example, from the raw records</h4>
+      <p>Four records. Names are encoded so that <b>Peter</b> and <b>Pete</b> both become <span class="kbd">p360</span>, and <b>Smith</b> becomes <span class="kbd">s530</span>.</p>
+      <div class="tscroll"><table>
+        <tr><th>#</th><th>X — real name</th><th>Y — code</th></tr>
+        <tr><td class="mini">1</td><td>Smith</td><td class="kbd">s530</td></tr>
+        <tr><td class="mini">2</td><td>Smith</td><td class="kbd">s530</td></tr>
+        <tr><td class="mini">3</td><td>Peter</td><td class="kbd">p360</td></tr>
+        <tr><td class="mini">4</td><td>Pete</td><td class="kbd">p360</td></tr>
+      </table></div>
+
+      <h4>Step 1 — H(X), the original uncertainty</h4>
+      <p>Smith 2/4, Peter 1/4, Pete 1/4. All powers of two, so no table needed:</p>
+      <div class="formula">H(X) = −(0.5·log₂0.5 + 0.25·log₂0.25 + 0.25·log₂0.25)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = −(0.5·(−1) + 0.25·(−2) + 0.25·(−2))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0.5 + 0.5 + 0.5 = <b>1.5 bits</b></div>
+
+      <h4>Step 2 — H(X|Y), what is left after seeing the code</h4>
+      <p>Group by code, then measure the leftover uncertainty inside each group:</p>
+      <div class="tscroll"><table>
+        <tr><th>Y</th><th>p(y)</th><th>X inside the group</th><th>H(X|Y=y)</th></tr>
+        <tr><td class="kbd">s530</td><td>2/4 = 0.5</td><td>Smith, Smith — only one value</td><td><b>0</b> bits</td></tr>
+        <tr><td class="kbd">p360</td><td>2/4 = 0.5</td><td>Peter, Pete — 50 / 50</td><td><b>1</b> bit</td></tr>
+      </table></div>
+      <div class="formula">H(X|Y) = 0.5 × 0 + 0.5 × 1 = <b>0.5 bits</b></div>
+      <p class="mini">Read it in plain words: seeing <span class="kbd">s530</span> tells the adversary the name exactly, so nothing is hidden there. Seeing <span class="kbd">p360</span> leaves a straight coin-flip between Peter and Pete — one bit still hidden. Average the two and you get half a bit.</p>
+
+      <h4>Step 3 — cross-check with the chain rule</h4>
+      <p>Y takes two values, each 2/4, so H(Y) = 1 bit. Because Y is fully determined by X, H(X,Y) = H(X) = 1.5.</p>
+      <div class="formula">H(X|Y) = H(X,Y) − H(Y) = 1.5 − 1.0 = <b>0.5</b> ✓ agrees with Step 2</div>
+
+      <h4>Step 4 — IG and RIG</h4>
+      <div class="formula">IG&nbsp; = H(X) − H(X|Y) = 1.5 − 0.5 = <b>1.0 bit</b><br>RIG = IG / H(X) &nbsp;= 1.0 / 1.5 = <b>0.67</b></div>
+
+      <h4>Step 5 — say what it means</h4>
+      <p>Do not stop at the number; the marks are in the sentence. RIG = 0.67 sits between 0.5 and 0.75 on the privacy spectrum:</p>
+      <div class="tip t-warn"><b>Conclusion</b>Roughly <b>67%</b> of the original information survives the encoding — "suspicion with moderate-to-high confidence". Simple phonetic encoding is <b>weak de-identification</b>: it collapses Peter and Pete together, but leaves Smith completely exposed.</div>
+
+      <div class="tip t-info"><b>Reading the two extremes</b><b>RIG = 0</b> → the de-identified data reveals nothing about the original, perfect privacy. <b>RIG = 1</b> → it reveals everything, the de-identification did nothing at all.</div>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">6</span> Reading k and l off a table</summary>
+    <div class="body">
+      <p>No formula here — it is a counting exercise, and the trick is knowing <i>what</i> to count.</p>
+      <h4>Recipe</h4>
+      <ol>
+        <li>Identify the <b>QID columns</b> (the quasi-identifiers — gender, birth year, postcode). Ignore the sensitive column for now.</li>
+        <li>Group rows that are <b>identical across all QID columns</b>. These groups are called equivalence classes.</li>
+        <li><b>k = the size of the smallest group.</b></li>
+        <li>Inside each group, count the <b>distinct sensitive values</b>. <b>l = the smallest of those counts.</b></li>
+      </ol>
+
+      <h4>Worked</h4>
+      <div class="tscroll"><table>
+        <tr><th>Gender</th><th>Born</th><th>Postcode</th><th>Diagnosis</th></tr>
+        <tr><td>F</td><td>1985</td><td>50200</td><td>flu</td></tr>
+        <tr><td>F</td><td>1985</td><td>50200</td><td>flu</td></tr>
+        <tr><td>F</td><td>1985</td><td>50200</td><td>cough</td></tr>
+        <tr><td>M</td><td>1990</td><td>50100</td><td>asthma</td></tr>
+        <tr><td>M</td><td>1990</td><td>50100</td><td>flu</td></tr>
+        <tr><td>M</td><td>1990</td><td>50100</td><td>asthma</td></tr>
+      </table></div>
+      <p>Two groups, three rows each. Group F has diagnoses {flu, cough} → 2 distinct. Group M has {asthma, flu} → 2 distinct.</p>
+      <div class="formula">k = min(3, 3) = <b>3</b> &nbsp;→ the table is 3-anonymous<br>l = min(2, 2) = <b>2</b> &nbsp;→ the table is 2-diverse</div>
+      <div class="tip t-warn"><b>The trap</b>k counts <b>rows per group</b>; l counts <b>distinct sensitive values inside a group</b>. Both are the <b>minimum</b> across groups — one bad group drags the whole table down. A table can be 5-anonymous and still 1-diverse, which leaks the diagnosis of everyone in that group.</div>
+    </div>
+  </details>
+
+  <details class="note">
+    <summary><span class="num n2">7</span> Exam checklist</summary>
+    <div class="body">
+      <ol class="clean">
+        <li><b>State the formula before you use it.</b> It is usually worth a mark on its own.</li>
+        <li><b>Show p for every group.</b> Write "3/10 = 0.3", not just 0.3.</li>
+        <li><b>Keep 3 decimal places</b> through the working, round only at the end.</li>
+        <li><b>Write the unit — bits.</b> Entropy, IG and joint entropy are all in bits. RIG has <b>no unit</b>; it is a ratio between 0 and 1.</li>
+        <li><b>Check the probabilities sum to 1</b> before computing anything.</li>
+        <li><b>Run the marginal check</b> on any joint table. Ten seconds, and it catches the error class the lecturer just confirmed.</li>
+        <li><b>Sanity-check the size:</b> 0 ≤ H ≤ log₂(distinct values), and H(X,Y) ≥ max(H(X), H(Y)).</li>
+        <li><b>Finish with a sentence.</b> "RIG = 0.67 → moderate-to-high risk, so this de-identification is too weak to publish." The interpretation is what the question is really testing.</li>
+      </ol>
+      <div class="tip t-good"><b>Most common lost marks</b>Forgetting the minus sign · using log₁₀ instead of log₂ · computing H(X|Y) as a plain average instead of weighting by p(y) · dividing RIG by H(Y) instead of H(X) · giving a number with no interpretation.</div>
+    </div>
+  </details>
+</div></section>
+
 <!-- ============ CASES ============ -->
 <section class="tab" id="cases"><div class="wrap">
   <h1><span class="pre">// REAL WORLD</span>Case Files</h1>
@@ -1027,7 +1218,7 @@ $('themeBtn').addEventListener('click',function(){
 })();
 
 /* ================= TABS ================= */
-var TABS=['home','notes','cases','drills','cheat','author'];
+var TABS=['home','notes','calc','cases','drills','cheat','author'];
 var scrollMem={};
 function go(tab,noPush){
   var cur=document.querySelector('.tab.on');
@@ -1038,7 +1229,7 @@ function go(tab,noPush){
   document.querySelectorAll('.tabbtn').forEach(function(b){
     b.classList.toggle('on',b.dataset.tab===tab);
   });
-  document.body.classList.toggle('hasrail', tab==='notes'||tab==='cases'||tab==='cheat');
+  document.body.classList.toggle('hasrail', tab==='notes'||tab==='calc'||tab==='cases'||tab==='cheat');
   buildRail(tab);
   LSset('privTab',tab);
   if(!noPush){
@@ -1054,7 +1245,13 @@ document.querySelectorAll('.tabbtn').forEach(function(b){
 var railItems=[];
 function anchorsFor(tab){
   var out=[];
-  if(tab==='notes'){
+  if(tab==='calc'){
+    document.querySelectorAll('#calc details.note').forEach(function(d,i){
+      if(!d.id) d.id='calc_'+i;
+      var sum=d.querySelector('summary');
+      out.push({id:d.id,k:'STEP',t:sum?sum.textContent.replace(/^\s*\d+\s*/,'').trim():'step'});
+    });
+  } else if(tab==='notes'){
     document.querySelectorAll('#notes details.note').forEach(function(d,i){
       if(!d.id) d.id='note_'+i;
       var host=d.closest('#notesT2')?'T2':'T1';
@@ -1364,6 +1561,12 @@ var IDX=[];
     var sum=d.querySelector('summary');
     IDX.push({k:'NOTE',t:sum?sum.textContent.replace(/^\s*\d+\s*/,'').trim():'note',
       s:(d.querySelector('.body')||d).textContent.slice(0,150),tab:'notes',id:d.id});
+  });
+  document.querySelectorAll('#calc details.note').forEach(function(d,i){
+    if(!d.id) d.id='calc_'+i;
+    var sum=d.querySelector('summary');
+    IDX.push({k:'CALC',t:sum?sum.textContent.replace(/^\s*\d+\s*/,'').trim():'calculation',
+      s:(d.querySelector('.body')||d).textContent.slice(0,150),tab:'calc',id:d.id});
   });
   document.querySelectorAll('#cases .case').forEach(function(c,i){
     if(!c.id) c.id='case_'+i;
