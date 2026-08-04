@@ -706,13 +706,9 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
           <tr><td><b>RIG</b> — Relative IG</td><td>IG scaled to 0.0–1.0 by dividing by H(X).</td><td>Comparable across datasets — matches the privacy spectrum.</td></tr>
         </table>
         <div class="formula">IG = H(X) − H(X|Y) &nbsp;&nbsp;&nbsp; RIG = IG / H(X)</div>
-        <p><b>Worked example from the slides:</b> names are encoded — "Peter" and "Pete" both become <span class="kbd">p360</span>, "Smith" becomes <span class="kbd">s530</span>.</p>
-        <ul class="clean">
-          <li>Entropy of the original names: H(X) = 1.5 bits</li>
-          <li>Uncertainty left after seeing the codes: H(X|Y) = 0.5 bits (the code p360 still hides "Peter vs Pete")</li>
-          <li>IG = 1.5 − 0.5 = <b>1.0 bit</b> &nbsp;→&nbsp; RIG = 1.0 / 1.5 = <b>0.67</b></li>
-        </ul>
-        <div class="tip t-warn"><b>Conclusion:</b> re-identification risk ≈ <b>67%</b> → "suspicion with moderate confidence" on the privacy spectrum. Simple encoding is weak de-identification — not too low, not too high, but a moderate risk remains.</div>
+        <p><b>The encoding example:</b> names are encoded phonetically — "Peter" and "Pete" both become <span class="kbd">p360</span>, the Smith family becomes <span class="kbd">s530</span>. The adversary sees only the codes.</p>
+        <div class="tip t-warn"><b>Slide figures under correction</b>The lecturer has confirmed an error in the printed numbers for this example. The leak is <b>1 bit</b> either way; what changes is the H(X) you divide by, so RIG comes out <b>0.50</b> or <b>0.67</b> depending on the record list. Both are worked line by line in the <b>Calc</b> tab, section 5 — take the corrected records to that table and read your answer off.</div>
+        <div class="tip t-good"><b>Conclusion — the part that is not in doubt</b>A substantial share of the original information survives the encoding, so simple phonetic encoding is <b>weak de-identification</b>. It hides Peter from Pete and nothing else; a name appearing in only one record stays fully exposed.</div>
         <p class="mini">Use IG/RIG to compare de-identification methods (or settings of one method) and decide if the data is safe enough to share.</p>
       </div>
     </details>
@@ -824,8 +820,11 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
       <div class="formula">IG = H(X) − H(X|Y) &nbsp;&nbsp;&nbsp;&nbsp; RIG = IG / H(X)</div>
       <p><b>IG</b> = how many bits about the original data the adversary gains by seeing the de-identified version. <b>Lower is safer.</b> <b>RIG</b> rescales it to 0–1 so it lines up with the privacy spectrum.</p>
 
-      <h4>The slide example, from the raw records</h4>
-      <p>Four records. Names are encoded so that <b>Peter</b> and <b>Pete</b> both become <span class="kbd">p360</span>, and <b>Smith</b> becomes <span class="kbd">s530</span>.</p>
+      <div class="tip t-warn"><b>The slide's figures are under correction</b>The lecturer has confirmed an error in the printed encoding example. The <b>method below is unaffected</b> — but the final number depends entirely on <b>how many records carry each name</b>, so both readings are worked out here. Bring the corrected record list and you can read your answer straight off.</div>
+
+      <p>The setup is the same in both: names are encoded phonetically, so <b>Peter</b> and <b>Pete</b> collapse to <span class="kbd">p360</span>, and the Smith family collapses to <span class="kbd">s530</span>.</p>
+
+      <h4>Reading A — one name repeats: Smith, Smith, Peter, Pete</h4>
       <div class="tscroll"><table>
         <tr><th>#</th><th>X — real name</th><th>Y — code</th></tr>
         <tr><td class="mini">1</td><td>Smith</td><td class="kbd">s530</td></tr>
@@ -833,33 +832,48 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
         <tr><td class="mini">3</td><td>Peter</td><td class="kbd">p360</td></tr>
         <tr><td class="mini">4</td><td>Pete</td><td class="kbd">p360</td></tr>
       </table></div>
-
-      <h4>Step 1 — H(X), the original uncertainty</h4>
-      <p>Smith 2/4, Peter 1/4, Pete 1/4. All powers of two, so no table needed:</p>
-      <div class="formula">H(X) = −(0.5·log₂0.5 + 0.25·log₂0.25 + 0.25·log₂0.25)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = −(0.5·(−1) + 0.25·(−2) + 0.25·(−2))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 0.5 + 0.5 + 0.5 = <b>1.5 bits</b></div>
-
-      <h4>Step 2 — H(X|Y), what is left after seeing the code</h4>
-      <p>Group by code, then measure the leftover uncertainty inside each group:</p>
+      <p><b>Step 1 — H(X).</b> Smith 2/4, Peter 1/4, Pete 1/4:</p>
+      <div class="formula">H(X) = 0.5·1 + 0.25·2 + 0.25·2 = 0.5 + 0.5 + 0.5 = <b>1.5 bits</b></div>
+      <p><b>Step 2 — H(X|Y).</b> Group by code and measure what is left inside each group:</p>
       <div class="tscroll"><table>
         <tr><th>Y</th><th>p(y)</th><th>X inside the group</th><th>H(X|Y=y)</th></tr>
-        <tr><td class="kbd">s530</td><td>2/4 = 0.5</td><td>Smith, Smith — only one value</td><td><b>0</b> bits</td></tr>
+        <tr><td class="kbd">s530</td><td>2/4 = 0.5</td><td>Smith, Smith — one value only</td><td><b>0</b> bits</td></tr>
         <tr><td class="kbd">p360</td><td>2/4 = 0.5</td><td>Peter, Pete — 50 / 50</td><td><b>1</b> bit</td></tr>
       </table></div>
       <div class="formula">H(X|Y) = 0.5 × 0 + 0.5 × 1 = <b>0.5 bits</b></div>
-      <p class="mini">Read it in plain words: seeing <span class="kbd">s530</span> tells the adversary the name exactly, so nothing is hidden there. Seeing <span class="kbd">p360</span> leaves a straight coin-flip between Peter and Pete — one bit still hidden. Average the two and you get half a bit.</p>
+      <p><b>Step 3 — IG and RIG.</b></p>
+      <div class="formula">IG&nbsp; = 1.5 − 0.5 = <b>1.0 bit</b><br>RIG = 1.0 / 1.5 = <b>0.67</b></div>
 
-      <h4>Step 3 — cross-check with the chain rule</h4>
-      <p>Y takes two values, each 2/4, so H(Y) = 1 bit. Because Y is fully determined by X, H(X,Y) = H(X) = 1.5.</p>
-      <div class="formula">H(X|Y) = H(X,Y) − H(Y) = 1.5 − 1.0 = <b>0.5</b> ✓ agrees with Step 2</div>
+      <h4>Reading B — four distinct names: Peter, Pete, Smith, Smyth</h4>
+      <p>Same two codes, but now every name is different, so nothing was repeated to begin with.</p>
+      <p><b>Step 1 — H(X).</b> Four equally likely names, 1/4 each:</p>
+      <div class="formula">H(X) = 4 × (0.25 × 2) = <b>2.0 bits</b></div>
+      <p><b>Step 2 — H(X|Y).</b> Now <i>both</i> groups are mixed:</p>
+      <div class="tscroll"><table>
+        <tr><th>Y</th><th>p(y)</th><th>X inside the group</th><th>H(X|Y=y)</th></tr>
+        <tr><td class="kbd">p360</td><td>2/4 = 0.5</td><td>Peter, Pete — 50 / 50</td><td><b>1</b> bit</td></tr>
+        <tr><td class="kbd">s530</td><td>2/4 = 0.5</td><td>Smith, Smyth — 50 / 50</td><td><b>1</b> bit</td></tr>
+      </table></div>
+      <div class="formula">H(X|Y) = 0.5 × 1 + 0.5 × 1 = <b>1.0 bit</b></div>
+      <p><b>Step 3 — IG and RIG.</b></p>
+      <div class="formula">IG&nbsp; = 2.0 − 1.0 = <b>1.0 bit</b><br>RIG = 1.0 / 2.0 = <b>0.50</b></div>
 
-      <h4>Step 4 — IG and RIG</h4>
-      <div class="formula">IG&nbsp; = H(X) − H(X|Y) = 1.5 − 0.5 = <b>1.0 bit</b><br>RIG = IG / H(X) &nbsp;= 1.0 / 1.5 = <b>0.67</b></div>
+      <h4>Why they differ — and which one the slide probably means</h4>
+      <div class="tscroll"><table>
+        <tr><th>Reading</th><th>H(X)</th><th>H(X|Y)</th><th>IG</th><th>RIG</th><th>Spectrum label</th></tr>
+        <tr><td>A · Smith repeats</td><td>1.5</td><td>0.5</td><td>1.0</td><td><b>0.67</b></td><td>between moderate and high</td></tr>
+        <tr><td>B · four distinct</td><td>2.0</td><td>1.0</td><td>1.0</td><td><b>0.50</b></td><td class="ok">exactly "moderate"</td></tr>
+      </table></div>
+      <div class="tip t-info"><b>The tell</b>Both readings leak the same <b>1 bit</b> — that part is stable. What changes is the baseline H(X) you divide by. The printed slide states <b>0.67</b> but describes the result as <b>"suspicion with moderate confidence"</b>, and moderate is the <b>0.50</b> mark on the spectrum. The number and its own label disagree, which is consistent with the error the lecturer flagged. Reading B is self-consistent; check the record list on the slide to confirm.</div>
 
-      <h4>Step 5 — say what it means</h4>
-      <p>Do not stop at the number; the marks are in the sentence. RIG = 0.67 sits between 0.5 and 0.75 on the privacy spectrum:</p>
-      <div class="tip t-warn"><b>Conclusion</b>Roughly <b>67%</b> of the original information survives the encoding — "suspicion with moderate-to-high confidence". Simple phonetic encoding is <b>weak de-identification</b>: it collapses Peter and Pete together, but leaves Smith completely exposed.</div>
-
-      <div class="tip t-info"><b>Reading the two extremes</b><b>RIG = 0</b> → the de-identified data reveals nothing about the original, perfect privacy. <b>RIG = 1</b> → it reveals everything, the de-identification did nothing at all.</div>
+      <h4>The last step is a sentence, not a number</h4>
+      <p>Whichever value you get, the marks are in the interpretation:</p>
+      <ul class="clean">
+        <li><b>RIG = 0</b> → the de-identified data reveals nothing about the original. Perfect privacy.</li>
+        <li><b>RIG = 0.5</b> → half the information survives. Suspicion with <b>moderate</b> confidence.</li>
+        <li><b>RIG = 1</b> → everything survives. The de-identification did nothing at all.</li>
+      </ul>
+      <div class="tip t-good"><b>The point the example is making</b>Phonetic encoding is <b>weak de-identification</b>. It hides the difference between Peter and Pete, but it hides nothing else — and if a name appears in only one record, that record stays fully exposed. That conclusion holds under both readings.</div>
     </div>
   </details>
 
@@ -902,7 +916,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
         <li><b>Check the probabilities sum to 1</b> before computing anything.</li>
         <li><b>Run the marginal check</b> on any joint table. Ten seconds, and it catches the error class the lecturer just confirmed.</li>
         <li><b>Sanity-check the size:</b> 0 ≤ H ≤ log₂(distinct values), and H(X,Y) ≥ max(H(X), H(Y)).</li>
-        <li><b>Finish with a sentence.</b> "RIG = 0.67 → moderate-to-high risk, so this de-identification is too weak to publish." The interpretation is what the question is really testing.</li>
+        <li><b>Finish with a sentence.</b> "RIG = 0.50 → moderate risk, so this de-identification is too weak to publish." The interpretation is what the question is really testing.</li>
       </ol>
       <div class="tip t-good"><b>Most common lost marks</b>Forgetting the minus sign · using log₁₀ instead of log₂ · computing H(X|Y) as a plain average instead of weighting by p(y) · dividing RIG by H(Y) instead of H(X) · giving a number with no interpretation.</div>
     </div>
@@ -1097,7 +1111,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
         <tr><td>Fair coin 0.5/0.5</td><td><b>1 bit</b> (max uncertainty)</td><td>Certain outcome 1.0/0.0</td><td><b>0 bits</b></td></tr>
         <tr><td>Coin 0.6/0.4</td><td><b>0.971 bits</b></td><td>Coin 0.8/0.2</td><td><b>0.722 bits</b></td></tr>
         <tr><td>Alejandra TM1 (postcode)</td><td><b>1.295 bits</b></td><td>TM2 (medical code)</td><td><b>1.361 bits</b></td></tr>
-        <tr><td>TM3 (both attributes)</td><td><b>highest risk</b> — recompute from the pairs<br><span class="mini">printed 1.895 is a known error</span></td><td>Encoding example RIG</td><td><b>0.67 → moderate risk</b></td></tr>
+        <tr><td>TM3 (both attributes)</td><td><b>highest risk</b> — recompute from the pairs<br><span class="mini">printed 1.895 is a known error</span></td><td>Encoding example RIG</td><td><b>0.50 or 0.67</b><br><span class="mini">slide under correction — see Calc §5</span></td></tr>
       </table>
       <p class="mini">Read: higher entropy = more unique values = more info for the attacker = higher re-ID risk. Lower IG = better de-identification.</p>
     </div>
@@ -1375,7 +1389,7 @@ var CARDS = [
  {t:2,q:"Privacy spectrum",a:"0.0 absolute privacy → 0.25 low suspicion → 0.5 moderate → 0.75 high → 1.0 provably exposed."},
  {t:2,q:"Entropy",a:"The amount of information (uncertainty) in a variable, in bits. Fair coin = 1 bit. Certain outcome = 0 bits. H(X) = −Σ p·log₂p."},
  {t:2,q:"Information Gain (IG)",a:"How much of the original data X can be learned from its de-identified version Y. IG = H(X) − H(X|Y). Lower = safer."},
- {t:2,q:"Relative Information Gain (RIG)",a:"IG divided by H(X), scaled 0.0–1.0 so datasets can be compared. Slide example: RIG = 0.67 → moderate risk."},
+ {t:2,q:"Relative Information Gain (RIG)",a:"IG divided by H(X), scaled 0.0-1.0 so datasets can be compared. RIG 0 = nothing leaks, 0.5 = moderate risk, 1 = the de-identification did nothing."},
  {t:2,q:"Direct vs quasi-identifiers",a:"Direct (DID): identify a person alone — name, email, phone. Quasi (QID): only identify when combined — DOB, gender, postcode."}
 ];
 
@@ -1432,9 +1446,9 @@ var QUIZ = [
  {q:"Root cause of the Medibank breach (2022)?",
   o:["SQL injection","DDoS attack","An employee's stolen credentials","Default IoT password"], a:[2],
   e:"Stolen credentials gave the attacker authenticated access → 200GB of data on 9.7M customers."},
- {q:"After de-identification, RIG = 0.67. What does that mean?",
-  o:["Data is fully safe (near absolute privacy)","67% risk that original values can be learned — moderate suspicion","Data was destroyed by 67%","Entropy increased by 67 bits"], a:[1],
-  e:"RIG maps to the privacy spectrum: 0.67 ≈ suspicion with moderate-to-high confidence — the encoding was weak."},
+ {q:"After de-identification, RIG = 0.50. What does that mean?",
+  o:["Data is fully safe (near absolute privacy)","Half the original information can still be learned — moderate suspicion","The data was destroyed by 50%","Entropy increased by 50 bits"], a:[1],
+  e:"RIG maps straight onto the privacy spectrum: 0.50 = suspicion with moderate confidence. Half the original information survived the de-identification, so it was weak."},
  {q:"Sweeney's study: ~87% of the US population can be identified using which combination?",
   o:["Name + address + phone","Gender + date of birth + 5-digit ZIP","Email + password + username","Fingerprint + photo + ID"], a:[1],
   e:"Three harmless-looking quasi-identifiers combine into a near-unique fingerprint."},
