@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIV // 269497 Privacy Console</title>
+<meta name="description" content="Offline study console for ISNE 269497 The Cult of Privacy Technologies — threats, risk quantification, real breach case files, flashcards and a mock exam.">
+<meta name="theme-color" content="#0a0b12">
+<style>
+:root{
+  --bg:#0a0b12; --bg2:#0e1019; --panel:#12151f; --panel2:#171b28; --panel3:#1d2233;
+  --ink:#e9ecf6; --dim:#98a1bb; --faint:#66708c;
+  --vi:#a78bfa; --vi2:#c4b5fd; --cy:#38bdf8; --gr:#34d399; --am:#fbbf24; --rd:#fb7185;
+  --line:#1d2233; --line2:#2b3350;
+  --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 18px 44px rgba(0,0,0,.42);
+}
+html:not(.dark){
+  --bg:#f7f8fc; --bg2:#eef1f8; --panel:#ffffff; --panel2:#f6f8fc; --panel3:#eef2f9;
+  --ink:#131725; --ink:#111827; --dim:#4b5568; --faint:#79839a;
+  --vi:#6d28d9; --vi2:#5b21b6; --cy:#0369a1; --gr:#047857; --am:#b45309; --rd:#be123c;
+  --line:#e4e8f1; --line2:#cdd4e3;
+  --shadow:0 18px 44px rgba(15,23,42,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  background:var(--bg);min-height:100vh;overflow-x:hidden}
+a{color:var(--vi);text-decoration:none}
+::selection{background:color-mix(in srgb,var(--vi) 32%,transparent)}
+:focus-visible{outline:2px solid var(--vi);outline-offset:2px;border-radius:5px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- live background ---------- */
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+html:not(.dark) #fx{opacity:.3}
+.shell{position:relative;z-index:1}
+
+/* ---------- top bar ---------- */
+#top{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:saturate(150%) blur(12px);border-bottom:1px solid var(--line)}
+.navin{max-width:1440px;margin:0 auto;padding:9px 16px;display:flex;gap:5px;align-items:center;
+  overflow:visible;flex-wrap:nowrap}
+.navin>.tabbtn{flex:0 0 auto}
+#csWrap{position:relative;flex:0 0 auto;margin-right:10px}
+#logoBtn{display:flex;align-items:center;gap:9px;background:none;border:0;cursor:pointer;padding:3px 6px;
+  border-radius:9px;color:inherit;font:inherit}
+#logoBtn:hover{background:var(--panel2)}
+.logomk{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,var(--vi),var(--cy));
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 14px color-mix(in srgb,var(--vi) 34%,transparent)}
+.logotx{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
+.logotx b{font-family:var(--mono);font-size:13.5px;letter-spacing:.4px;font-weight:800;white-space:nowrap}
+.logotx b i{font-style:normal;color:var(--vi)}
+.logotx span{font-family:var(--mono);font-size:8.5px;letter-spacing:2.4px;color:var(--faint);
+  text-transform:uppercase;font-weight:700}
+.caret{font-size:9px;color:var(--faint);margin-left:1px}
+#csPop{position:absolute;top:calc(100% + 9px);left:0;width:340px;background:var(--panel);
+  border:1px solid var(--line2);border-radius:14px;padding:7px;box-shadow:var(--shadow);display:none;z-index:80}
+#csPop.on{display:block}
+.cshead{font-family:var(--mono);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--faint);padding:8px 10px 6px;font-weight:700}
+.csrow{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;color:inherit}
+.csrow:hover{background:var(--panel2)}
+.csmk{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-weight:800;font-size:10px;flex:0 0 auto;border:1px solid currentColor}
+.csrow b{display:block;font-size:14px;font-weight:650;letter-spacing:-.1px}
+.csrow span{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:1px}
+.csgo{margin-left:auto;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.8px;
+  color:var(--faint);border:1px solid var(--line2);border-radius:6px;padding:4px 8px;white-space:nowrap}
+.csrow.here .csgo{color:var(--gr);border-color:var(--gr)}
+.csfoot{border-top:1px solid var(--line);margin-top:5px;padding:8px 10px 4px;display:flex;gap:12px}
+.csfoot a{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.csfoot a:hover{color:var(--vi)}
+.navsep{width:1px;height:19px;background:var(--line2);margin:0 6px;flex:0 0 auto}
+.tabbtn{background:none;border:0;color:var(--dim);font-family:var(--mono);font-size:11.5px;font-weight:700;
+  letter-spacing:1.1px;padding:8px 11px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:.14s}
+.tabbtn:hover{color:var(--ink);background:var(--panel2)}
+.tabbtn.on{color:var(--vi);background:color-mix(in srgb,var(--vi) 13%,transparent)}
+.navsp{margin-left:auto}
+.iconbtn{background:var(--panel2);border:1px solid var(--line2);color:var(--dim);border-radius:8px;
+  padding:7px 10px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.7px;cursor:pointer;
+  white-space:nowrap;transition:.14s;flex:0 0 auto}
+.iconbtn:hover{color:var(--ink);border-color:var(--vi)}
+#searchBtn{display:flex;align-items:center;gap:7px;min-width:150px;color:var(--faint)}
+#searchBtn kbd{margin-left:auto;font-family:var(--mono);font-size:9.5px;border:1px solid var(--line2);
+  border-radius:4px;padding:1px 5px;color:var(--faint)}
+@media(max-width:1080px){#searchBtn{min-width:0}#searchBtn .stxt,#searchBtn kbd{display:none}}
+@media(max-width:900px){.navin{flex-wrap:wrap}.logotx span{display:none}}
+
+/* ---------- context rail ---------- */
+#rail{position:sticky;top:49px;z-index:50;background:color-mix(in srgb,var(--bg2) 92%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:none}
+body.hasrail #rail{display:block}
+.railin{max-width:1200px;margin:0 auto;padding:8px 16px;display:flex;gap:8px;align-items:center}
+#railSel{flex:1;background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:8px;
+  padding:7px 11px;font-family:var(--mono);font-size:12px;cursor:pointer}
+.rbtn{background:var(--panel);border:1px solid var(--line2);color:var(--dim);border-radius:8px;
+  padding:6px 11px;cursor:pointer;font-size:13px;font-family:var(--mono)}
+.rbtn:hover:not(:disabled){color:var(--vi);border-color:var(--vi)}
+.rbtn:disabled{opacity:.32;cursor:default}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1000px;margin:0 auto;padding:30px 18px 90px}
+.tab{display:none}
+.tab.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(25px,4.4vw,36px);font-weight:800;letter-spacing:-.9px;line-height:1.14}
+.pre,.kicker{font-family:var(--mono);color:var(--vi);font-size:11px;display:block;letter-spacing:2.2px;
+  margin-bottom:8px;font-weight:700;text-transform:uppercase}
+h2.title{font-size:clamp(23px,4vw,32px);font-weight:800;letter-spacing:-.8px;line-height:1.16;margin-bottom:2px}
+.lede,.lead{color:var(--dim);margin-top:11px;font-size:16px;max-width:660px}
+h3{font-size:17.5px;font-weight:700;letter-spacing:-.25px}
+h4{font-family:var(--mono);font-size:10.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--vi);
+  margin-top:19px;margin-bottom:2px;font-weight:700}
+p{margin-top:9px}
+b,strong{font-weight:680;color:var(--ink)}
+
+/* ---------- panels / cards ---------- */
+.panel,.card,.item{background:var(--panel);border:1px solid var(--line);border-radius:13px;
+  padding:19px 21px;margin-top:16px;position:relative;scroll-margin-top:118px}
+.panel::before{content:"";position:absolute;top:-1px;left:18px;width:38px;height:2px;background:var(--vi);border-radius:2px}
+.panel.pc::before{background:var(--cy)} .panel.pg::before{background:var(--gr)} .panel.pa::before{background:var(--am)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:16px}
+.grid2 .card{margin-top:0}
+
+/* ---------- badges / chips ---------- */
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;
+  border-radius:5px;border:1px solid var(--line2);color:var(--faint);font-weight:700;display:inline-block}
+.badge.b1,.badge.vi{color:var(--vi);border-color:var(--vi);background:color-mix(in srgb,var(--vi) 10%,transparent)}
+.badge.b2,.badge.cy{color:var(--cy);border-color:var(--cy);background:color-mix(in srgb,var(--cy) 10%,transparent)}
+.badge.bb{color:var(--rd);border-color:var(--rd);background:color-mix(in srgb,var(--rd) 10%,transparent)}
+.badge.bw{color:var(--am);border-color:var(--am);background:color-mix(in srgb,var(--am) 10%,transparent)}
+.badge.gr{color:var(--gr);border-color:var(--gr)}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);
+  border:1px solid var(--line2);border-radius:20px;padding:5px 12px;font-weight:600}
+.chip.c1{color:var(--vi);border-color:color-mix(in srgb,var(--vi) 45%,transparent)}
+.chip.c2{color:var(--cy);border-color:color-mix(in srgb,var(--cy) 45%,transparent)}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:11px;display:table}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--vi);
+  font-weight:700;background:color-mix(in srgb,var(--vi) 7%,transparent);border-bottom:1px solid var(--line2)}
+tr:last-child td{border-bottom:0}
+.tscroll{overflow-x:auto;margin-top:10px}
+@media(max-width:640px){table{font-size:13px}th,td{padding:7px 8px}}
+
+/* ---------- callouts ---------- */
+.tip,.box{border-radius:9px;padding:11px 14px;margin-top:12px;font-size:14.5px;line-height:1.62}
+.tip b:first-child,.box b:first-child{font-family:var(--mono);font-size:10.5px;letter-spacing:.8px;
+  text-transform:uppercase;display:block;margin-bottom:3px}
+.t-good,.box.rl{background:color-mix(in srgb,var(--gr) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--gr) 28%,transparent)}
+.t-good b:first-child,.box.rl b:first-child{color:var(--gr)}
+.t-warn,.box.trap{background:color-mix(in srgb,var(--am) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--am) 30%,transparent)}
+.t-warn b:first-child,.box.trap b:first-child{color:var(--am)}
+.t-info,.box.wild{background:color-mix(in srgb,var(--cy) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--cy) 26%,transparent)}
+.t-info b:first-child,.box.wild b:first-child{color:var(--cy)}
+.lesson{background:color-mix(in srgb,var(--gr) 9%,var(--panel));border-left:2px solid var(--gr);
+  border-radius:0 9px 9px 0;padding:10px 13px;margin-top:11px;font-size:14px}
+.lesson b:first-child{color:var(--gr);font-family:var(--mono);font-size:10.5px;letter-spacing:.8px;text-transform:uppercase}
+
+/* ---------- notes accordions ---------- */
+.switch{display:flex;gap:7px;margin-top:16px;flex-wrap:wrap}
+.sw{background:var(--panel);border:1px solid var(--line2);color:var(--dim);border-radius:9px;padding:9px 15px;
+  font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.4px;cursor:pointer;transition:.14s}
+.sw:hover{color:var(--ink)}
+.sw.on1{color:var(--vi);border-color:var(--vi);background:color-mix(in srgb,var(--vi) 12%,transparent)}
+.sw.on2{color:var(--cy);border-color:var(--cy);background:color-mix(in srgb,var(--cy) 12%,transparent)}
+details.note{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:11px;
+  overflow:hidden;scroll-margin-top:118px}
+details.note[open]{border-color:var(--line2)}
+details.note>summary{cursor:pointer;padding:13px 16px;font-size:16px;font-weight:650;letter-spacing:-.2px;
+  display:flex;align-items:center;gap:11px;user-select:none;list-style:none}
+details.note>summary::-webkit-details-marker{display:none}
+details.note>summary::after{content:"+";margin-left:auto;font-family:var(--mono);font-size:17px;
+  color:var(--faint);font-weight:400;transition:.16s}
+details.note[open]>summary::after{content:"−";color:var(--vi)}
+details.note>summary:hover{background:var(--panel2)}
+.num{width:25px;height:25px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;font-weight:800;flex:0 0 auto}
+.n1{background:color-mix(in srgb,var(--vi) 17%,transparent);color:var(--vi);border:1px solid color-mix(in srgb,var(--vi) 42%,transparent)}
+.n2{background:color-mix(in srgb,var(--cy) 17%,transparent);color:var(--cy);border:1px solid color-mix(in srgb,var(--cy) 42%,transparent)}
+details.note>.body{padding:2px 16px 16px;border-top:1px solid var(--line);font-size:15px}
+details.note>.body>p:first-child{margin-top:12px}
+
+/* ---------- misc content ---------- */
+.mini{font-size:13px;color:var(--faint);display:inline-block}
+p.mini,.sub2{font-size:13px;color:var(--faint);margin-top:7px;display:block}
+.formula{font-family:var(--mono);font-size:14px;background:var(--panel3);border:1px solid var(--line2);
+  border-left:2px solid var(--vi);border-radius:0 9px 9px 0;padding:13px 15px;margin-top:12px;
+  color:var(--vi2);line-height:1.85;overflow-x:auto}
+.kbd,code{font-family:var(--mono);font-size:.88em;background:var(--panel3);color:var(--vi);
+  padding:1px 6px;border-radius:4px;border:1px solid var(--line)}
+ul.clean{list-style:none;margin-top:10px}
+ul.clean li{position:relative;padding-left:17px;margin-top:7px;font-size:15px}
+ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--vi);font-size:12px;top:1px}
+ul:not(.clean){margin:9px 0 0 19px}
+ul:not(.clean) li{margin-top:6px}
+ol{margin:9px 0 0 21px}
+ol li{margin-top:7px}
+ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
+
+/* ---------- case files ---------- */
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px;margin-top:17px}
+.case{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--rd);
+  border-radius:0 13px 13px 0;padding:16px 18px;scroll-margin-top:118px}
+.case .top{display:flex;align-items:baseline;gap:10px;margin-bottom:9px}
+.case .top h3{font-size:16.5px;flex:1}
+.case .yr{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:700;
+  border:1px solid var(--line2);border-radius:5px;padding:2px 7px}
+.case p{font-size:14.5px;margin-top:9px}
+
+/* ---------- entropy lab ---------- */
+.lab{background:var(--panel3);border:1px solid var(--line2);border-radius:11px;padding:15px 17px;margin-top:14px}
+.lab>b:first-child{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--vi);display:block;margin-bottom:9px}
+.lab input[type=range]{width:100%;margin-top:10px;accent-color:var(--vi);cursor:pointer}
+.readout{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:11px;
+  font-family:var(--mono);font-size:13px;color:var(--dim)}
+.readout b{color:var(--vi)}
+.hbar{height:9px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;margin-top:10px;overflow:hidden}
+.hbar>div{height:100%;background:linear-gradient(90deg,var(--vi),var(--cy));transition:width .12s}
+
+/* ---------- flashcards ---------- */
+.fc-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn{background:var(--panel);border:1px solid var(--line2);color:var(--dim);border-radius:9px;
+  padding:8px 14px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:.14s}
+.btn:hover{color:var(--ink);border-color:var(--vi)}
+.btn.primary{color:var(--vi);border-color:var(--vi);background:color-mix(in srgb,var(--vi) 12%,transparent)}
+.fc-stage{margin-top:16px}
+.fc{position:relative;min-height:230px;perspective:1400px;cursor:pointer}
+.fc .face{position:absolute;inset:0;backface-visibility:hidden;background:var(--panel);
+  border:1px solid var(--line2);border-radius:14px;padding:26px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;transition:transform .42s cubic-bezier(.4,.2,.2,1)}
+.fc .front{transform:rotateY(0)}
+.fc .back{transform:rotateY(180deg);background:var(--panel2);border-color:var(--vi)}
+.fc.flip .front{transform:rotateY(-180deg)}
+.fc.flip .back{transform:rotateY(0)}
+.fc .tag{position:absolute;top:14px;left:14px}
+.fc .q{font-size:19px;font-weight:650;letter-spacing:-.3px;max-width:600px}
+.fc .a{font-size:16px;color:var(--dim);max-width:620px;line-height:1.7}
+.fc .hint{position:absolute;bottom:13px;font-family:var(--mono);font-size:10px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--faint)}
+.fc-nav{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:14px;flex-wrap:wrap}
+.fc-count{font-family:var(--mono);font-size:12px;color:var(--faint);min-width:66px;text-align:center}
+.fc-score{text-align:center;margin-top:11px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.fc-score .g{color:var(--gr)} .fc-score .r{color:var(--am)}
+
+/* ---------- quiz ---------- */
+.qbar{height:4px;background:var(--panel3);border-radius:3px;overflow:hidden;margin-top:16px}
+.qbar>div{height:100%;background:linear-gradient(90deg,var(--vi),var(--cy));transition:width .3s}
+.qmeta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;
+  color:var(--faint);margin-top:9px;letter-spacing:.5px}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:20px 22px;margin-top:11px}
+.qcard h3{font-size:17.5px;line-height:1.5;margin-bottom:14px;font-weight:650}
+.opt{display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;background:var(--panel2);
+  border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:12px 14px;margin-top:8px;
+  cursor:pointer;font-size:15px;font-family:inherit;line-height:1.5;transition:.13s}
+.opt:hover{border-color:var(--vi)}
+.opt .mark{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--line2);flex:0 0 auto;margin-top:2px}
+.opt.sel{border-color:var(--vi)} .opt.sel .mark{background:var(--vi);border-color:var(--vi)}
+.opt.ok{border-color:var(--gr);background:color-mix(in srgb,var(--gr) 12%,var(--panel2))}
+.opt.ok .mark{background:var(--gr);border-color:var(--gr)}
+.opt.no{border-color:var(--rd);background:color-mix(in srgb,var(--rd) 12%,var(--panel2))}
+.opt.no .mark{background:var(--rd);border-color:var(--rd)}
+.opt.dim{opacity:.44}
+.expl{display:none} .expl.show{display:block}
+.qactions{display:flex;gap:9px;margin-top:15px}
+.qresult{text-align:center}
+.qresult .big{font-family:var(--mono);font-size:44px;font-weight:800;color:var(--vi);margin:6px 0}
+.review-item{text-align:left;font-size:13.5px;padding:7px 11px;border-radius:8px;margin-top:6px;
+  border:1px solid var(--line);background:var(--panel2)}
+.review-item.good{border-color:color-mix(in srgb,var(--gr) 40%,transparent);color:var(--gr)}
+.review-item.bad{border-color:color-mix(in srgb,var(--rd) 40%,transparent);color:var(--rd)}
+
+/* ---------- cheat sheet ---------- */
+.cheat h3{margin-top:24px;display:flex;align-items:center;gap:9px;font-size:16.5px}
+.cheat .card{margin-top:10px;padding:15px 17px}
+
+/* ---------- command palette ---------- */
+#pal{position:fixed;inset:0;z-index:200;background:rgba(3,5,12,.68);backdrop-filter:blur(5px);
+  display:none;align-items:flex-start;justify-content:center;padding:11vh 18px}
+#pal.on{display:flex}
+.palbox{width:100%;max-width:620px;background:var(--panel);border:1px solid var(--line2);border-radius:15px;
+  box-shadow:var(--shadow);overflow:hidden}
+#palIn{width:100%;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);
+  padding:16px 19px;font-size:16px;font-family:inherit;outline:0}
+#palList{max-height:400px;overflow-y:auto;padding:7px}
+.palit{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;cursor:pointer}
+.palit.sel,.palit:hover{background:var(--panel2)}
+.palit .pk{font-family:var(--mono);font-size:9.5px;font-weight:800;letter-spacing:.6px;color:var(--vi);
+  border:1px solid color-mix(in srgb,var(--vi) 45%,transparent);border-radius:5px;padding:2px 6px;flex:0 0 auto;min-width:46px;text-align:center}
+.palit b{font-size:14.5px;font-weight:600;display:block}
+.palit span{font-size:12px;color:var(--faint);display:block}
+.palempty{padding:22px;text-align:center;color:var(--faint);font-size:14px}
+
+/* ---------- watermark + footer ---------- */
+#wm{position:fixed;right:15px;bottom:14px;z-index:40;display:flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:2.4px;font-weight:800;color:var(--faint);
+  background:color-mix(in srgb,var(--panel) 82%,transparent);border:1px solid var(--line);
+  border-radius:20px;padding:5px 12px 5px 6px;pointer-events:none;backdrop-filter:blur(6px)}
+#wm i{width:19px;height:19px;border-radius:50%;background:linear-gradient(140deg,var(--vi),var(--cy));
+  display:flex;align-items:center;justify-content:center;font-style:normal;font-size:9.5px;color:#0a0b12;font-weight:900}
+@media(max-width:620px){#wm{display:none}}
+.footer{text-align:center;color:var(--faint);font-family:var(--mono);font-size:10.5px;
+  padding:26px 0 46px;letter-spacing:.7px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--vi);color:#0a0b12;padding:9px 15px;
+  border-radius:0 0 8px 0;font-weight:700;z-index:300}
+.skip:focus{left:0}
+.kv{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.kv:last-child{border-bottom:0}
+.kv b{font-family:var(--mono);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--faint);min-width:118px;padding-top:3px}
+@media(max-width:560px){.kv{flex-direction:column;gap:2px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<canvas id="fx"></canvas>
+<div class="shell">
+
+<header id="top">
+ <div class="navin">
+  <div id="csWrap">
+    <button id="logoBtn" aria-haspopup="true" aria-expanded="false" title="Switch course">
+      <span class="logomk"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0a0b12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></span>
+      <span class="logotx"><b>PRIV<i>://269497</i></b><span>by zann</span></span>
+      <span class="caret">▼</span>
+    </button>
+    <div id="csPop" role="menu">
+      <div class="cshead">// switch course</div>
+      <a class="csrow" href="https://zann208.github.io/study/"><span class="csmk" style="color:var(--gr)">ALL</span><span style="flex:1"><b>All courses</b><span>semester overview</span></span><span class="csgo">HOME ↗</span></a>
+      <a class="csrow" href="https://zann208.github.io/netdes/"><span class="csmk" style="color:#22d3ee">NET</span><span style="flex:1"><b>Network Design</b><span>261434 · CPE434</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow" href="https://zann208.github.io/wnet/"><span class="csmk" style="color:#38bdf8">WLN</span><span style="flex:1"><b>Wireless Networks</b><span>269430</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow" href="https://zann208.github.io/algo/"><span class="csmk" style="color:#f0b429">ALG</span><span style="flex:1"><b>Algorithms for iSNE</b><span>269202 · ISNE</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow here" id="csSelf" href="#"><span class="csmk" style="color:var(--vi)">PRV</span><span style="flex:1"><b>Privacy Technologies</b><span>269497 · ISNE</span></span><span class="csgo">HERE</span></a>
+      <div class="csfoot"><a href="https://zann208.github.io" target="_blank" rel="noopener">portfolio ↗</a><a href="https://github.com/Zann208" target="_blank" rel="noopener">github ↗</a></div>
+    </div>
+  </div>
+  <span class="navsep"></span>
+  <button class="tabbtn on" data-tab="home">HOME</button>
+  <button class="tabbtn" data-tab="notes">NOTES</button>
+  <button class="tabbtn" data-tab="cases">CASES</button>
+  <button class="tabbtn" data-tab="drills">DRILLS</button>
+  <button class="tabbtn" data-tab="cheat">CHEATSHEET</button>
+  <button class="tabbtn" data-tab="author">AUTHOR</button>
+  <span class="navsp"></span>
+  <button class="iconbtn" id="searchBtn"><span>⌕</span><span class="stxt">Search</span><kbd>⌘K</kbd></button>
+  <button class="iconbtn" id="themeBtn" title="Light / dark">◑</button>
+ </div>
+</header>
+
+<div id="rail">
+ <div class="railin">
+  <button class="rbtn" id="rPrev" title="Previous">‹</button>
+  <select id="railSel" aria-label="Jump to section"></select>
+  <button class="rbtn" id="rNext" title="Next">›</button>
+  <button class="rbtn" id="rTop" title="Back to top">↑ TOP</button>
+ </div>
+</div>
+
+<main id="main">
+
+<!-- ============ HOME ============ -->
+<section class="tab on" id="home"><div class="wrap">
+  <h1><span class="pre">// THE CULT OF PRIVACY TECHNOLOGIES</span>Two topics. Everything you need.</h1>
+  <p class="lede">ISNE <b>269497</b> · Semester 1, 2026 · Chiang Mai University. What can go wrong with personal data, and how to put a number on it. Written in plain words, with the real breaches the exam keeps coming back to.</p>
+  <div class="chiprow">
+    <span class="chip c1">Topic 1 · Threats, Risks &amp; Vulnerabilities</span>
+    <span class="chip c2">Topic 2 · Privacy Risk Quantification</span>
+    <span class="chip">36 cards</span>
+    <span class="chip">20-question mock exam</span>
+    <span class="chip">11 case files</span>
+    <span class="chip">works offline</span>
+  </div>
+
+<div class="grid2">
+    <div class="card">
+      <span class="badge b1">Topic 1</span>
+      <h3 style="margin-bottom:8px;">Threats, Risks &amp; Vulnerabilities</h3>
+      <p style="font-size:14.5px;">What can go wrong. You learn the 5 properties that keep data safe, the attacks that break them, the weak points in a network, and how people get re-identified from "anonymous" data.</p>
+    </div>
+    <div class="card">
+      <span class="badge b2">Topic 2</span>
+      <h3 style="margin-bottom:8px;">Privacy Risk Quantification</h3>
+      <p style="font-size:14.5px;">How much can go wrong — as a number. You learn what makes data risky, how to measure risk with entropy, and how to check if de-identification actually worked (IG &amp; RIG).</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h3 style="margin-bottom:10px;">The map — 4 steps</h3>
+    <table>
+      <tr><td><b>1 · Protect</b></td><td>Data has 5 properties to defend: confidentiality, integrity, availability, anonymity, indistinguishability.</td></tr>
+      <tr><td><b>2 · Attack</b></td><td>Attackers break these properties: ransomware, DoS, SQL injection, phishing, re-identification.</td></tr>
+      <tr><td><b>3 · Measure</b></td><td>Entropy turns "how risky is this data?" into a number in bits.</td></tr>
+      <tr><td><b>4 · Reduce</b></td><td>De-identify the data, then use IG &amp; RIG to prove the risk went down.</td></tr>
+    </table>
+  </div>
+
+  <div class="grid2" style="margin-top:16px;">
+    <div class="card">
+      <h3 style="margin-bottom:10px;">How to use this page</h3>
+      <ul class="clean" style="font-size:14.5px;">
+        <li><b>Notes</b> — read each topic. Short and plain.</li>
+        <li><b>Case Files</b> — real breaches. Exams love these.</li>
+        <li><b>Drills</b> — 36 flashcards, then a 20-question mock exam with every answer explained.</li>
+        <li><b>Cheat Sheet</b> — one last look before the exam.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px;">Course facts</h3>
+      <ul class="clean" style="font-size:14.5px;">
+        <li>Instructor: Asst. Prof. Jenjira Jaimunk, PhD</li>
+        <li>Class: Tue &amp; Fri 13:00–14:30, Room 601 Engineering Bldg.</li>
+        <li>Office hours: Monday 09:00–12:00</li>
+        <li>Grades: Homework &amp; quizzes <b>30%</b> · Midterm <b>35%</b> · Final <b>35%</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tip t-info" style="margin-top:16px;"><b>Exam tip:</b> the discussion questions from the slides are inside the Quiz tab — practice them first, they are the most likely exam questions.</div>
+</div></section>
+
+<!-- ============ NOTES ============ -->
+<section class="tab" id="notes"><div class="wrap">
+  <h1><span class="pre">// LEARN</span>Notes</h1>
+  <p class="lede">Pick a topic, open one box at a time. Every box is one idea, and every idea earns its place on the exam.</p>
+<div class="switch">
+    <button class="sw on1" id="swT1">Topic 1 · Threats &amp; Risks</button>
+    <button class="sw" id="swT2">Topic 2 · Measuring Risk</button>
+  </div>
+  <div id="notesT1">
+
+    <details class="note" open>
+      <summary><span class="num n1">1</span> Security vs Privacy — the two big words</summary>
+      <div class="body">
+        <table>
+          <tr><th>Data Security</th><th>Information Privacy</th></tr>
+          <tr>
+            <td>Protects data from being <b>stolen, changed, or destroyed</b>.<br><span class="mini">Tools: encryption, firewalls, access controls, authentication, regular updates.</span></td>
+            <td>Controls <b>who can see</b> personal info and <b>how it is used</b>.<br><span class="mini">Covers: names, addresses, money and health info.</span></td>
+          </tr>
+        </table>
+        <p>Privacy also means: collect only what is needed, be open about it, and get consent. People should know how and why their data is collected.</p>
+        <div class="tip t-good"><b>Memory trick:</b> Security = protecting the <b>data</b>. Privacy = protecting the <b>person</b> behind the data.</div>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">2</span> The CIA triad — 3 security properties</summary>
+      <div class="body">
+        <table>
+          <tr><th>Property</th><th>Simple meaning</th><th>Broken by</th></tr>
+          <tr><td><b>C</b>onfidentiality</td><td>Only the right people can see the data.</td><td>Data breaches, ransomware (WannaCry), insiders selling secrets.</td></tr>
+          <tr><td><b>I</b>ntegrity</td><td>The data has not been changed — you can trust it.</td><td>Hackers modifying data, phishing emails, fake news, misinformation.</td></tr>
+          <tr><td><b>A</b>vailability</td><td>You can reach the data when you need it.</td><td>DoS attacks — flooding a server until it fails (GitHub 2018).</td></tr>
+        </table>
+        <p><b>DoS in one line:</b> the attacker sends more requests than the service can handle, so real users get locked out.</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">3</span> The 2 privacy properties</summary>
+      <div class="body">
+        <table>
+          <tr><th>Property</th><th>Simple meaning</th><th>Example</th></tr>
+          <tr><td><b>Anonymity</b></td><td>An action cannot be linked to your real identity.</td><td>E-voting — nobody should learn who you voted for.</td></tr>
+          <tr><td><b>Indistinguishability</b></td><td>You cannot be picked out of the crowd in a dataset.</td><td>AOL 2006 — people were picked out of "anonymous" search logs.</td></tr>
+        </table>
+        <div class="tip t-warn"><b>Exam favourite:</b> "Someone was re-identified from an anonymised dataset. Which property broke?" → <b>Indistinguishability</b>.</div>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">4</span> How to protect each property</summary>
+      <div class="body">
+        <p>One defence per property. Know this mapping cold — it is a classic multi-choice question.</p>
+        <table>
+          <tr><th>Defence</th><th>Protects</th><th>How</th></tr>
+          <tr><td><b>Encryption + access controls</b></td><td>Confidentiality</td><td>Only people with the key or access rights can read the data.</td></tr>
+          <tr><td><b>Hashing + logs</b></td><td>Integrity</td><td>Compare hash values or check logs to spot any change. One changed character → totally different hash.</td></tr>
+          <tr><td><b>Backups</b></td><td>Availability</td><td>If data is lost or locked, restore it from the backup.</td></tr>
+          <tr><td><b>De-identification</b></td><td>Anonymity + Indistinguishability</td><td>Techniques like k-anonymity and differential privacy hide who is who.</td></tr>
+        </table>
+        <p><b>Hashing in one line:</b> a function that turns any value into a unique "digest" — change the input a tiny bit and the digest changes completely.</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">5</span> Information systems &amp; the 3 states of data</summary>
+      <div class="body">
+        <p>An information system (IS) network = software + hardware + Internet + IoT devices + <b>users</b>, all sharing data. Data lives in 3 states:</p>
+        <table>
+          <tr><th>State</th><th>Meaning</th><th>Example</th></tr>
+          <tr><td><b>At rest</b></td><td>Stored</td><td>Data sitting in a database.</td></tr>
+          <tr><td><b>In transit</b></td><td>Moving</td><td>Data sent over the Internet.</td></tr>
+          <tr><td><b>In use</b></td><td>Being processed</td><td>Data open in an app on your laptop.</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">6</span> Weak points — 5 vulnerable components</summary>
+      <div class="body">
+        <table>
+          <tr><th>Component</th><th>Main attack</th><th>Fix</th></tr>
+          <tr><td><b>Modem / WiFi</b></td><td>OS exploit; man-in-the-middle (attacker sits between you and the other side, reads or changes traffic).</td><td>Keep OS updated, use a firewall, encrypt the WiFi network.</td></tr>
+          <tr><td><b>Database</b></td><td>SQL injection — attacker types malicious SQL into an input box and the database runs it.</td><td>Encrypt stored data, de-identify shared data, access controls, monitoring.</td></tr>
+          <tr><td><b>Computer</b></td><td>Malware, ransomware, OS exploits (WannaCry).</td><td>Antivirus, firewall, updates, backups.</td></tr>
+          <tr><td><b>IoT devices</b></td><td>Default passwords, weak security → spying, botnets, entry point (casino fish tank).</td><td>Change default passwords, update firmware, encrypt communication.</td></tr>
+          <tr><td><b>Humans</b></td><td>Social engineering &amp; phishing — tricking people into giving info. Plus malicious insiders (Snowden).</td><td>Security training, strong authentication, tech + vigilant people.</td></tr>
+        </table>
+        <p><b>Firewall in one line:</b> a barrier between your private network and the Internet — lets safe traffic in, keeps bad traffic out.</p>
+        <div class="tip t-warn"><b>Why are humans the weak point?</b> Low awareness, easy to phish, weak passwords, click bad links — and insiders are trusted, so their damage is huge.</div>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">7</span> Re-identification — 4 attack types</summary>
+      <div class="body">
+        <p><b>Re-identification</b> = working out who someone is from "anonymous" data, then learning more about them. It breaks anonymity, indistinguishability and confidentiality.</p>
+        <table>
+          <tr><th>Attack</th><th>Simple meaning</th><th>Example</th></tr>
+          <tr><td><b>Inference</b></td><td>Learn or predict facts about a person from the data.</td><td>AOL: find one person's searches → read all their searches.</td></tr>
+          <tr><td><b>Amplification</b></td><td>Link public data with anonymised data to learn new facts.</td><td>Match medical records to public social media profiles.</td></tr>
+          <tr><td><b>Differencing</b></td><td>Compare two query results; the difference exposes one person.</td><td>Count diagnoses with target vs without → target's diagnosis.</td></tr>
+          <tr><td><b>Reconstruction</b></td><td>Rebuild original data from aggregated or synthetic data.</td><td>Rebuild personal movement paths from aggregate mobility data.</td></tr>
+        </table>
+        <div class="tip t-good"><b>Memory trick — I·A·D·R:</b> "<b>I</b> <b>A</b>lways <b>D</b>iscover <b>R</b>ecords."</div>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n1">8</span> Auxiliary knowledge — what attackers use</summary>
+      <div class="body">
+        <p>Re-identification usually needs extra knowledge on top of the dataset. Three kinds:</p>
+        <table>
+          <tr><th>Type</th><th>Meaning</th><th>Examples</th></tr>
+          <tr><td><b>Unique identifiers</b></td><td>One value = one person.</td><td>Email, phone number, medical record number.</td></tr>
+          <tr><td><b>Quasi-identifiers</b></td><td>Not unique alone — unique when <b>combined</b>.</td><td>Gender + date of birth + ZIP code.</td></tr>
+          <tr><td><b>Background knowledge</b></td><td>Things the attacker already knows about the target.</td><td>"Only she visited the clinic that day."</td></tr>
+        </table>
+        <div class="tip t-info"><b>Key number:</b> ~<b>87%</b> of the US population can be uniquely identified from just <b>gender + date of birth + 5-digit ZIP</b> (Sweeney, 2000).</div>
+        <p><b>Adversary</b> = any person, group, organisation or government that wants to cause harm through cyber activity (NIST).</p>
+      </div>
+    </details>
+
+  </div>
+  <div id="notesT2" style="display:none;">
+
+    <details class="note" open>
+      <summary><span class="num n2">1</span> What makes data risky — 4 key elements</summary>
+      <div class="body">
+        <table>
+          <tr><th>Element</th><th>Simple meaning</th><th>Example</th></tr>
+          <tr><td><b>Uniqueness</b></td><td>Rare values stand out → easy to re-identify.</td><td>"Jenjira" is rarer than "John" → higher risk.</td></tr>
+          <tr><td><b>Uniformity</b></td><td>The same value repeating for one person across time → easy to infer.</td><td>Someone keeps searching the same illness → the illness is clearly theirs.</td></tr>
+          <tr><td><b>Linkable tokens</b></td><td>Values holding personal info (PII) that can link to a person.</td><td>An email address left inside free-text feedback.</td></tr>
+          <tr><td><b>Correlation</b></td><td>Knowing one attribute lets you guess another. Also links records <b>across datasets</b>.</td><td>Part-time job ↔ late-submission penalty.</td></tr>
+        </table>
+        <p><b>Direct identifiers (DIDs)</b> point at a person by themselves (name, email, phone). <b>Quasi-identifiers (QIDs)</b> only work in combination (birth date, gender, postcode).</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">2</span> k-anonymity &amp; l-diversity — the two defence models</summary>
+      <div class="body">
+        <table>
+          <tr><th>Model</th><th>Fights</th><th>Rule</th></tr>
+          <tr><td><b>k-anonymity</b></td><td>Uniqueness</td><td>Every value (or combo of values) must appear in at least <b>k</b> records → each record hides among at least <b>k−1</b> look-alikes.</td></tr>
+          <tr><td><b>l-diversity</b></td><td>Uniformity</td><td>Each group of similar records must hold at least <b>l different</b> sensitive values.</td></tr>
+        </table>
+        <p><b>k example:</b> k = 5 → at least 5 records share the value "Jenjira", so every record looks like at least 4 others. Harder (not impossible!) to single anyone out.</p>
+        <p><b>l example:</b> a patient has 10 visits all saying "chest pain". With l = 3, the records must be changed so the group shows at least 3 values, e.g. "chest pain", "headache", "fever".</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">3</span> Threat models — what does the attacker know?</summary>
+      <div class="body">
+        <p>A <b>threat model</b> describes the intent and capability (knowledge) of an adversary. More assumed knowledge → higher estimated risk.</p>
+        <table>
+          <tr><th>Threat model</th><th>The adversary knows…</th><th>Risk</th></tr>
+          <tr><td><b>1 · Single attribute</b></td><td>One value about the target, e.g. their postcode.</td><td>Lowest</td></tr>
+          <tr><td><b>2 · Combination of attributes</b></td><td>Several values, e.g. postcode + medical code.</td><td>Higher</td></tr>
+          <tr><td><b>3 · Direct identifiers</b></td><td>No attributes — but can pull a direct identifier (like a phone number) out of the data and link it to external sources (phone directory, voter records).</td><td>High</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">4</span> The privacy spectrum — 0.0 to 1.0</summary>
+      <div class="body">
+        <p>Risk is a scale, not a yes/no. Memorise the 5 marks:</p>
+        <table>
+          <tr><th>Value</th><th>Level</th><th>Meaning</th></tr>
+          <tr><td><b>0.0</b></td><td>Absolute privacy</td><td>The adversary can learn nothing.</td></tr>
+          <tr><td><b>0.25</b></td><td>Suspicion — low</td><td>Some risk, but low confidence.</td></tr>
+          <tr><td><b>0.5</b></td><td>Suspicion — moderate</td><td>Data might be exposed; moderate confidence.</td></tr>
+          <tr><td><b>0.75</b></td><td>Suspicion — high</td><td>High confidence, but not proved.</td></tr>
+          <tr><td><b>1.0</b></td><td>Provably exposed</td><td>The adversary can provably re-identify or infer.</td></tr>
+        </table>
+        <p class="mini">To place a dataset on this scale we need a number → that is why we compute entropy, IG and RIG.</p>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">5</span> Entropy — risk as a number</summary>
+      <div class="body">
+        <p><b>Entropy</b> (Shannon) measures the amount of information — the uncertainty — in a variable, in <b>bits</b>.</p>
+        <div class="formula">H(X) = − Σ p(x) · log₂ p(x)</div>
+        <p>In words: for each possible value, multiply its probability by the log₂ of that probability, add them all up, flip the sign.</p>
+        <table>
+          <tr><th>Coin example</th><th>Probabilities</th><th>Entropy</th></tr>
+          <tr><td>Fair coin</td><td>0.5 / 0.5</td><td><b>1 bit</b> — maximum uncertainty</td></tr>
+          <tr><td>Slightly unfair</td><td>0.6 / 0.4</td><td><b>0.971 bits</b></td></tr>
+          <tr><td>Very unfair</td><td>0.8 / 0.2</td><td><b>0.722 bits</b></td></tr>
+          <tr><td>Always heads</td><td>1.0 / 0.0</td><td><b>0 bits</b> — no new info, outcome already known</td></tr>
+        </table>
+        <div class="tip t-info"><b>How to read it in this course:</b> spread-out, unique values → high entropy → more information for the attacker → <b>higher re-identification risk</b>. One dominant value → low entropy → little to learn.</div>
+        <div class="lab">
+          <b>🎛 Entropy lab</b> — drag p(heads) and watch H(X):
+          <input type="range" id="entSlider" min="0" max="100" value="50">
+          <div class="readout">
+            <span>p(heads) = <b id="entP">0.50</b> · p(tails) = <b id="entQ">0.50</b></span>
+            <span style="font-size:20px;">H(X) = <b id="entH">1.000</b> bits</span>
+          </div>
+          <div class="hbar"><div id="entBar" style="width:100%;"></div></div>
+          <p class="mini" style="margin-top:8px;">Notice: H peaks at 1 bit when p = 0.5 (50/50) and drops to 0 when the outcome is certain.</p>
+        </div>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">6</span> Worked example — Alejandra's clinic data</summary>
+      <div class="body">
+        <p>Alejandra's anonymised dataset has 10 records with two attributes. We compute the uniqueness-based risk (entropy) under 3 threat models.</p>
+        <table>
+          <tr><th>Threat model</th><th>Adversary knows</th><th>Values &amp; probabilities</th><th>Entropy</th></tr>
+          <tr><td><b>TM 1</b></td><td>Postcode</td><td>2015: 3/10 · 2016: 6/10 · 2017: 1/10</td><td><b>≈ 1.295 bits</b></td></tr>
+          <tr><td><b>TM 2</b></td><td>Medical code</td><td>A: 5/10 · B: 4/10 · C: 1/10</td><td><b>≈ 1.361 bits</b></td></tr>
+          <tr><td><b>TM 3</b></td><td>Both</td><td>(2015,A): 3/10 · (2016,A): 3/10 · (2016,B): 3/10 · (2017,C): 1/10</td><td><b>≈ 1.895 bits</b></td></tr>
+        </table>
+        <div class="formula">TM1: H = −(0.3·log₂0.3 + 0.6·log₂0.6 + 0.1·log₂0.1) ≈ 1.295<br>TM2: H = −(0.5·log₂0.5 + 0.4·log₂0.4 + 0.1·log₂0.1) ≈ 1.361<br>TM3: H = −(3 × 0.3·log₂0.3 + 0.1·log₂0.1) ≈ 1.895</div>
+        <p><b>Three lessons:</b></p>
+        <ul class="clean">
+          <li><b>TM3 is the riskiest.</b> Knowing two attributes gives the adversary the most information — combined values become more unique.</li>
+          <li><b>Combining attributes raises uniqueness.</b> More unique → higher re-identification risk.</li>
+          <li><b>TM1 beats TM2 slightly.</b> Medical codes (0.5 / 0.4) are closer to a 50-50 split than postcodes (0.3 / 0.6), so they carry more uncertainty → higher entropy → less privacy.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="note">
+      <summary><span class="num n2">7</span> Did de-identification work? — IG &amp; RIG</summary>
+      <div class="body">
+        <p>After de-identifying, prove the risk dropped. Two ways: compare entropy before vs after, or compute:</p>
+        <table>
+          <tr><th>Metric</th><th>Meaning</th><th>Reading</th></tr>
+          <tr><td><b>IG</b> — Information Gain</td><td>How much of the original data X can be learned from the de-identified version Y.</td><td><b>Lower = safer.</b></td></tr>
+          <tr><td><b>RIG</b> — Relative IG</td><td>IG scaled to 0.0–1.0 by dividing by H(X).</td><td>Comparable across datasets — matches the privacy spectrum.</td></tr>
+        </table>
+        <div class="formula">IG = H(X) − H(X|Y) &nbsp;&nbsp;&nbsp; RIG = IG / H(X)</div>
+        <p><b>Worked example from the slides:</b> names are encoded — "Peter" and "Pete" both become <span class="kbd">p360</span>, "Smith" becomes <span class="kbd">s530</span>.</p>
+        <ul class="clean">
+          <li>Entropy of the original names: H(X) = 1.5 bits</li>
+          <li>Uncertainty left after seeing the codes: H(X|Y) = 0.5 bits (the code p360 still hides "Peter vs Pete")</li>
+          <li>IG = 1.5 − 0.5 = <b>1.0 bit</b> &nbsp;→&nbsp; RIG = 1.0 / 1.5 = <b>0.67</b></li>
+        </ul>
+        <div class="tip t-warn"><b>Conclusion:</b> re-identification risk ≈ <b>67%</b> → "suspicion with moderate confidence" on the privacy spectrum. Simple encoding is weak de-identification — not too low, not too high, but a moderate risk remains.</div>
+        <p class="mini">Use IG/RIG to compare de-identification methods (or settings of one method) and decide if the data is safe enough to share.</p>
+      </div>
+    </details>
+
+  </div>
+</div></section>
+
+<!-- ============ CASES ============ -->
+<section class="tab" id="cases"><div class="wrap">
+  <h1><span class="pre">// REAL WORLD</span>Case Files</h1>
+  <p class="lede">Eleven breaches straight from the slides. For each one know three things: what happened, which property broke, and the lesson. Exam questions are usually one of those three.</p>
+<div class="cases">
+
+    <div class="case">
+      <div class="top"><h3>📘 Facebook / Cambridge Analytica</h3><span class="yr">2018</span></div>
+      <span><span class="badge bb">Data breach</span> <span class="badge bw">Third-party API</span></span>
+      <p>50–90 million users exposed through a loophole in Facebook's API used by a third-party quiz app. Facebook knew about the issue as early as <b>2015</b> and did nothing.</p>
+      <div class="lesson"><b>Lesson:</b> ignoring known flaws is expensive — Facebook paid a <b>$5 billion fine</b> for poor data protection.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🦠 WannaCry ransomware</h3><span class="yr">2017</span></div>
+      <span><span class="badge bb">Confidentiality</span> <span class="badge bb">Availability</span></span>
+      <p>Infected <b>250,000+</b> computers in <b>150 countries</b> using a Windows vulnerability. Files were hijacked and encrypted; victims had to pay <b>$300 in bitcoin</b> for the key.</p>
+      <div class="lesson"><b>Lesson:</b> unpatched systems are open doors — keep the OS updated, keep backups.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>⚡ GitHub DDoS</h3><span class="yr">2018</span></div>
+      <span><span class="badge bb">Availability</span></span>
+      <p>A flood from 1,000+ systems peaked at <b>1.35 terabits/second</b> — <b>126.9 million packets per second</b> — knocking GitHub offline and then intermittent for a short time.</p>
+      <div class="lesson"><b>Lesson:</b> a DoS attack breaks <b>availability</b> — overwhelm the service, real users get locked out.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🔎 AOL search logs</h3><span class="yr">2006</span></div>
+      <span><span class="badge bb">Indistinguishability</span> <span class="badge bw">Inference attack</span></span>
+      <p>AOL released "anonymised" search histories of <b>650,000 users</b> for research. People who searched their own name, SSN, phone or location were re-identified — exposing all their searches.</p>
+      <div class="lesson"><b>Lesson:</b> removing names is not anonymisation. Searches themselves identify you.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🎬 Netflix prize data</h3><span class="yr">2008</span></div>
+      <span><span class="badge bw">Re-identification</span></span>
+      <p>Anonymised movie ratings of <b>500,000 subscribers</b> were released for a contest. Researchers (Narayanan &amp; Shmatikov) re-identified people by linking ratings with public IMDb reviews.</p>
+      <div class="lesson"><b>Lesson:</b> linking two datasets (an <b>amplification</b>-style attack) beats weak anonymisation.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🏥 Massachusetts hospital data</h3><span class="yr">1997</span></div>
+      <span><span class="badge bw">Quasi-identifiers</span></span>
+      <p>Sweeney re-identified people (famously the state governor) in "anonymous" hospital discharge data by linking it with voter records using ZIP + birth date + gender.</p>
+      <div class="lesson"><b>Lesson:</b> quasi-identifiers combine into a fingerprint — <b>~87%</b> of the US is unique on gender + DOB + ZIP.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>📡 Optus breach</h3><span class="yr">2022</span></div>
+      <span><span class="badge bb">Confidentiality</span> <span class="badge bw">Insecure API</span></span>
+      <p>An exposed API that required <b>no authentication</b> let attackers pull <b>10+ million</b> customer records — names, addresses, birth dates, passport and Medicare numbers. Data of 10,000 customers hit the dark web; a class action followed in 2023.</p>
+      <div class="lesson"><b>Lesson:</b> every public endpoint must demand authentication. One open API = the whole database.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🏥 Medibank breach</h3><span class="yr">2022</span></div>
+      <span><span class="badge bb">Confidentiality</span> <span class="badge bw">Stolen credentials</span></span>
+      <p>An employee's <b>stolen credentials</b> gave attackers access to <b>200GB</b> of data on <b>9.7 million</b> customers, including medical claims. APRA made Medibank set aside <b>$250 million</b>.</p>
+      <div class="lesson"><b>Lesson:</b> one set of stolen credentials can open everything — use multi-factor authentication.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🐠 Casino fish tank</h3><span class="yr">2017</span></div>
+      <span><span class="badge bw">IoT entry point</span></span>
+      <p>Hackers entered a casino's network through an Internet-connected <b>fish-tank thermometer</b>, then scanned for weaknesses and stole <b>10GB</b> of data.</p>
+      <div class="lesson"><b>Lesson:</b> the weakest connected device sets your security level — even a thermometer.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>🕵️ Edward Snowden</h3><span class="yr">2013</span></div>
+      <span><span class="badge bb">Insider threat</span></span>
+      <p>An IT administrator at an NSA contractor downloaded thousands of top-secret files in May 2013 and released them to journalists in June 2013.</p>
+      <div class="lesson"><b>Lesson:</b> insiders are trusted, so their damage is huge. Access control and monitoring matter inside too.</div>
+    </div>
+
+    <div class="case">
+      <div class="top"><h3>📷 Nest camera</h3><span class="yr">—</span></div>
+      <span><span class="badge bw">Default password</span></span>
+      <p>A smart camera left on its <b>default password</b> can be taken over to spy on the owner and infer private information.</p>
+      <div class="lesson"><b>Lesson:</b> never keep default passwords on IoT devices.</div>
+    </div>
+
+  </div>
+</div></section>
+
+<!-- ============ DRILLS ============ -->
+<section class="tab" id="drills"><div class="wrap">
+  <h1><span class="pre">// TRAINING</span>Drills</h1>
+  <p class="lede">Thirty-six cards to make the definitions automatic, then a twenty-question mock exam that explains every answer — including the discussion questions lifted straight from the slides.</p>
+
+  <div class="panel" id="flash">
+    <h2 class="title" style="font-size:21px">Flashcards</h2>
+    <p class="sub2">Click the card to flip it. Be honest — mark "Again" if you hesitated. Keyboard: <b>Space</b> flip · <b>←/→</b> move · <b>G</b> got it · <b>A</b> again.</p>
+    <div class="fc-controls" id="fcFilters">
+      <button class="btn primary" data-f="all">All</button>
+      <button class="btn" data-f="t1">Topic 1</button>
+      <button class="btn" data-f="t2">Topic 2</button>
+      <button class="btn" id="fcShuffle" style="margin-left:auto">Shuffle</button>
+    </div>
+    <div class="fc-stage">
+      <div class="fc" id="fcCard">
+        <div class="face front"><span class="tag badge b1" id="fcTag">Topic 1</span><div class="q" id="fcQ"></div><span class="hint">click to flip</span></div>
+        <div class="face back"><div class="a" id="fcA"></div><span class="hint">click to flip back</span></div>
+      </div>
+      <div class="fc-nav">
+        <button class="btn" id="fcPrev">‹ Prev</button>
+        <span class="fc-count" id="fcCount"></span>
+        <button class="btn" id="fcNext">Next ›</button>
+        <button class="btn" id="fcAgain" style="margin-left:10px">↻ Again</button>
+        <button class="btn primary" id="fcKnow">✓ Got it</button>
+      </div>
+      <div class="fc-score" id="fcScore"></div>
+    </div>
+  </div>
+
+  <div class="panel pc" id="quiz">
+    <h2 class="title" style="font-size:21px">Mock exam</h2>
+    <p class="sub2">Twenty questions. Single-answer ones grade the moment you click; multi-answer ones wait for Check.</p>
+    <div id="quizShell" class="quiz-shell"></div>
+  </div>
+</div></section>
+
+<!-- ============ CHEATSHEET ============ -->
+<section class="tab" id="cheat"><div class="wrap">
+  <h1><span class="pre">// LAST LOOK</span>Cheat Sheet</h1>
+  <p class="lede">Everything squeezed onto one screen. This is the page to read in the ten minutes before you walk in.</p>
+<div class="cheat">
+
+    <h3><span class="badge b1">T1</span> The 5 properties</h3>
+    <div class="card">
+      <table>
+        <tr><th>Property</th><th>Meaning</th><th>Broken by</th><th>Defended by</th></tr>
+        <tr><td><b>Confidentiality</b></td><td>Only the right people see it</td><td>Breaches, ransomware, insiders</td><td>Encryption, access controls</td></tr>
+        <tr><td><b>Integrity</b></td><td>Data not changed, trustworthy</td><td>Modified data, phishing, fake news</td><td>Hashing, logs</td></tr>
+        <tr><td><b>Availability</b></td><td>Reachable when needed</td><td>DoS / DDoS</td><td>Backups</td></tr>
+        <tr><td><b>Anonymity</b></td><td>Action can't be linked to you</td><td>Re-identification</td><td>De-identification</td></tr>
+        <tr><td><b>Indistinguishability</b></td><td>Can't be picked from the crowd</td><td>Re-identification</td><td>De-identification (k-anonymity, differential privacy)</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="badge b1">T1</span> 4 re-identification attacks</h3>
+    <div class="card">
+      <table>
+        <tr><td><b>Inference</b></td><td>Learn/predict facts about a person from the data (AOL).</td></tr>
+        <tr><td><b>Amplification</b></td><td>Link public data + anonymised data → new facts.</td></tr>
+        <tr><td><b>Differencing</b></td><td>Query with target vs without → difference exposes them.</td></tr>
+        <tr><td><b>Reconstruction</b></td><td>Rebuild original data from aggregated/synthetic data.</td></tr>
+      </table>
+      <p class="mini">Fuel: unique identifiers · quasi-identifiers · background knowledge. Key stat: 87% of US unique on gender + DOB + 5-digit ZIP.</p>
+    </div>
+
+    <h3><span class="badge b1">T1</span> Component → attack → fix</h3>
+    <div class="card">
+      <table>
+        <tr><td><b>Modem/WiFi</b></td><td>OS exploit, man-in-the-middle</td><td>Updates, firewall, encrypt WiFi</td></tr>
+        <tr><td><b>Database</b></td><td>SQL injection</td><td>Encrypt, de-identify, monitor</td></tr>
+        <tr><td><b>Computer</b></td><td>Malware, ransomware</td><td>Antivirus, updates, backups</td></tr>
+        <tr><td><b>IoT</b></td><td>Default passwords, botnets</td><td>Change passwords, update, encrypt</td></tr>
+        <tr><td><b>Humans</b></td><td>Phishing, social engineering, insiders</td><td>Training, strong authentication</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="badge b2">T2</span> 4 risky elements → defence models</h3>
+    <div class="card">
+      <table>
+        <tr><td><b>Uniqueness</b></td><td>Rare values stand out (Jenjira vs John)</td><td>→ <b>k-anonymity</b>: each value combo shared by ≥ k records</td></tr>
+        <tr><td><b>Uniformity</b></td><td>Repeated values reveal a person</td><td>→ <b>l-diversity</b>: ≥ l different sensitive values per group</td></tr>
+        <tr><td><b>Linkable tokens</b></td><td>PII hiding in the data (emails in free text)</td><td>→ remove/mask direct identifiers</td></tr>
+        <tr><td><b>Correlation</b></td><td>One attribute predicts another; links datasets</td><td>→ break correlations, perturb values</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="badge b2">T2</span> Threat models &amp; spectrum</h3>
+    <div class="card">
+      <table>
+        <tr><td><b>Threat models</b></td><td>① single attribute &lt; ② combination of attributes · ③ direct identifiers extracted + linked externally. More knowledge = more risk.</td></tr>
+        <tr><td><b>Privacy spectrum</b></td><td>0.0 absolute privacy · 0.25 low suspicion · 0.5 moderate · 0.75 high · 1.0 provably exposed</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="badge b2">T2</span> Formulas &amp; key numbers</h3>
+    <div class="card">
+      <div class="formula">H(X) = − Σ p(x)·log₂ p(x) &nbsp;&nbsp;·&nbsp;&nbsp; IG = H(X) − H(X|Y) &nbsp;&nbsp;·&nbsp;&nbsp; RIG = IG / H(X)</div>
+      <table>
+        <tr><td>Fair coin 0.5/0.5</td><td><b>1 bit</b> (max uncertainty)</td><td>Certain outcome 1.0/0.0</td><td><b>0 bits</b></td></tr>
+        <tr><td>Coin 0.6/0.4</td><td><b>0.971 bits</b></td><td>Coin 0.8/0.2</td><td><b>0.722 bits</b></td></tr>
+        <tr><td>Alejandra TM1 (postcode)</td><td><b>1.295 bits</b></td><td>TM2 (medical code)</td><td><b>1.361 bits</b></td></tr>
+        <tr><td>TM3 (both attributes)</td><td><b>1.895 bits — highest risk</b></td><td>Encoding example RIG</td><td><b>0.67 → moderate risk</b></td></tr>
+      </table>
+      <p class="mini">Read: higher entropy = more unique values = more info for the attacker = higher re-ID risk. Lower IG = better de-identification.</p>
+    </div>
+
+    <h3>📁 Cases in one line each</h3>
+    <div class="card">
+      <table>
+        <tr><td><b>Facebook/CA '18</b></td><td>Quiz-app API loophole, 50–90M users, $5B fine</td></tr>
+        <tr><td><b>WannaCry '17</b></td><td>Windows flaw, 250k PCs, 150 countries, $300 BTC ransom</td></tr>
+        <tr><td><b>GitHub '18</b></td><td>DDoS 1.35 Tbps — availability down</td></tr>
+        <tr><td><b>AOL '06</b></td><td>650k "anonymous" search logs → users re-identified</td></tr>
+        <tr><td><b>Netflix '08</b></td><td>500k subscribers re-identified by linking with IMDb</td></tr>
+        <tr><td><b>Massachusetts '97</b></td><td>Governor re-identified via ZIP+DOB+gender</td></tr>
+        <tr><td><b>Optus '22</b></td><td>API with no authentication, 10M+ records</td></tr>
+        <tr><td><b>Medibank '22</b></td><td>Stolen credentials, 200GB, 9.7M customers, $250M</td></tr>
+        <tr><td><b>Casino '17</b></td><td>Fish-tank thermometer → 10GB stolen</td></tr>
+        <tr><td><b>Snowden '13</b></td><td>Insider downloaded top-secret NSA files</td></tr>
+      </table>
+    </div>
+
+    <h3>⚡ Last-minute answers</h3>
+    <div class="card">
+      <ul class="clean" style="font-size:14.5px;">
+        <li>Ransomware → confidentiality broken (attacker controls the data) <i>and</i> availability (you lose access).</li>
+        <li>Insider selling secrets → <b>confidentiality</b>.</li>
+        <li>Re-identified from an anonymised dataset → <b>indistinguishability</b>.</li>
+        <li>Integrity is preserved by <b>hashing + logs</b> (not encryption, not backups).</li>
+        <li>Social networking, location, transaction and web-search data are <b>all</b> sensitive.</li>
+        <li>k = 5 → every record looks like at least <b>4</b> others.</li>
+        <li>3 states of data: at rest · in transit · in use.</li>
+      </ul>
+    </div>
+
+  </div>
+</div></section>
+
+<!-- ============ AUTHOR ============ -->
+<section class="tab" id="author"><div class="wrap">
+  <h1><span class="pre">// WHO BUILT THIS</span>Zann</h1>
+  <p class="lede">One of four course consoles I built for this semester. Same shell, same keyboard shortcuts, same offline-first rule — open the file and it works, with the Wi-Fi off.</p>
+
+  <div class="panel">
+    <h3>Author</h3>
+    <div class="kv"><b>Name</b><span>Thu Htoo Zan — <b>Zann</b></span></div>
+    <div class="kv"><b>Student ID</b><span>670615524</span></div>
+    <div class="kv"><b>Programme</b><span>Information Systems &amp; Network Engineering (ISNE)</span></div>
+    <div class="kv"><b>Faculty</b><span>Faculty of Engineering, Chiang Mai University</span></div>
+    <div class="kv"><b>Email</b><span><a href="mailto:thuhtoozan_1@cmu.ac.th">thuhtoozan_1@cmu.ac.th</a></span></div>
+    <div class="kv"><b>Links</b><span><a href="https://zann208.github.io" target="_blank" rel="noopener">portfolio</a> · <a href="https://github.com/Zann208" target="_blank" rel="noopener">github</a> · <a href="https://zann208.github.io/study/" target="_blank" rel="noopener">all courses</a></span></div>
+  </div>
+
+  <div class="panel pc">
+    <h3>This course</h3>
+    <div class="kv"><b>Code</b><span>ISNE 269497</span></div>
+    <div class="kv"><b>Title</b><span>The Cult of Privacy Technologies</span></div>
+    <div class="kv"><b>Term</b><span>Semester 1, 2026</span></div>
+    <div class="kv"><b>Instructor</b><span>Asst. Prof. Jenjira Jaimunk, PhD</span></div>
+    <div class="kv"><b>Class</b><span>Tue &amp; Fri 13:00–14:30 · Room 601, Engineering Building</span></div>
+    <div class="kv"><b>Office hours</b><span>Monday 09:00–12:00</span></div>
+    <div class="kv"><b>Assessment</b><span>Homework &amp; quizzes 30% · Midterm 35% · Final 35%</span></div>
+  </div>
+
+  <div class="box trap"><b>On the content</b>These notes are my own restatement of the course material, written for my own revision. Lecture slides and figures remain the property of the instructor and are not redistributed here.</div>
+
+  <div class="panel pg">
+    <h3>Built with</h3>
+    <p>Vanilla HTML, CSS and JavaScript. No framework, no build step, no dependencies, no network calls — one file you can open from a USB stick. Progress, theme and your place in each section are stored in <code>localStorage</code> on your own device and nowhere else.</p>
+  </div>
+</div></section>
+
+</main>
+<div class="footer">ISNE 269497 · The Cult of Privacy Technologies · built by ZANN · runs entirely offline</div>
+</div>
+
+<div id="wm"><i>Z</i>ZANN</div>
+
+<div id="pal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="palbox">
+    <input id="palIn" placeholder="Search notes, cases, cards, cheat sheet…" autocomplete="off">
+    <div id="palList"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function LSget(k,d){try{var v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}}
+function LSset(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+/* ================= THEME ================= */
+function applyTheme(dark){
+  document.documentElement.classList.toggle('dark',dark);
+  var m=document.querySelector('meta[name=theme-color]');
+  if(m) m.setAttribute('content',dark?'#0a0b12':'#f7f8fc');
+  LSset('privTheme',dark?'dark':'light');
+}
+$('themeBtn').addEventListener('click',function(){
+  applyTheme(!document.documentElement.classList.contains('dark'));
+});
+(function(){
+  var s=LSget('privTheme',null);
+  var prefers=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(s?s==='dark':(prefers!==false));
+})();
+
+/* ================= COURSE SWITCHER ================= */
+(function(){
+  var b=$('logoBtn'),p=$('csPop');
+  if(!b||!p)return;
+  b.addEventListener('click',function(e){e.stopPropagation();
+    var on=p.classList.toggle('on');b.setAttribute('aria-expanded',on?'true':'false');});
+  p.addEventListener('click',function(e){e.stopPropagation()});
+  document.addEventListener('click',function(){p.classList.remove('on');b.setAttribute('aria-expanded','false')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')p.classList.remove('on')});
+  var s=$('csSelf');
+  if(s)s.addEventListener('click',function(e){e.preventDefault();p.classList.remove('on');go('home')});
+})();
+
+/* ================= TABS ================= */
+var TABS=['home','notes','cases','drills','cheat','author'];
+var scrollMem={};
+function go(tab,noPush){
+  var cur=document.querySelector('.tab.on');
+  if(cur) scrollMem[cur.id]=window.scrollY;
+  TABS.forEach(function(t){
+    var el=$(t); if(el) el.classList.toggle('on',t===tab);
+  });
+  document.querySelectorAll('.tabbtn').forEach(function(b){
+    b.classList.toggle('on',b.dataset.tab===tab);
+  });
+  document.body.classList.toggle('hasrail', tab==='notes'||tab==='cases'||tab==='cheat');
+  buildRail(tab);
+  LSset('privTab',tab);
+  if(!noPush){
+    var y=scrollMem[tab]||0;
+    requestAnimationFrame(function(){window.scrollTo({top:y,behavior:'instant'})});
+  }
+}
+document.querySelectorAll('.tabbtn').forEach(function(b){
+  b.addEventListener('click',function(){go(b.dataset.tab)});
+});
+
+/* ================= CONTEXT RAIL ================= */
+var railItems=[];
+function anchorsFor(tab){
+  var out=[];
+  if(tab==='notes'){
+    document.querySelectorAll('#notes details.note').forEach(function(d,i){
+      if(!d.id) d.id='note_'+i;
+      var host=d.closest('#notesT2')?'T2':'T1';
+      var sum=d.querySelector('summary');
+      var txt=sum?sum.textContent.replace(/^\s*\d+\s*/,'').trim():'note';
+      out.push({id:d.id,k:host,t:txt});
+    });
+  } else if(tab==='cases'){
+    document.querySelectorAll('#cases .case').forEach(function(c,i){
+      if(!c.id) c.id='case_'+i;
+      var h=c.querySelector('h3'), y=c.querySelector('.yr');
+      out.push({id:c.id,k:y?y.textContent.trim():'',t:h?h.textContent.trim():'case'});
+    });
+  } else if(tab==='cheat'){
+    document.querySelectorAll('#cheat .cheat h3').forEach(function(h,i){
+      if(!h.id) h.id='ch_'+i;
+      var bd=h.querySelector('.badge');
+      out.push({id:h.id,k:bd?bd.textContent.trim():'·',t:h.textContent.replace(/^T\d\s*/,'').trim()});
+    });
+  }
+  return out;
+}
+function buildRail(tab){
+  railItems=anchorsFor(tab);
+  var sel=$('railSel'); if(!sel) return;
+  sel.innerHTML=railItems.map(function(it){
+    return '<option value="'+it.id+'">'+esc(it.k?it.k+' · ':'')+esc(it.t)+'</option>';
+  }).join('');
+  syncRail();
+}
+function jumpTo(id){
+  var el=$(id); if(!el) return;
+  if(el.tagName==='DETAILS') el.open=true;
+  var y=el.getBoundingClientRect().top+window.scrollY-118;
+  window.scrollTo({top:y,behavior:'smooth'});
+}
+$('railSel').addEventListener('change',function(){jumpTo(this.value)});
+$('rPrev').addEventListener('click',function(){var s=$('railSel'),i=s.selectedIndex;if(i>0){s.selectedIndex=i-1;jumpTo(s.value)}});
+$('rNext').addEventListener('click',function(){var s=$('railSel'),i=s.selectedIndex;if(i<s.options.length-1){s.selectedIndex=i+1;jumpTo(s.value)}});
+$('rTop').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+function syncRail(){
+  var s=$('railSel'); if(!s||!railItems.length) return;
+  var best=0,bd=1e9;
+  railItems.forEach(function(it,i){
+    var el=$(it.id); if(!el) return;
+    var d=Math.abs(el.getBoundingClientRect().top-130);
+    if(d<bd){bd=d;best=i}
+  });
+  s.selectedIndex=best;
+  $('rPrev').disabled=best===0;
+  $('rNext').disabled=best===railItems.length-1;
+}
+var rt=null;
+window.addEventListener('scroll',function(){
+  if(rt) return;
+  rt=setTimeout(function(){rt=null;if(document.body.classList.contains('hasrail'))syncRail()},140);
+},{passive:true});
+
+/* ================= NOTES TOPIC SWITCH ================= */
+(function(){
+  var a=$('swT1'),b=$('swT2'),n1=$('notesT1'),n2=$('notesT2');
+  if(!a||!b)return;
+  function pick(one){
+    a.className='sw'+(one?' on1':''); b.className='sw'+(one?'':' on2');
+    n1.style.display=one?'':'none'; n2.style.display=one?'none':'';
+    LSset('privTopic',one?'1':'2');
+    buildRail('notes');
+  }
+  a.addEventListener('click',function(){pick(true)});
+  b.addEventListener('click',function(){pick(false)});
+  pick(LSget('privTopic','1')==='1');
+})();
+
+/* ================= ENTROPY LAB ================= */
+(function(){
+  var s=$('entSlider'); if(!s) return;
+  function H(p){ return (p<=0||p>=1)?0:-(p*Math.log2(p)+(1-p)*Math.log2(1-p)); }
+  function upd(){
+    var p=s.value/100,h=H(p);
+    $('entP').textContent=p.toFixed(2);
+    $('entQ').textContent=(1-p).toFixed(2);
+    $('entH').textContent=h.toFixed(3);
+    $('entBar').style.width=(h*100)+'%';
+  }
+  s.addEventListener('input',upd); upd();
+})();
+
+/* ================= FLASHCARD DATA — 36 cards ================= */
+var CARDS = [
+ {t:1,q:"Data security = ?",a:"Protecting data from being stolen, changed, or destroyed. Tools: encryption, firewalls, access controls, authentication, regular updates."},
+ {t:1,q:"Information privacy = ?",a:"Controlling who can see personal info and how it is used — names, addresses, money and health data."},
+ {t:1,q:"Confidentiality",a:"Only authorised people can see the data. Broken by data breaches, ransomware, and insiders selling secrets."},
+ {t:1,q:"Integrity",a:"Data has not been changed, so it can be trusted as correct and authentic. Broken by modified data, phishing, fake news."},
+ {t:1,q:"Availability",a:"Authorised users can reach data and systems when needed. Broken by DoS attacks (e.g. GitHub 2018)."},
+ {t:1,q:"Anonymity",a:"An action cannot be linked to your real identity. Example: e-voting — nobody learns who you voted for."},
+ {t:1,q:"Indistinguishability",a:"You cannot be picked out from the crowd in a dataset. Broken in the AOL 2006 search-log case."},
+ {t:1,q:"What protects confidentiality?",a:"Encryption and access controls — only people with the key or access rights can read the data."},
+ {t:1,q:"What protects integrity?",a:"Hashing and logs. Compare hash values or check the action log to spot any change."},
+ {t:1,q:"What protects availability?",a:"Backups — if data is lost or locked, restore it from the backup."},
+ {t:1,q:"What protects anonymity + indistinguishability?",a:"De-identification techniques, such as k-anonymity and differential privacy."},
+ {t:1,q:"Hashing",a:"Turns a value into a unique digest. Change one character of the input → completely different digest. Used to detect changes."},
+ {t:1,q:"3 states of data",a:"At rest (stored in a database) · in transit (moving over the Internet) · in use (being processed in an app)."},
+ {t:1,q:"Man-in-the-middle attack",a:"Attacker sits between two parties, viewing or changing the traffic. A WiFi risk. Fix: encrypt the network."},
+ {t:1,q:"SQL injection",a:"Attacker types malicious SQL into an input field (like username) and the database runs it — stealing, changing or deleting data."},
+ {t:1,q:"Social engineering",a:"Tricking a person into giving up info or doing a harmful action. Includes phishing. Fix: training + strong authentication."},
+ {t:1,q:"Re-identification",a:"Working out who someone is from anonymised data, then learning more about them. Breaks anonymity, indistinguishability, confidentiality."},
+ {t:1,q:"Inference attack",a:"Learning or predicting facts about a person from the data. AOL: find one search, unlock all their searches."},
+ {t:1,q:"Amplification attack",a:"Linking public data with anonymised data to learn new facts — e.g. medical records + social media profiles."},
+ {t:1,q:"Differencing attack",a:"Query counts with the target included, then without. The difference reveals the target's value."},
+ {t:1,q:"Reconstruction attack",a:"Rebuilding the original data from synthetic, aggregated or anonymised data — e.g. mobility paths from aggregates."},
+ {t:1,q:"Quasi-identifiers",a:"Not unique alone, unique when combined. Gender + date of birth + 5-digit ZIP identifies ~87% of the US population."},
+ {t:1,q:"Adversary",a:"A person, group, organisation or government that intends to cause harm through cyber activities (NIST)."},
+ {t:2,q:"Uniqueness",a:"How much a value stands out. Rare values ('Jenjira') are riskier than common ones ('John'). Countered by k-anonymity."},
+ {t:2,q:"Uniformity",a:"The same value repeating for one person across events → easy to infer it belongs to them. Countered by l-diversity."},
+ {t:2,q:"Linkable tokens",a:"Values containing PII that can link to a person, directly or indirectly — like an email address inside free text."},
+ {t:2,q:"Correlation",a:"Knowing one attribute lets you guess another (part-time job ↔ late penalty). Can also link records across datasets."},
+ {t:2,q:"k-anonymity",a:"Every value (or combo) must appear in at least k records, so each record hides among at least k−1 look-alikes. k=5 → 4 look-alikes."},
+ {t:2,q:"l-diversity",a:"Each group of similar records must contain at least l different sensitive values — e.g. l=3: chest pain, headache, fever."},
+ {t:2,q:"Threat model",a:"A description of the intent and capability (knowledge) of a potential adversary. More assumed knowledge → higher estimated risk."},
+ {t:2,q:"The 3 threat models",a:"① Single attribute known · ② combination of attributes known · ③ direct identifiers extracted from the data and linked to external sources."},
+ {t:2,q:"Privacy spectrum",a:"0.0 absolute privacy → 0.25 low suspicion → 0.5 moderate → 0.75 high → 1.0 provably exposed."},
+ {t:2,q:"Entropy",a:"The amount of information (uncertainty) in a variable, in bits. Fair coin = 1 bit. Certain outcome = 0 bits. H(X) = −Σ p·log₂p."},
+ {t:2,q:"Information Gain (IG)",a:"How much of the original data X can be learned from its de-identified version Y. IG = H(X) − H(X|Y). Lower = safer."},
+ {t:2,q:"Relative Information Gain (RIG)",a:"IG divided by H(X), scaled 0.0–1.0 so datasets can be compared. Slide example: RIG = 0.67 → moderate risk."},
+ {t:2,q:"Direct vs quasi-identifiers",a:"Direct (DID): identify a person alone — name, email, phone. Quasi (QID): only identify when combined — DOB, gender, postcode."}
+];
+
+/* ================= QUIZ DATA — 20 questions ================= */
+var QUIZ = [
+ {q:"Which one is about controlling WHO can see personal info and HOW it is used?",
+  o:["Data security","Information privacy","Data integrity","Authentication"], a:[1],
+  e:"Privacy = controlling access and usage of personal info. Security = the measures that protect the data itself."},
+ {q:"📋 Slide question: Ransomware hijacks a computer, encrypts the files, and demands payment. Which property is breached?",
+  o:["Integrity only","Anonymity","Confidentiality — and availability is hit too","Indistinguishability"], a:[2],
+  e:"The slides discuss WannaCry under confidentiality: the attacker takes control of the data, and losing this property also caused authorised users to lose access to their files."},
+ {q:"📋 Slide question: A malicious insider is selling company secrets. Which property is compromised?",
+  o:["Availability","Integrity","Anonymity","Confidentiality"], a:[3],
+  e:"Secrets reached people who should not see them → confidentiality."},
+ {q:"📋 Slide question: A person is re-identified from a publicly available anonymised dataset. Which property is breached?",
+  o:["Indistinguishability","Availability","Integrity","Confidentiality only"], a:[0],
+  e:"They were distinguished from the crowd — that is exactly what indistinguishability protects (like the AOL case)."},
+ {q:"📋 Slide question: Which techniques preserve the INTEGRITY property? (pick 2)",
+  o:["Hashing","Encryption","Logs","Backup"], a:[0,2], multi:true,
+  e:"Hashing + logs detect changes → integrity. Encryption protects confidentiality; backups protect availability."},
+ {q:"📋 Slide question: Which of these data types are sensitive or confidential? (pick all that apply)",
+  o:["Social networking data","Location data","Transaction data","Web search history"], a:[0,1,2,3], multi:true,
+  e:"All four. Each can reveal private facts on its own — and even more when combined."},
+ {q:"A DoS attack floods a server with more requests than it can handle. Which property breaks?",
+  o:["Confidentiality","Integrity","Availability","Anonymity"], a:[2],
+  e:"Real users can no longer reach the service — availability. Example: GitHub 2018, 1.35 Tbps."},
+ {q:"What is the entropy of a fair coin (p = 0.5 / 0.5)?",
+  o:["0 bits","0.5 bits","1 bit","2 bits"], a:[2],
+  e:"A 50-50 outcome is maximum uncertainty for two outcomes → exactly 1 bit."},
+ {q:"📋 Slide question: p(apple) = 0.6 and p(orange) = 0.4. What is the entropy?",
+  o:["0.5 bits","0.722 bits","0.971 bits","1 bit"], a:[2],
+  e:"−0.6·log₂0.6 − 0.4·log₂0.4 = 0.971 bits. Close to fair, so close to 1 bit."},
+ {q:"A coin that ALWAYS lands on heads has entropy of…",
+  o:["1 bit","0.5 bits","0 bits","Cannot be computed"], a:[2],
+  e:"The outcome is certain → no new information can be learned → 0 bits."},
+ {q:"A dataset has k-anonymity with k = 5. What does that mean?",
+  o:["Only 5 people are in the dataset","Each record is indistinguishable from at least 4 others","5 attributes were removed","Data is encrypted 5 times"], a:[1],
+  e:"Every value combo must be shared by at least k records → each record hides among at least k−1 = 4 look-alikes."},
+ {q:"A patient has 10 hospital records, all saying 'chest pain'. Which model fixes this risk?",
+  o:["k-anonymity","l-diversity","Firewall","Hashing"], a:[1],
+  e:"Repeating values = uniformity risk. l-diversity forces at least l different sensitive values (e.g. chest pain, headache, fever)."},
+ {q:"An attacker links an anonymised medical dataset with public social media profiles to learn people's health conditions. Attack type?",
+  o:["Differencing","Reconstruction","Amplification","DoS"], a:[2],
+  e:"Amplification = gaining new info by linking public data with anonymised data."},
+ {q:"An attacker queries diagnosis counts for the whole dataset, then for everyone except the target. Attack type?",
+  o:["Differencing","Inference from uniqueness","Amplification","Reconstruction"], a:[0],
+  e:"Comparing results with and without the target — the difference reveals the target's diagnosis."},
+ {q:"In Alejandra's worked example, which threat model showed the HIGHEST risk?",
+  o:["TM1 — adversary knows the postcode","TM2 — adversary knows the medical code","TM3 — adversary knows both attributes","All equal"], a:[2],
+  e:"TM3 ≈ 1.895 bits — combining attributes makes values more unique, giving the adversary the most information."},
+ {q:"Root cause of the Optus breach (2022)?",
+  o:["Phishing email","Publicly exposed API that required no authentication","Fish-tank thermometer","Ransomware"], a:[1],
+  e:"An open API with no authentication let attackers pull 10+ million customer records."},
+ {q:"Root cause of the Medibank breach (2022)?",
+  o:["SQL injection","DDoS attack","An employee's stolen credentials","Default IoT password"], a:[2],
+  e:"Stolen credentials gave the attacker authenticated access → 200GB of data on 9.7M customers."},
+ {q:"After de-identification, RIG = 0.67. What does that mean?",
+  o:["Data is fully safe (near absolute privacy)","67% risk that original values can be learned — moderate suspicion","Data was destroyed by 67%","Entropy increased by 67 bits"], a:[1],
+  e:"RIG maps to the privacy spectrum: 0.67 ≈ suspicion with moderate-to-high confidence — the encoding was weak."},
+ {q:"Sweeney's study: ~87% of the US population can be identified using which combination?",
+  o:["Name + address + phone","Gender + date of birth + 5-digit ZIP","Email + password + username","Fingerprint + photo + ID"], a:[1],
+  e:"Three harmless-looking quasi-identifiers combine into a near-unique fingerprint."},
+ {q:"How did hackers get into the casino network in 2017?",
+  o:["Phishing the manager","Cracking the WiFi password","Through an Internet-connected fish-tank thermometer","USB stick in the parking lot"], a:[2],
+  e:"The IoT thermometer was the entry point — from there they scanned the network and stole 10GB."}
+];
+
+/* ================= FLASHCARDS ================= */
+var deck=CARDS.slice(), fcIdx=0, know=0, again=0;
+var fcCard=$('fcCard');
+function renderCard(){
+  if(!deck.length) return;
+  var c=deck[fcIdx];
+  fcCard.classList.remove('flip');
+  setTimeout(function(){
+    $('fcQ').textContent=c.q;
+    $('fcA').textContent=c.a;
+    var tag=$('fcTag');
+    tag.textContent='Topic '+c.t;
+    tag.className='tag badge '+(c.t===1?'b1':'b2');
+    $('fcCount').textContent=(fcIdx+1)+' / '+deck.length;
+  }, fcCard.classList.contains('flip')?190:0);
+  $('fcScore').innerHTML='<b class="g">✓ '+know+' got it</b> &nbsp;·&nbsp; <b class="r">↻ '+again+' again</b>';
+}
+fcCard.addEventListener('click',function(){fcCard.classList.toggle('flip')});
+$('fcPrev').addEventListener('click',function(){fcIdx=(fcIdx-1+deck.length)%deck.length;renderCard()});
+$('fcNext').addEventListener('click',function(){fcIdx=(fcIdx+1)%deck.length;renderCard()});
+$('fcKnow').addEventListener('click',function(){know++;fcIdx=(fcIdx+1)%deck.length;renderCard()});
+$('fcAgain').addEventListener('click',function(){again++;fcIdx=(fcIdx+1)%deck.length;renderCard()});
+$('fcShuffle').addEventListener('click',function(){deck.sort(function(){return Math.random()-.5});fcIdx=0;renderCard()});
+document.querySelectorAll('#fcFilters [data-f]').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#fcFilters [data-f]').forEach(function(x){x.classList.remove('primary')});
+    b.classList.add('primary');
+    var f=b.dataset.f;
+    deck = f==='all' ? CARDS.slice() : CARDS.filter(function(c){return c.t===(f==='t1'?1:2)});
+    fcIdx=0;know=0;again=0;renderCard();
+  });
+});
+renderCard();
+
+/* ================= QUIZ ================= */
+var shell=$('quizShell'), qIdx=0, qScore=0, qPicked=[], qResults=[];
+function startQuiz(){qIdx=0;qScore=0;qResults=[];renderQ()}
+window.startQuiz=startQuiz;
+function renderQ(){
+  var q=QUIZ[qIdx]; qPicked=[];
+  var opts=q.o.map(function(o,i){
+    return '<button class="opt" data-i="'+i+'"><span class="mark"></span><span>'+o+'</span></button>';
+  }).join('');
+  shell.innerHTML=
+    '<div class="qbar"><div style="width:'+(qIdx/QUIZ.length*100)+'%"></div></div>'+
+    '<div class="qmeta"><span>Question '+(qIdx+1)+' of '+QUIZ.length+'</span><span>Score: '+qScore+'</span></div>'+
+    '<div class="qcard"><h3>'+q.q+'</h3>'+
+    (q.multi?'<p class="sub2" style="margin-bottom:10px">Select all that apply, then press Check.</p>':'')+
+    opts+
+    '<div class="expl tip t-info" id="expl"><b>Why</b>'+q.e+'</div>'+
+    '<div class="qactions">'+
+    (q.multi?'<button class="btn primary" id="checkBtn">Check</button>':'')+
+    '<button class="btn primary" id="nextBtn" style="display:none">'+(qIdx===QUIZ.length-1?'See results →':'Next →')+'</button>'+
+    '</div></div>';
+  var optEls=shell.querySelectorAll('.opt'), q_=q;
+  optEls.forEach(function(el){
+    el.addEventListener('click',function(){
+      if(shell.querySelector('#expl').classList.contains('show')) return;
+      var i=+el.dataset.i;
+      if(q_.multi){
+        el.classList.toggle('sel');
+        qPicked=[].slice.call(optEls).filter(function(x){return x.classList.contains('sel')}).map(function(x){return +x.dataset.i});
+      } else { qPicked=[i]; grade(); }
+    });
+  });
+  var cb=shell.querySelector('#checkBtn');
+  if(cb) cb.addEventListener('click',function(){if(qPicked.length)grade()});
+  shell.querySelector('#nextBtn').addEventListener('click',function(){
+    qIdx++; if(qIdx<QUIZ.length) renderQ(); else renderResults();
+  });
+}
+function grade(){
+  var q=QUIZ[qIdx], optEls=shell.querySelectorAll('.opt');
+  var correct=q.a.slice().sort().join(',')===qPicked.slice().sort().join(',');
+  if(correct) qScore++;
+  qResults.push({q:q.q,correct:correct});
+  optEls.forEach(function(el){
+    var i=+el.dataset.i;
+    if(q.a.indexOf(i)>=0) el.classList.add('ok');
+    else if(qPicked.indexOf(i)>=0) el.classList.add('no');
+    else el.classList.add('dim');
+    el.style.pointerEvents='none';
+  });
+  shell.querySelector('#expl').classList.add('show');
+  var cb=shell.querySelector('#checkBtn'); if(cb) cb.style.display='none';
+  shell.querySelector('#nextBtn').style.display='';
+  shell.querySelector('.qmeta span:last-child').textContent='Score: '+qScore;
+  var best=parseInt(LSget('privBest','0'),10)||0;
+  if(qIdx===QUIZ.length-1 && qScore>best) LSset('privBest',String(qScore));
+}
+function renderResults(){
+  var pct=Math.round(qScore/QUIZ.length*100), msg;
+  if(pct>=90) msg="A-level. You own this material.";
+  else if(pct>=75) msg="Strong. Re-check the ones you missed below.";
+  else if(pct>=50) msg="Halfway there. Read the Notes again, then retry.";
+  else msg="No stress — go through Notes and Flashcards, then come back.";
+  var best=parseInt(LSget('privBest','0'),10)||0;
+  if(qScore>best){best=qScore;LSset('privBest',String(best))}
+  shell.innerHTML='<div class="qcard qresult">'+
+    '<div class="big">'+qScore+' / '+QUIZ.length+'</div>'+
+    '<p>'+pct+'% — '+msg+'</p>'+
+    '<p class="sub2">Best so far: '+best+' / '+QUIZ.length+'</p>'+
+    '<div style="max-width:540px;margin:16px auto 20px">'+
+    qResults.map(function(r,i){
+      return '<div class="review-item '+(r.correct?'good':'bad')+'">'+(r.correct?'✓':'✗')+' Q'+(i+1)+' · '+r.q.replace('📋 Slide question: ','')+'</div>';
+    }).join('')+
+    '</div><button class="btn primary" onclick="startQuiz()">↻ Try again</button></div>';
+}
+startQuiz();
+
+/* ================= COMMAND PALETTE ================= */
+var IDX=[];
+(function buildIndex(){
+  document.querySelectorAll('#notes details.note').forEach(function(d,i){
+    if(!d.id) d.id='note_'+i;
+    var sum=d.querySelector('summary');
+    IDX.push({k:'NOTE',t:sum?sum.textContent.replace(/^\s*\d+\s*/,'').trim():'note',
+      s:(d.querySelector('.body')||d).textContent.slice(0,150),tab:'notes',id:d.id});
+  });
+  document.querySelectorAll('#cases .case').forEach(function(c,i){
+    if(!c.id) c.id='case_'+i;
+    var h=c.querySelector('h3'),y=c.querySelector('.yr');
+    IDX.push({k:'CASE',t:(h?h.textContent.trim():'case'),s:(y?y.textContent.trim()+' · ':'')+c.textContent.slice(0,130),tab:'cases',id:c.id});
+  });
+  document.querySelectorAll('#cheat .cheat h3').forEach(function(h,i){
+    if(!h.id) h.id='ch_'+i;
+    IDX.push({k:'CHEAT',t:h.textContent.trim(),s:'cheat sheet block',tab:'cheat',id:h.id});
+  });
+  CARDS.forEach(function(c,i){ IDX.push({k:'CARD',t:c.q,s:c.a.slice(0,130),tab:'drills',id:'flash',card:i}); });
+  IDX.push({k:'GO',t:'Home',s:'course overview',tab:'home',id:''});
+  IDX.push({k:'GO',t:'Mock exam',s:'20 questions',tab:'drills',id:'quiz'});
+  IDX.push({k:'GO',t:'Author',s:'who built this',tab:'author',id:''});
+})();
+var palSel=0, palHits=[];
+function palRender(q){
+  q=(q||'').toLowerCase().trim();
+  palHits = !q ? IDX.slice(0,9)
+    : IDX.filter(function(x){return (x.t+' '+x.s+' '+x.k).toLowerCase().indexOf(q)>=0}).slice(0,40);
+  palSel=0;
+  $('palList').innerHTML = palHits.length
+    ? palHits.map(function(x,i){
+        return '<div class="palit'+(i===0?' sel':'')+'" data-i="'+i+'"><span class="pk">'+x.k+'</span>'+
+               '<span><b>'+esc(x.t.slice(0,88))+'</b><span>'+esc(x.s.replace(/\s+/g,' ').slice(0,84))+'</span></span></div>';
+      }).join('')
+    : '<div class="palempty">Nothing matches that.</div>';
+  $('palList').querySelectorAll('.palit').forEach(function(el){
+    el.addEventListener('click',function(){palGo(+el.dataset.i)});
+  });
+}
+function palGo(i){
+  var x=palHits[i]; if(!x) return;
+  closePal(); go(x.tab);
+  setTimeout(function(){
+    if(x.card!==undefined){
+      var f=document.querySelector('#fcFilters [data-f="all"]'); if(f) f.click();
+      fcIdx=x.card; renderCard();
+    }
+    if(x.id) jumpTo(x.id);
+  },90);
+}
+function openPal(){$('pal').classList.add('on');$('palIn').value='';palRender('');$('palIn').focus()}
+function closePal(){$('pal').classList.remove('on')}
+$('searchBtn').addEventListener('click',openPal);
+$('pal').addEventListener('click',function(e){if(e.target===$('pal'))closePal()});
+$('palIn').addEventListener('input',function(){palRender(this.value)});
+$('palIn').addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    palSel=Math.max(0,Math.min(palHits.length-1,palSel+(e.key==='ArrowDown'?1:-1)));
+    $('palList').querySelectorAll('.palit').forEach(function(el,i){el.classList.toggle('sel',i===palSel)});
+    var s=$('palList').querySelector('.palit.sel'); if(s) s.scrollIntoView({block:'nearest'});
+  } else if(e.key==='Enter'){ palGo(palSel) }
+  else if(e.key==='Escape'){ closePal() }
+});
+
+/* ================= KEYBOARD ================= */
+document.addEventListener('keydown',function(e){
+  var typing=/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPal();return}
+  if(typing) return;
+  if(e.key==='Escape'){closePal();return}
+  var onDrills=$('drills').classList.contains('on');
+  if(onDrills){
+    if(e.key===' '){e.preventDefault();fcCard.classList.toggle('flip')}
+    else if(e.key==='ArrowRight'){$('fcNext').click()}
+    else if(e.key==='ArrowLeft'){$('fcPrev').click()}
+    else if(e.key.toLowerCase()==='g'){$('fcKnow').click()}
+    else if(e.key.toLowerCase()==='a'){$('fcAgain').click()}
+  }
+  if(document.body.classList.contains('hasrail')){
+    if(e.key.toLowerCase()==='j'){$('rNext').click()}
+    else if(e.key.toLowerCase()==='k'&&!e.metaKey&&!e.ctrlKey){$('rPrev').click()}
+  }
+});
+
+/* ================= LIVE BACKGROUND ================= */
+(function(){
+  var c=$('fx'); if(!c) return;
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){c.style.display='none';return}
+  var x=c.getContext('2d'),W=0,H=0,cols=[],glyphs='01ABCDEF#$%&*+=<>/\\|';
+  function size(){
+    W=c.width=window.innerWidth; H=c.height=window.innerHeight;
+    var n=Math.floor(W/22); cols=[];
+    for(var i=0;i<n;i++) cols.push({x:i*22+11,y:Math.random()*H,v:.5+Math.random()*1.4});
+  }
+  size(); window.addEventListener('resize',size);
+  var margin=function(){ return Math.max(0,(window.innerWidth-1000)/2-30) };
+  function frame(){
+    if(document.hidden){requestAnimationFrame(frame);return}
+    var dark=document.documentElement.classList.contains('dark');
+    x.clearRect(0,0,W,H);
+    var m=margin();
+    if(m>60){
+      x.font='12px ui-monospace,monospace';
+      cols.forEach(function(col){
+        if(col.x>m && col.x<W-m) return;
+        col.y+=col.v;
+        if(col.y>H+20) col.y=-20;
+        var g=glyphs[Math.floor(Math.random()*glyphs.length)];
+        x.fillStyle = dark ? 'rgba(167,139,250,.22)' : 'rgba(109,40,217,.13)';
+        x.fillText(g,col.x,col.y);
+        x.fillStyle = dark ? 'rgba(56,189,248,.30)' : 'rgba(3,105,161,.18)';
+        x.fillText(g,col.x,col.y-14);
+      });
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ================= BOOT ================= */
+go(LSget('privTab','home'),true);
+</script>
+</body>
+</html>
