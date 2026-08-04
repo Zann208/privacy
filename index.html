@@ -634,21 +634,62 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     </details>
 
     <details class="note">
-      <summary><span class="num n2">6</span> Worked example — Alejandra's clinic data</summary>
+      <summary><span class="num n2">6</span> How to calculate entropy — the method, step by step</summary>
       <div class="body">
-        <p>Alejandra's anonymised dataset has 10 records with two attributes. We compute the uniqueness-based risk (entropy) under 3 threat models.</p>
-        <table>
-          <tr><th>Threat model</th><th>Adversary knows</th><th>Values &amp; probabilities</th><th>Entropy</th></tr>
-          <tr><td><b>TM 1</b></td><td>Postcode</td><td>2015: 3/10 · 2016: 6/10 · 2017: 1/10</td><td><b>≈ 1.295 bits</b></td></tr>
-          <tr><td><b>TM 2</b></td><td>Medical code</td><td>A: 5/10 · B: 4/10 · C: 1/10</td><td><b>≈ 1.361 bits</b></td></tr>
-          <tr><td><b>TM 3</b></td><td>Both</td><td>(2015,A): 3/10 · (2016,A): 3/10 · (2016,B): 3/10 · (2017,C): 1/10</td><td><b>≈ 1.895 bits</b></td></tr>
-        </table>
-        <div class="formula">TM1: H = −(0.3·log₂0.3 + 0.6·log₂0.6 + 0.1·log₂0.1) ≈ 1.295<br>TM2: H = −(0.5·log₂0.5 + 0.4·log₂0.4 + 0.1·log₂0.1) ≈ 1.361<br>TM3: H = −(3 × 0.3·log₂0.3 + 0.1·log₂0.1) ≈ 1.895</div>
-        <p><b>Three lessons:</b></p>
+        <p>Alejandra's anonymised dataset has <b>10 records</b> with two attributes: a <b>postcode</b> and a <b>medical code</b>. The exam gives you a table like this and asks for the risk under each threat model. Here is the procedure that works every time.</p>
+
+        <h4 style="margin-top:16px">The five steps</h4>
+        <ol>
+          <li><b>Read the threat model</b> — it tells you what the adversary knows, and that decides what counts as one "value". One attribute → the value is that attribute. Two attributes → the value is the <b>pair</b>.</li>
+          <li><b>Group the records</b> by that value and count each group. The counts must add up to 10.</li>
+          <li><b>Turn counts into probabilities:</b> p = count / total.</li>
+          <li><b>Apply the formula</b> to every group and add up:</li>
+        </ol>
+        <div class="formula">H(X) = − Σ p(x) · log₂ p(x)</div>
+        <ol start="5">
+          <li><b>Check your answer</b> against the three tests below before you write it down.</li>
+        </ol>
+
+        <h4>The log₂ table — memorise this row</h4>
+        <p>Every probability in this course is a tenth, so you only ever need nine values. Notice the pattern: <b>doubling p subtracts exactly 1</b> (0.1→0.2→0.4→0.8, and 0.3→0.6).</p>
+        <div class="tscroll"><table>
+          <tr><th>p</th><th>0.1</th><th>0.2</th><th>0.3</th><th>0.4</th><th>0.5</th><th>0.6</th><th>0.7</th><th>0.8</th><th>0.9</th></tr>
+          <tr><td><b>log₂ p</b></td><td>−3.322</td><td>−2.322</td><td>−1.737</td><td>−1.322</td><td>−1.000</td><td>−0.737</td><td>−0.515</td><td>−0.322</td><td>−0.152</td></tr>
+          <tr><td><b>−p·log₂ p</b></td><td>0.332</td><td>0.464</td><td>0.521</td><td>0.529</td><td>0.500</td><td>0.442</td><td>0.360</td><td>0.258</td><td>0.137</td></tr>
+        </table></div>
+        <p class="mini">The bottom row is the one you actually add up — it already has the minus sign folded in, so <b>H is just the sum of those numbers</b>. No sign errors.</p>
+
+        <h4>Worked — TM 1, adversary knows the postcode</h4>
+        <p>Group the 10 records by postcode: <b>2015</b> appears 3 times, <b>2016</b> 6 times, <b>2017</b> once.</p>
+        <div class="formula">p = 0.3, 0.6, 0.1<br>H = 0.521 + 0.442 + 0.332 = <b>1.295 bits</b></div>
+        <div class="tip t-info"><b>Note</b>2015, 2016 and 2017 are <b>postcodes</b>, not years. Do not let them trick you into reading the table as a timeline.</div>
+
+        <h4>Worked — TM 2, adversary knows the medical code</h4>
+        <p>Group by medical code: <b>A</b> 5 times, <b>B</b> 4 times, <b>C</b> once.</p>
+        <div class="formula">p = 0.5, 0.4, 0.1<br>H = 0.500 + 0.529 + 0.332 = <b>1.361 bits</b></div>
+
+        <h4>TM 3, adversary knows both</h4>
+        <p>Now the value is the <b>pair</b> (postcode, medical code). Group the 10 records by pair, get each p, and sum the same way. Whatever pairs the data gives you, the answer must survive all three checks:</p>
+
+        <div class="tip t-warn"><b>Correction — the printed TM 3 is wrong</b>
+        The version of this example circulating with pairs <span class="kbd">(2015,A) 3 · (2016,A) 3 · (2016,B) 3 · (2017,C) 1</span> giving 1.895 bits <b>does not match the data</b>, and the lecturer has confirmed it is an error.
+        <br><br>Add those pairs up by medical code and you get <b>A = 6, B = 3</b> — but TM 2 says <b>A = 5, B = 4</b>. The same ten records cannot be both. Use the real pairs from the slide and recompute with the method above; the arithmetic in TM 1 and TM 2 is correct and unaffected.</div>
+
+        <h4>Three checks that catch almost every mistake</h4>
+        <ol class="clean">
+          <li><b>Probabilities sum to 1.</b> If your counts do not total 10, you grouped something wrong.</li>
+          <li><b>Marginals must reproduce the single-attribute tables.</b> Collapse the joint pairs down to one attribute and you must get TM 1's counts back; collapse the other way and you must get TM 2's. <b>This is the check that catches the error above</b> — and the one worth doing in the exam, because it costs ten seconds.</li>
+          <li><b>The joint can never be smaller than either part, and never bigger than their sum.</b>
+          <div class="formula" style="margin-top:8px">max(H(X), H(Y)) ≤ H(X,Y) ≤ H(X) + H(Y)<br>1.361 ≤ H(TM3) ≤ 2.656</div>
+          Adding an attribute can only keep the uncertainty the same or raise it — never lower it.</li>
+        </ol>
+        <p class="mini">Worth knowing: the bad 1.895 <i>does</i> sit inside those bounds, so check 3 alone would have passed it. Only check 2 exposes it. Do both.</p>
+
+        <h4>What the example is teaching</h4>
         <ul class="clean">
-          <li><b>TM3 is the riskiest.</b> Knowing two attributes gives the adversary the most information — combined values become more unique.</li>
-          <li><b>Combining attributes raises uniqueness.</b> More unique → higher re-identification risk.</li>
-          <li><b>TM1 beats TM2 slightly.</b> Medical codes (0.5 / 0.4) are closer to a 50-50 split than postcodes (0.3 / 0.6), so they carry more uncertainty → higher entropy → less privacy.</li>
+          <li><b>TM 3 is always the riskiest.</b> Knowing two attributes gives the adversary the most information, because combined values are more unique than either alone. That conclusion holds no matter which pairs are correct.</li>
+          <li><b>Combining attributes raises uniqueness</b>, and more unique → higher re-identification risk.</li>
+          <li><b>TM 2 is slightly riskier than TM 1</b> — 1.361 against 1.295. Medical codes (0.5 / 0.4) sit closer to an even split than postcodes (0.3 / 0.6), and an even split carries the most uncertainty. More uncertainty → higher entropy → in this course, <b>less privacy</b>.</li>
         </ul>
       </div>
     </details>
@@ -865,7 +906,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
         <tr><td>Fair coin 0.5/0.5</td><td><b>1 bit</b> (max uncertainty)</td><td>Certain outcome 1.0/0.0</td><td><b>0 bits</b></td></tr>
         <tr><td>Coin 0.6/0.4</td><td><b>0.971 bits</b></td><td>Coin 0.8/0.2</td><td><b>0.722 bits</b></td></tr>
         <tr><td>Alejandra TM1 (postcode)</td><td><b>1.295 bits</b></td><td>TM2 (medical code)</td><td><b>1.361 bits</b></td></tr>
-        <tr><td>TM3 (both attributes)</td><td><b>1.895 bits — highest risk</b></td><td>Encoding example RIG</td><td><b>0.67 → moderate risk</b></td></tr>
+        <tr><td>TM3 (both attributes)</td><td><b>highest risk</b> — recompute from the pairs<br><span class="mini">printed 1.895 is a known error</span></td><td>Encoding example RIG</td><td><b>0.67 → moderate risk</b></td></tr>
       </table>
       <p class="mini">Read: higher entropy = more unique values = more info for the attacker = higher re-ID risk. Lower IG = better de-identification.</p>
     </div>
@@ -1187,7 +1228,7 @@ var QUIZ = [
   e:"Comparing results with and without the target — the difference reveals the target's diagnosis."},
  {q:"In Alejandra's worked example, which threat model showed the HIGHEST risk?",
   o:["TM1 — adversary knows the postcode","TM2 — adversary knows the medical code","TM3 — adversary knows both attributes","All equal"], a:[2],
-  e:"TM3 ≈ 1.895 bits — combining attributes makes values more unique, giving the adversary the most information."},
+  e:"TM3 — combining attributes makes values more unique, so it always carries the most information for the adversary. (The 1.895 figure printed in the example is a known error; the ranking TM3 > TM2 > TM1 still holds.)"},
  {q:"Root cause of the Optus breach (2022)?",
   o:["Phishing email","Publicly exposed API that required no authentication","Fish-tank thermometer","Ransomware"], a:[1],
   e:"An open API with no authentication let attackers pull 10+ million customer records."},
