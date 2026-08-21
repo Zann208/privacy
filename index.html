@@ -13,8 +13,9 @@
 fetch('./legacy.html?v=20260821')
 .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text()})
 .then(function(html){
-  var addon='<script src="./topic3.js?v=20260821a"><\/script>'+
-            '<script src="./midterm.js?v=20260821a"><\/script>';
+  var addon='<script src="./topic3.js?v=20260821a"><\/script>'+ 
+            '<script src="./midterm.js?v=20260821a"><\/script>'+ 
+            '<script src="./scope-fix.js?v=20260821a"><\/script>';
   if(html.indexOf('</body>')>-1)html=html.replace('</body>',addon+'</body>');else html+=addon;
   document.open();document.write(html);document.close();
 })
