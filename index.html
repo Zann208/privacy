@@ -5,21 +5,55 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>PRIV // 269497 Privacy Console</title>
 <meta name="theme-color" content="#0a0b12">
-<style>html,body{margin:0;min-height:100%;background:#0a0b12;color:#e9ecf6;font:14px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}#boot{min-height:100vh;display:grid;place-items:center;color:#66708c;letter-spacing:.08em}a{color:#a78bfa}</style>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0b12;color:#e9ecf6;font:14px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+#boot{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:#0a0b12;color:#66708c;letter-spacing:.08em;text-align:center;padding:24px}
+#app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#0a0b12;visibility:hidden}
+a{color:#a78bfa}
+</style>
 </head>
 <body>
 <div id="boot">LOADING PRIVACY CONSOLE…</div>
+<iframe id="app" title="Privacy Technologies Study Console" src="./legacy.html?v=20260821b"></iframe>
 <script>
-fetch('./legacy.html?v=20260821')
-.then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text()})
-.then(function(html){
-  var addon='<script src="./topic3.js?v=20260821a"><\/script>'+ 
-            '<script src="./midterm.js?v=20260821a"><\/script>'+ 
-            '<script src="./scope-fix.js?v=20260821a"><\/script>';
-  if(html.indexOf('</body>')>-1)html=html.replace('</body>',addon+'</body>');else html+=addon;
-  document.open();document.write(html);document.close();
-})
-.catch(function(err){document.getElementById('boot').innerHTML='Could not load the Privacy console. <a href="./legacy.html">Open the base console</a><br><small>'+String(err)+'</small>'});
+(function(){
+  var frame=document.getElementById('app');
+  var boot=document.getElementById('boot');
+
+  function inject(doc,src){
+    return new Promise(function(resolve,reject){
+      var s=doc.createElement('script');
+      s.src=src;
+      s.async=false;
+      s.onload=resolve;
+      s.onerror=function(){reject(new Error('Failed to load '+src));};
+      (doc.body||doc.documentElement).appendChild(s);
+    });
+  }
+
+  frame.addEventListener('load',function(){
+    var doc;
+    try{doc=frame.contentDocument||frame.contentWindow.document;}catch(e){
+      boot.innerHTML='Could not access the Privacy console document.<br><small>'+String(e)+'</small>';
+      return;
+    }
+
+    inject(doc,'./topic3.js?v=20260821b')
+      .then(function(){return inject(doc,'./midterm.js?v=20260821b');})
+      .then(function(){return inject(doc,'./scope-fix.js?v=20260821b');})
+      .then(function(){
+        frame.style.visibility='visible';
+        boot.style.display='none';
+      })
+      .catch(function(err){
+        frame.style.visibility='visible';
+        boot.innerHTML='The base console loaded, but an upgrade script failed.<br><small>'+String(err)+'</small>';
+        boot.style.pointerEvents='none';
+        boot.style.background='transparent';
+        boot.style.alignItems='start';
+      });
+  });
+})();
 </script>
 </body>
 </html>
