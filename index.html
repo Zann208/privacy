@@ -14,7 +14,7 @@ a{color:#a78bfa}
 </head>
 <body>
 <div id="boot">LOADING PRIVACY CONSOLE…</div>
-<iframe id="app" title="Privacy Technologies Study Console" src="./legacy.html?v=20260821c"></iframe>
+<iframe id="app" title="Privacy Technologies Study Console" src="./legacy.html?v=20260821f"></iframe>
 <script>
 (function(){
   var frame=document.getElementById('app');
@@ -42,18 +42,17 @@ a{color:#a78bfa}
     if(!target || !target.classList.contains('tab')) saved='home';
 
     try{
-      if(typeof win.go==='function'){
-        win.go(saved,true);
-      }else{
+      if(typeof win.go==='function')win.go(saved,true);
+      else{
         doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id===saved);});
         doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===saved);});
       }
     }catch(e){
+      saved='home';
       doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id==='home');});
       doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab==='home');});
     }
 
-    /* Last-resort guard: never allow every tab to be hidden. */
     if(!doc.querySelector('section.tab.on')){
       var home=doc.getElementById('home');if(home)home.classList.add('on');
       var hb=doc.querySelector('.tabbtn[data-tab="home"]');if(hb)hb.classList.add('on');
@@ -70,16 +69,14 @@ a{color:#a78bfa}
       return;
     }
 
-    inject(doc,'./topic3.js?v=20260821c')
-      .then(function(){return inject(doc,'./midterm.js?v=20260821c');})
-      .then(function(){return inject(doc,'./scope-fix.js?v=20260821c');})
+    inject(doc,'./topic3.js?v=20260821f')
+      .then(function(){return inject(doc,'./midterm-static-tab.js?v=20260821f');})
       .then(function(){
         activateValidTab(win,doc);
         frame.style.visibility='visible';
         boot.style.display='none';
       })
       .catch(function(err){
-        /* Even if an add-on fails, show the original console rather than a blank shell. */
         try{activateValidTab(win,doc);}catch(e){}
         frame.style.visibility='visible';
         boot.style.display='none';
