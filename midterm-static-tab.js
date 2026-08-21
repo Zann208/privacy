@@ -12,7 +12,7 @@ if(!btn){
 var main=document.getElementById('main'),sec=document.getElementById('midterm');
 if(!sec&&main){
   sec=document.createElement('section');sec.className='tab';sec.id='midterm';
-  sec.innerHTML='<iframe title="Privacy Midterm Master Pack" src="./midterm-pack.html?v=20260821f" style="display:block;width:100%;height:calc(100vh - 50px);min-height:720px;border:0;background:var(--bg)"></iframe>';
+  sec.innerHTML='<iframe title="Privacy Midterm Master Binder" src="./midterm-pack.html?v=20260821g" style="display:block;width:100%;height:calc(100vh - 50px);min-height:720px;border:0;background:var(--bg)"></iframe>';
   var author=document.getElementById('author');if(author)main.insertBefore(sec,author);else main.appendChild(sec);
 }
 })();
