@@ -1,0 +1,223 @@
+H = -[0.5 log₂0.5 + 0.4 log₂0.4 + 0.1 log₂0.1] ≈ 1.361 bits
+
+Alejandra - Threat Model 3: postcode + medical code
+
+The lecture slide lists four combined values: (2015,A), (2016,A), (2016,B), (2017,C), with counts 3, 3, 3 and 1.
+H = -[3(0.3 log₂0.3) + 0.1 log₂0.1] ≈ 1.895 bits
+
+Lecture slide note: The TM3 pair counts printed in the lecture imply medical-code totals A=6, B=3, C=1, while the preceding TM2 slide states A=5, B=4, C=1. The entropy calculation above follows the TM3 pair counts exactly as printed on that slide.
+
+Interpretation of the three threat models
+
+Threat Model 3 has the highest entropy in the lecture and is interpreted as the highest re-identification/inference risk because the adversary knows two attributes.
+Combining multiple attribute values makes the combined patterns more unique.
+Threat Model 1 has slightly better privacy than Threat Model 2 because the medical-code probabilities are closer to equal than the postcode probabilities, giving TM2 higher entropy in the lecture interpretation.
+Entropy provides a common numerical scale to compare privacy risk across datasets and threat models.
+TOPIC 2 - INFORMATION GAIN AND RELATIVE INFORMATION GAIN
+
+Risk reduction after de-identification
+
+The effectiveness of a de-identification technique can be assessed by comparing entropy before and after de-identification, or by using Information Gain (IG) and Relative Information Gain (RIG).
+X is the original dataset. Y is the perturbed/anonymised/de-identified version.
+IG(X|Y) = H(X) - H(X|Y)
+
+RIG(X|Y) = IG(X|Y) / H(X)
+
+H(X|Y) is the conditional entropy - the remaining uncertainty about original X when the de-identified version Y is known. Lower IG means it is more difficult for an adversary to infer the original dataset from the de-identified dataset. RIG normalises IG against H(X) on a 0.0-1.0 scale.
+Peter / Pete / Smith worked example
+
+Original X | Count | De-identified Y
+Peter | 30 | p360
+Pete | 20 | p360
+Smith | 50 | s530
+
+H(X) = 1.4855 bits
+
+For Y=p360, Peter/Pete remain possible with conditional probabilities 0.6 and 0.4. For Y=s530, Smith is known with certainty.
+H(X|Y) = 0.4855 bits
+
+IG = 1.4855 - 0.4855 = 1.0 bit
+
+RIG = 1.0 / 1.4855 = 0.6732 ≈ 67%
+
+The lecture interprets this simple encoding example as a 67% re-identification risk / moderate degree of suspicion on the privacy spectrum.
+Lecture slide note: The H(X) slide contains mismatched log labels in a few table cells, but the contribution values 0.5211, 0.4644 and 0.5 and the total H(X)=1.4855 match the probabilities 0.3, 0.2 and 0.5.
+
+TOPIC 3 - DE-IDENTIFICATION METHODS
+
+Privacy-preserving data sharing
+
+Individual data are increasingly shared for supply-chain optimisation, targeted marketing, customised products/services and product/user-experience improvement.
+Examples in the lecture include sharing shopping transactions among retailers/wholesalers/marketers and Apple collecting mobile-device usage data.
+Because data about individuals can create re-identification risk, entities collecting data need privacy-preserving data-sharing techniques.
+In the Topic 3 data-sharing model, the data curator is assumed to be trusted.
+Basic de-identification techniques
+
+Technique | Definition / example
+Remove direct identifiers | Remove names, Medicare numbers, email addresses, phone numbers.
+Aggregation | Publish statistics rather than individual records; e.g. population density or counts of patients with different diseases.
+Binning | Group detailed values into ranges; e.g. ages 0-30, 31-60, 61-100.
+Perturbation | Modify attribute values using random values/noise; lecture example adds a random value from [0-20] to age.
+Synthetic data | Generate and publish artificial data that reflects/mimics the distribution of real-world data.
+
+The lecture states that these naive techniques are still susceptible to linkage attacks using known background/auxiliary data. De-identification does not automatically eliminate re-identification.
+De-identification models and privacy guarantees
+
+Common models named in the lecture are k-anonymity, l-diversity, t-closeness and differential privacy. The lecture states that k-anonymity, l-diversity and t-closeness do not provide provable privacy guarantees.
+Concept | Meaning
+Provable privacy | Privacy guarantee against an attack supported by mathematical/theoretical proof.
+Probable privacy | Provides a privacy guarantee/protection but no proof that the guarantee always holds.
+Inference attack | Technique used to illegitimately learn or make an educated guess about a person's sensitive information from a dataset/database.
+
+TOPIC 3 - K-ANONYMITY
+
+Definition
+
+k-anonymity aims to ensure that each individual's information in a released dataset cannot be distinguished from at least k-1 other individuals with respect to the selected quasi-identifiers. k is user specified.
+k = 3 → each record looks the same as at least 2 other records on the selected QIDs
+
+Mechanisms
+
+Mechanism | Meaning | Course example
+Generalisation | Replace QID/attribute values with less specific values so at least k records share the same values. | Age groups 20-25 and 25-30 generalised to 20-30.
+Suppression | Remove a QID/value when generalisation would create too much utility/information loss, especially for outliers. | Mask/remove a problematic QID.
+
+Privacy-utility trade-off
+
+Larger k gives stronger ambiguity because each record looks like more records.
+Larger k requires more generalisation/suppression and therefore more information loss.
+Small datasets suffer more utility loss for large k.
+The lecture says k-anonymity is better suited to large datasets where a large k may be achieved without excessive information loss.
+Health dataset example
+
+The example dataset contains three QIDs - nationality, age and ZIP code - and one sensitive attribute - health condition. The dataset contains Australians and New Zealanders living in the United States.
+k=3: nationality is suppressed/generalised to “*”; age is generalised into 20-30, 30-40 and 40-50; ZIP is generalised into 130** and 148** so each pattern has at least 3 records.
+k=2: nationality does not need to be suppressed; age and ZIP remain generalised.
+Different coloured groups in the slides represent clusters/equivalence classes sharing the same QID values.
+With a smaller k, the privacy requirement can be achieved with less generalisation/suppression.
+External voter-registration linkage
+
+Without anonymisation, R11 can be linked to G100 (Alex) using nationality, age and ZIP, revealing cancer.
+R5 can be linked to G123 (Bob), revealing the health condition.
+With k=2, Bob/G123 can ambiguously match R5 or R7, so the condition may be cancer or flu.
+With k=3, Bob/G123 can match R5-R8, so cancer, flu or heart disease remain possible.
+The larger k becomes, the more ambiguous and difficult exact inference becomes.
+Lecture naming note: One sentence near the end of Topic 3 Part 1 calls the all-cancer homogeneity target “Bob”; Topic 3 Part 2 uses “Alex” for the all-cancer example and “Bob” for the background-knowledge example. The Part 2 sequence is internally consistent.
+
+TOPIC 3 - ATTACKS ON K-ANONYMITY
+
+Homogeneity attack
+
+Even when an external record matches k records, the sensitive attribute can still be inferred when the sensitive values in the equivalence class lack diversity.
+Bob safe example: matching R5-R8 contain Cancer, Heart and Flu; the exact condition cannot be inferred.
+Alex vulnerable example: Alex matches three records and all three have Cancer; cancer can be inferred.
+Background attack
+
+If the adversary has external knowledge about the target, k-anonymity may not protect against inference.
+Lecture example: background knowledge states that people from New Zealand have a very low incidence of heart disease or cancer. This reduces Bob's possible matches from four to R7/R8, both of which have Flu, so Flu can be inferred.
+Limitations of k-anonymity
+
+Does not provide sufficient privacy in all cases.
+Larger k reduces re-identification risk but increases information loss.
+The trade-off is especially difficult for small datasets.
+Best suited to larger datasets when a large k can be achieved without excessive information loss.
+TOPIC 3 - L-DIVERSITY AND ATTACKS
+
+l-diversity
+
+l-diversity extends k-anonymity by requiring diversity in the sensitive attribute. Each cluster/group of records sharing the same QID values should contain at least l well-represented sensitive values, approximately equal in proportion according to the lecture description.
+l = 3 → each QID group contains at least 3 diverse sensitive values
+
+Health example
+
+Each group contains at least the sensitive values Heart, Flu and Cancer.
+One example group: age <37 and ZIP form 1**6*.
+Second group: age ≥37 and ZIP form 1**5*.
+First group has 2 records for each of Heart, Flu and Cancer.
+Second group has 2 Cancer, 2 Flu and 1 Heart.
+The lecture states that l-diversity protects against the homogeneity and background attacks that affect k-anonymity, but it still does not stop probabilistic inference attacks.
+Similarity attack
+
+l-diversity may have distinct sensitive values that are semantically very similar. An adversary can then infer the approximate sensitive category even though the values are technically diverse.
+Lecture Bob example: Gastric ulcer, Gastritis and Stomach cancer are three distinct values, but all indicate a stomach-related disease; therefore a stomach-related condition can still be inferred.
+Composition attack
+
+Combining two k-anonymised or l-diverse datasets can reveal more information than either release alone. The lecture example uses two hospitals: an adversary who knows the target visited both can combine the releases and infer/re-identify sensitive attributes.
+l-diversity trade-off
+
+Stronger privacy than k-anonymity, but greater information loss.
+May perform worse than k-anonymity on small datasets in terms of utility.
+Best suited to large datasets with many semantically diverse sensitive values.
+TOPIC 3 - T-CLOSENESS AND LIMITATIONS
+
+t-closeness
+
+t-closeness aims to overcome limitations of k-anonymity and l-diversity. t is user specified and controls how close the sensitive-attribute distribution inside each QID group is to the sensitive-attribute distribution in the entire dataset.
+distance(group sensitive distribution, overall sensitive distribution) ≤ t
+
+Closeness is measured in the lecture using Earth Mover's Distance (EMD). If every group satisfies the threshold, the dataset provides t-closeness.
+Earth Mover's Distance (EMD)
+
+The lecture defines EMD as a metric for semantic similarity between two strings/texts and describes it as the minimum amount of work required to transform the first string/text into the second.
+Privacy properties
+
+Protects against homogeneity attacks and background-knowledge attacks.
+Addresses semantic closeness of sensitive values, which is a limitation of l-diversity.
+Lecture example further anonymises an l=3-diverse dataset into two QID groups and reports approximately t=0.278 for health condition.
+This provides stronger privacy but causes additional information loss.
+Limitations and privacy-utility trade-off
+
+Making every class distribution close to the overall distribution is not trivial.
+t-closeness can require more generalisation and reduce utility.
+Lecture example generalises age from 3 groups to 2 groups and masks 3 ZIP digits instead of 2.
+The privacy-utility trade-off is harder to achieve than with k-anonymity and l-diversity.
+Like k and l, t-closeness is more practical on large datasets when sufficient privacy can be achieved with tolerable information loss.
+COMPARISON TABLES
+
+Security and privacy properties
+
+Property | Meaning | Preservation method / example
+Confidentiality | Only authorised access/disclosure. | Encryption, access control.
+Integrity | Data remains unmodified/correct/authentic/reliable. | Hashing, logs.
+Availability | Authorised access when required. | Backups; DoS/DDoS is a failure.
+Anonymity | Action cannot be linked to identity. | De-identification; e-voting.
+Indistinguishability | Person/record cannot be singled out from population/sample. | De-identification; AOL failure example.
+
+Re-identification attacks
+
+Attack | Recognition clue | Course context
+Inference | Learn/predict sensitive information. | AOL remaining search queries.
+Amplification | Link public data with anonymised data. | Medical + social media.
+Differencing | Compare results with vs without target. | Diagnosis-count difference.
+Reconstruction | Rebuild original/detailed data from aggregate/synthetic/anonymised data. | Mobility trajectories.
+
+k-anonymity vs l-diversity vs t-closeness
+
+Model | Core rule | Improves | Main weakness / cost
+k-anonymity | At least k records share a QID pattern. | Reduces uniqueness and direct linkage certainty. | Homogeneity and background attacks; information loss grows with k.
+l-diversity | At least l well-represented sensitive values in each QID group. | Adds sensitive-value diversity; protects against k homogeneity/background issues. | Similarity and composition attacks; probabilistic inference; more utility loss.
+t-closeness | Sensitive distribution in each group is close to overall distribution within t. | Controls distribution/semantic leakage; resists earlier attacks. | Harder to achieve; more generalisation and information loss; difficult privacy-utility trade-off.
+
+CASE STUDIES
+
+Case | Important facts | Concepts
+Facebook / Cambridge Analytica | April 2018; 50-90 million users stated in lecture; third-party quiz app/API loophole; awareness as early as 2015; $5 billion fine cited. | Data protection, privacy, third-party/API risk.
+WannaCry 2017 | >250,000 computers; >150 countries; Windows vulnerability; encrypted/hijacked files; $300 bitcoin ransom. | Ransomware, OS exploit, confidentiality/availability.
+GitHub DDoS 2018 | >1,000 autonomous systems; peak 1.35 Tbps; 126.9 million packets/s; temporary/intermittent unavailability. | Availability, DoS/DDoS.
+Optus 2022 | Public insecure unauthenticated API; >10m accounts; 10,000 dark-web publication; multiple personal identifiers. | Database/API vulnerability, confidentiality/privacy.
+Medibank 2022 | Stolen employee credentials; 200GB; up to 9.7m people; passport/medical claims; $250m APRA set-aside. | Credentials, database breach, sensitive health data.
+Casino fish tank 2017 | Internet-connected thermometer used as point of entry; network scanning; 10GB stolen. | IoT vulnerability.
+Edward Snowden 2013 | NSA contractor/sysadmin; top-secret access; thousands of files; release to journalists. | Insider threat.
+AOL 2006 | Anonymised search histories of 650,000 users; personal search details allowed re-identification; other searches could then be inferred. | Indistinguishability, inference.
+Netflix | Training data of 500,000 subscribers cited. | Re-identification/linkage.
+Massachusetts hospital data | Hospital discharge data cited; related lecture fact: ~87% uniqueness via gender+DOB+5-digit ZIP. | QIDs, linkage/re-identification.
+
+LECTURE DISCUSSION QUESTIONS AND ANSWERS
+
+1. Which privacy/security property is breached by a ransomware attack that hijacks a computer, encrypts files and demands ransom?
+Answer: The slide places this in the confidentiality discussion. Availability is also affected because authorised users lose access to files.
+2. A malicious employee sells company secrets. Which property is compromised?
+Answer: Confidentiality.
+3. An individual is re-identified from a publicly available anonymised dataset. Which privacy/security property has been breached?
+Answer: Indistinguishability is the direct course concept: the individual could be singled out and identified. Anonymity/confidentiality may also be affected depending on the context.
+4. Why are humans a significant vulnerability in cyber attacks?
