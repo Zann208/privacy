@@ -1,0 +1,235 @@
+Privacy Technologies
+Midterm Notes - Topics 1-3
+ISNE 269497
+Name: ________________________________
+Student ID: ___________________________
+Topics covered: Threats, Risks & Vulnerabilities | Privacy Risk Quantification & Evaluation | De-identification Methods
+QUICK INDEX
+
+Section | Page
+Topic 1 - Fundamentals and privacy/security properties | 4
+Topic 1 - IS networks, vulnerabilities and cases | 5
+Topic 1 - Re-identification attacks and auxiliary knowledge | 7
+Topic 2 - Key privacy-risk elements | 9
+Topic 2 - Threat models and privacy spectrum | 10
+Topic 2 - Entropy and Alejandra calculations | 10
+Topic 2 - Information Gain / Relative Information Gain | 12
+Topic 3 - Basic de-identification methods | 13
+Topic 3 - k-anonymity | 13
+Topic 3 - attacks on k-anonymity | 15
+Topic 3 - l-diversity and attacks | 15
+Topic 3 - t-closeness and limitations | 16
+Comparison tables | 17
+Case studies | 17
+Lecture discussion questions and answers | 19
+Practice questions and answers | 20
+Lecture example tables / figures | 32
+Glossary | 47
+
+Core formulas and numbers
+
+Item | Reference
+Shannon entropy | H(X) = -sum p(x) log2 p(x)
+Conditional entropy | H(X|Y) = sum p(x,y) [-log2 p(x|y)] = sum p(y)H(X|Y=y)
+Information Gain | IG(X|Y) = H(X) - H(X|Y)
+Relative Information Gain | RIG(X|Y) = IG(X|Y) / H(X)
+Binary p=.5/.5 | H = 1 bit
+Binary p=1/0 | H = 0 bit
+Binary p=.8/.2 | H ≈ 0.722 bits
+Binary p=.6/.4 | H ≈ 0.971 bits
+Alejandra TM1 postcode | H ≈ 1.295 bits
+Alejandra TM2 medical code | H ≈ 1.361 bits
+Alejandra TM3 postcode+medical code | H ≈ 1.895 bits (using the pair counts printed in the slide)
+Peter/Pete/Smith | H(X)=1.4855; H(X|Y)=0.4855; IG=1.0; RIG=0.6732
+t-closeness lecture example | t ≈ 0.278
+
+TOPIC 1 - THREATS, RISKS AND VULNERABILITIES
+
+Data security and information privacy protect people's sensitive and personal data from unauthorised access, use or disclosure.
+Data security and information privacy
+
+Concept | Course meaning | Examples / points
+Data security | Protects data from being stolen, compromised or corrupted. | Encryption, firewalls, access controls, authentication mechanisms, regular updates, strong passwords, multi-factor identity checks, end-to-end encrypted services.
+Information privacy | Controls who has access to personal information and how that information is used. | Names, addresses, financial information, health information; data collection should be transparent and consensual; people should know how and why data is collected; unnecessary collection/retention can have serious consequences.
+
+Facebook / Cambridge Analytica discussion example
+
+April 2018 discussion example.
+The slides describe 50-90 million users as exposed.
+A loophole involving a third-party quiz app and Facebook API is highlighted.
+The slides state Facebook was aware of the issue as early as 2015.
+The slides cite a $5 billion fine in connection with continuing data-security/data-protection violations.
+Security properties - CIA triad
+
+Property | Definition | Typical failure / example
+Confidentiality | Information is disclosed appropriately; only people with the right authorisation can access it. | Data breach or insider disclosure; WannaCry is presented in the confidentiality discussion.
+Integrity | Data has not been modified and can be trusted as correct, authentic and reliable. | Modification used to facilitate phishing, spam, fake news/posts or misinformation.
+Availability | Authorised users have timely and reliable access to data and resources when required. | DoS/DDoS; GitHub 2018 attack caused temporary/intermittent unavailability.
+
+Availability example - GitHub 2018
+
+Distributed denial-of-service attack.
+Traffic originated from over a thousand autonomous systems.
+Peak: 1.35 terabits per second.
+Packet rate: 126.9 million packets per second.
+Result: GitHub became unavailable/intermittently available for a short time.
+Privacy properties
+
+Property | Definition | Course example
+Anonymity | An action cannot be linked to the real identity. | E-voting: a vote/action should not reveal the voter's identity or private choice.
+Indistinguishability | An entity/person cannot be distinguished from the population or sample and identified. | AOL search-log release: users could be distinguished/re-identified from searches containing personal details.
+
+Methods used to preserve properties
+
+Method | Property | Course explanation
+Encryption / access control | Confidentiality | Only users with the decryption key or access key can access the data.
+Hashing / logs | Integrity | Compare previous/current hash values or inspect the list of actions in logs to determine whether data/files were changed.
+Backups | Availability | If original data is lost or unavailable, backup data can be used.
+De-identification | Anonymity / indistinguishability | Examples named in the course include k-anonymity and differential privacy.
+
+Hashing
+
+Cryptographic technique that converts a value into a hash digest/message digest.
+Even a one-character input difference can produce a completely different digest.
+Comparing old and new hash values can show whether the data changed.
+TOPIC 1 - IS NETWORKS, VULNERABILITIES AND CONTROLS
+
+Information-systems network
+
+A typical information-systems network contains computer systems/software, computer hardware, Internet connections, IoT devices and users that share and receive data and information.
+Data state | Meaning
+Data at rest | Stored data, for example data stored in a database.
+Data in transit | Data moving over a network or the Internet.
+Data in use | Data being processed by software or a computing device.
+
+Vulnerabilities by component
+
+Component | Threat / vulnerability | Controls stated in lectures
+Modem / device OS | OS or service exploitation using a known exploit; attacker may gain access/control or monitor activity. | Keep OS/software updated; use a firewall.
+Wi-Fi modem | Man-in-the-middle attack: attacker sits between parties, views and may modify sent/received information. | Encrypt Wi-Fi; allow only trusted/authorised users.
+Database | SQL injection; insecure API; weak security; insecure transfer; stolen credentials. | Encrypted storage, access controls, monitoring, strong privacy-preserving/de-identification methods for data sharing.
+Computer | Malware, ransomware, OS/service exploitation. | Updated anti-virus, firewall, OS/software updates, backup strategy.
+IoT device | Default password, weak software/communications, data breach/privacy loss, botnet/DDoS risk. | Updates, firewall, never use default passwords, secure credential/data storage, secure/encrypted communication.
+Human | Phishing, social engineering, weak passwords, malicious links, malicious insider. | Cybersecurity education, strong authentication, technical controls, vigilant behaviour.
+
+Firewall
+
+A network security device that creates a barrier between a private internal network and the Internet. It allows safe traffic and blocks dangerous traffic according to organisational security policies and protocols.
+SQL injection
+
+A code-injection attack against data-driven applications. Malicious SQL statements are inserted through user input such as username/password fields. If the system executes them, an attacker may modify, delete or retrieve sensitive database data.
+Social engineering
+
+Techniques designed to trick a person into divulging information or taking actions that lead to malicious activity.
+Case details
+
+Case | Key facts from slides | Main connection
+Optus 2022 | Insecure publicly exposed API with no authentication; >10 million accounts compromised; names, emails, addresses, phones, DOB and some ID numbers; 10,000 customers' data published on dark web; class action filed April 2023. | Database/API vulnerability; confidentiality/privacy.
+Medibank 2022 | Stolen employee credentials; attacker authenticated and retrieved 200GB; up to 9.7 million customers; names, DOB, passports, medical claims; APRA required $250m set-aside June 2023. | Credential compromise; database breach.
+WannaCry 2017 | >250,000 computers in >150 countries; exploited Microsoft Windows vulnerability; encrypted/hijacked files; demanded $300 bitcoin ransom. | Ransomware; OS vulnerability; confidentiality/availability context.
+Casino fish tank 2017 | Internet-connected thermometer used as point of entry; attacker scanned network; 10GB data stolen. | IoT vulnerability.
+Edward Snowden 2013 | NSA contractor/system administrator; top-secret clearance; downloaded thousands of files in May 2013; later released documents to journalists. | Insider threat / trusted employee risk.
+
+TOPIC 1 - RE-IDENTIFICATION RISKS AND AUXILIARY KNOWLEDGE
+
+Re-identification
+
+Re-identification is the risk of identifying an individual and learning more about that individual from the data. The lectures connect it mainly with loss of anonymity, indistinguishability and confidentiality.
+AOL anonymised search histories: 650,000 users are cited; individuals could be identified from search histories and the rest of their queries could then be inferred.
+Netflix training data: 500,000 subscribers are cited as a re-identification example.
+Massachusetts hospital discharge data is cited as a classic re-identification example.
+Four re-identification attack groups
+
+Attack | Definition | Course example / clue
+Inference | Learning or predicting information about an individual from the data. | AOL: once someone is identified from some search queries, other queries can be inferred.
+Amplification | Gaining new information by linking public data with anonymised/de-identified data. | Medical dataset linked with public social-media profiles to infer health conditions or religious views.
+Differencing | Analysing differences in query/data results to reveal target information. | Compare diagnosis counts for whole dataset vs dataset excluding the target; the difference reveals diagnosis.
+Reconstruction | Reconstructing original data from synthetic, aggregated or anonymised data. | Reconstruct part of individuals' mobility trajectories from aggregated mobility data.
+
+Auxiliary knowledge
+
+Type | Meaning | Examples
+Unique / direct identifier | Attribute unique for each individual and usable for direct identification. | Email address, telephone number, medical record number.
+Quasi-identifier (QID) | Not unique by itself but sufficiently correlated with an individual; combinations can become unique. | Gender + date of birth + 5-digit ZIP.
+Background knowledge | Anything the adversary already knows about the target. | Knowing only the target visited a clinic for a chronic condition at a specific time.
+Adversary | Person, group, organisation or government intending to cause harm through cyber activities. | Course uses a NIST-style definition.
+
+Key fact: The lectures cite a Sweeney result stating that around 87% of the US population could be uniquely identified by the combination of gender, date of birth and 5-digit ZIP code.
+
+TOPIC 2 - PRIVACY RISK QUANTIFICATION AND EVALUATION
+
+Four key elements of data privacy risk
+
+Element | Definition | Lecture example / implication
+Uniqueness | Likelihood that an attribute value or combination is distinguishable from other records. | Rare name “Jenjira” has greater re-identification risk than common “John”. More unique values increase re-ID/inference risk.
+Uniformity | How similar an individual's attribute values are across different events or times. | Repeated consistent searches about one medical illness increase inference confidence.
+Linkable tokens | Tokens containing personally identifiable information that can directly or indirectly link records to an individual. | Email address appearing in free-text feedback in an otherwise anonymised education dataset.
+Correlation | Likelihood of inferring one attribute from another known/guessed attribute; measures how variables change in relation to each other. | Part-time job status correlated with late-submission penalties; demographic dataset correlated with browsing-history dataset.
+
+Uniqueness and k-anonymity
+
+The opposite of uniqueness is used in k-anonymity: each considered value/pattern must be shared by at least k records.
+k represents the degree of privacy protection.
+k=5 means each record is indistinguishable from at least 4 others for the considered attributes.
+This makes re-identification difficult, but not impossible.
+Uniformity and l-diversity
+
+The lecture presents l-diversity as the opposite of uniformity.
+Within records/groups that share quasi-identifiers, at least l distinct sensitive values should be represented.
+Illustrative example: if 10 health-condition observations all say “chest pain”, l=3 requires diversity such as chest pain, headache and fever.
+Direct identifiers and quasi-identifiers
+
+Type | Examples | Difference
+Direct identifier (DID) | Name, email, telephone number, unique medical record number. | Directly and explicitly identifies an individual.
+Quasi-identifier (QID) | Date of birth, gender, postcode. | Cannot usually identify directly alone; combinations may identify.
+
+Correlation
+
+Positive correlation: variables increase/decrease together.
+Negative correlation: one variable increases while the other decreases.
+Highly correlated attributes are easier to infer from one another.
+Across datasets, shared/correlated attributes can enable linkage even when one dataset contains no direct identifiers.
+TOPIC 2 - THREAT MODELS AND PRIVACY SPECTRUM
+
+Threat models
+
+A threat model defines the intents and capabilities of potential adversaries that want to compromise data and privacy. Privacy-preserving/de-identification methods should protect the required properties against the assumed threat model.
+Threat model | Adversary knowledge | Risk logic
+Single attribute | Knows one attribute value of a target, e.g. postcode. | Attempts re-identification using that one value.
+Combination of attributes | Knows multiple values, e.g. postcode + medical code. | More prior knowledge generally gives higher estimated re-identification risk.
+Direct identifier | May not know dataset attributes but can extract a direct identifier from an attribute, e.g. phone number in clinical notes. | Links the DID to external data such as a telephone directory or voter database.
+
+Alejandra / Fred scenario
+
+Alejandra wants to assess the privacy risk of sharing her dataset with Fred if Fred knows at least two quasi-identifiers about a target or can use an external source to link a direct identifier available in the dataset.
+Privacy spectrum
+
+Value | Meaning
+0.0 | Absolute privacy: adversary cannot re-identify or infer information.
+0.25 | Low suspicion / low confidence that data can be exposed.
+0.50 | Moderate suspicion / moderate confidence.
+0.75 | High suspicion / high confidence of exposure, but not proved.
+1.0 | Provably exposed: adversary can provably re-identify or infer information.
+
+TOPIC 2 - ENTROPY AND PRIVACY-RISK CALCULATIONS
+
+Information theory and entropy
+
+Information theory provides the mathematical basis for quantifying information in data. The lectures use entropy to analyse uniqueness, linkability and uniformity and thereby quantify privacy risk.
+Shannon entropy is measured in bits. A bit is treated as a unit of information. Entropy measures uncertainty/randomness and the amount of new information provided by a variable.
+H(X) = -Σ p(x) log₂ p(x)
+
+Distribution | Entropy | Interpretation in lecture
+0.5 / 0.5 | 1 bit | Maximum uncertainty/new information for a binary variable.
+1.0 / 0.0 | 0 bit | Deterministic; no new information from observing the variable.
+0.8 / 0.2 | ≈ 0.722 bits | Some uncertainty, less than the balanced case.
+0.6 / 0.4 | ≈ 0.971 bits | Lecture discussion calculation.
+
+Alejandra - Threat Model 1: postcode
+
+Postcode values: 2015 appears 3 times, 2016 appears 6 times, 2017 appears once. Total = 10.
+H = -[0.3 log₂0.3 + 0.6 log₂0.6 + 0.1 log₂0.1] ≈ 1.295 bits
+
+Alejandra - Threat Model 2: medical code
+
+Medical-code values: A appears 5 times, B appears 4 times, C appears once. Total = 10.

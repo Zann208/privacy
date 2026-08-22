@@ -1,0 +1,237 @@
+Answer: Approximately 67% re-identification risk / moderate suspicion under the simple encoding example.
+2.60. Why is s530 conditionally certain?
+Answer: s530 maps only to Smith, so H(X|Y=s530)=0.
+2.61. Why is p360 conditionally uncertain?
+Answer: p360 could correspond to Peter or Pete, with conditional probabilities 0.6 and 0.4.
+2.62. What is H(X|Y=p360)?
+Answer: Approximately 0.971 bits.
+2.63. Why are IG and RIG useful for comparing de-identification methods?
+Answer: They provide numerical measures of information leakage/risk reduction across methods/settings.
+Topic 3 practice questions
+
+3.1. Why is privacy-preserving data sharing needed?
+Answer: Individual-level data are increasingly shared for useful applications, but re-identification/inference can compromise privacy.
+3.2. What is assumed about the data curator in Topic 3?
+Answer: The data curator is trusted.
+3.3. Name the five basic de-identification techniques.
+Answer: Remove direct identifiers, aggregation, binning, perturbation, synthetic data.
+3.4. What does removing direct identifiers mean?
+Answer: Delete values such as names, Medicare numbers, emails and phone numbers.
+3.5. What is aggregation?
+Answer: Publish group statistics instead of individual-level records.
+3.6. What is binning?
+Answer: Replace detailed values with ranges/groups, e.g. age 0-30, 31-60, 61-100.
+3.7. What is perturbation?
+Answer: Modify values with random values/noise; lecture example adds random [0-20] noise to age.
+3.8. What is synthetic data?
+Answer: Artificially generated data designed to mimic real-world data distribution.
+3.9. Why can basic/naive de-identification still fail?
+Answer: Linkage attacks can combine anonymised data with known background/auxiliary information.
+3.10. Name the common de-identification models in Topic 3.
+Answer: k-anonymity, l-diversity, t-closeness, differential privacy.
+3.11. Which of those are stated as not providing provable privacy guarantees?
+Answer: k-anonymity, l-diversity and t-closeness.
+3.12. Define provable privacy.
+Answer: A privacy guarantee against an attack supported by mathematical/theoretical proof.
+3.13. Define probable privacy.
+Answer: Privacy protection/guarantee without proof that it always holds.
+3.14. Define inference attack in Topic 3.
+Answer: Illegitimately learning/guessing a person's sensitive information from data.
+3.15. Define k-anonymity.
+Answer: Each released record is indistinguishable from at least k-1 other records with respect to selected QIDs.
+3.16. What does k=3 mean?
+Answer: Each record shares its QID pattern with at least 2 other records.
+3.17. What is generalisation?
+Answer: Replace precise QID values with less specific values to create groups of at least k matching records.
+3.18. What is suppression?
+Answer: Remove/mask a QID/value when needed, especially for outliers or when generalisation would create excessive utility loss.
+3.19. What happens as k increases?
+Answer: Privacy/ambiguity generally increases; information loss also increases.
+3.20. Why does larger k increase information loss?
+Answer: More generalisation/suppression is needed so each record matches a larger group.
+3.21. Why is k-anonymity better suited to large datasets?
+Answer: Large k can often be achieved with less relative utility loss than in small datasets.
+3.22. What are the QIDs in the health example?
+Answer: Nationality, age and ZIP code.
+3.23. What is the sensitive attribute in the health example?
+Answer: Health condition.
+3.24. What happens to nationality in the k=3 table?
+Answer: It is suppressed/generalised to *.
+3.25. What happens to age and ZIP in the k=3 table?
+Answer: Age becomes 20-30, 30-40, 40-50; ZIP becomes 130** or 148**.
+3.26. What differs in the k=2 table?
+Answer: Nationality is not suppressed; age and ZIP are still generalised.
+3.27. Why can original R11 be linked to G100?
+Answer: Nationality, age and ZIP match uniquely in the original data, identifying Alex and revealing cancer.
+3.28. What does k=2 do to Bob/G123 linkage?
+Answer: Makes it ambiguous between R5 and R7 in the worked discussion, so exact condition cannot be determined.
+3.29. What does k=3 do to Bob/G123 linkage?
+Answer: Makes it ambiguous across R5-R8, with multiple possible health conditions.
+3.30. Define homogeneity attack.
+Answer: Sensitive values in an equivalence class lack diversity, so the target's sensitive value can be inferred despite k-anonymity.
+3.31. What is the Alex homogeneity example?
+Answer: Alex matches 3 records and all 3 have Cancer; cancer can be inferred.
+3.32. What is the Bob non-homogeneous example?
+Answer: Bob matches R5-R8, whose conditions include Cancer, Heart and Flu, so exact condition cannot be inferred from the group alone.
+3.33. Define background attack.
+Answer: External knowledge narrows possible matching records/sensitive values and defeats k-anonymity.
+3.34. What is the Bob background-knowledge example?
+Answer: Knowing New Zealanders have low incidence of heart disease/cancer narrows Bob to R7/R8; both have Flu, so Flu is inferred.
+3.35. What are the two main attacks on k-anonymity?
+Answer: Homogeneity and background attacks.
+3.36. Can a larger k reduce these risks?
+Answer: It can reduce re-identification risk, but may require more generalisation and cause more information loss.
+3.37. Define l-diversity.
+Answer: Each QID group contains at least l well-represented/diverse sensitive values.
+3.38. What does l=3 mean?
+Answer: Each QID group should contain at least 3 diverse sensitive values.
+3.39. How does l-diversity improve k-anonymity?
+Answer: It adds sensitive-value diversity and addresses homogeneity/background weaknesses.
+3.40. Does l-diversity stop all inference?
+Answer: No. The lecture says it does not prevent probabilistic inference and is vulnerable to similarity/composition attacks.
+3.41. What are the two l-diversity attacks?
+Answer: Similarity and composition.
+3.42. Define similarity attack.
+Answer: Distinct sensitive values are semantically close, so the attacker can still infer an approximate sensitive category.
+3.43. What is semantic similarity?
+Answer: How similar or close the meanings of two values are.
+3.44. What is the Bob similarity example?
+Answer: Gastric ulcer, Gastritis and Stomach cancer are distinct but all stomach-related, so a stomach condition can be inferred.
+3.45. Define composition attack.
+Answer: Combining multiple anonymised releases reveals more information than each release separately.
+3.46. What is the hospital composition example?
+Answer: An attacker knowing a person visited two hospitals combines both anonymised datasets and infers/re-identifies sensitive attributes.
+3.47. Why does composition work in the lecture example?
+Answer: Sensitive attributes are disclosed exactly, allowing cross-release intersection/linkage.
+3.48. How does l-diversity compare with k-anonymity on privacy?
+Answer: Stronger privacy.
+3.49. How does l-diversity compare on information loss?
+Answer: Generally more information loss, especially with large l or small datasets.
+3.50. What kind of dataset best suits l-diversity?
+Answer: Large datasets with many semantically diverse sensitive values.
+3.51. Define t-closeness.
+Answer: Each QID group's sensitive-value distribution must remain close to the overall sensitive-value distribution within threshold t.
+3.52. What does t represent?
+Answer: A user-specified closeness/similarity threshold.
+3.53. What metric does the lecture use for closeness?
+Answer: Earth Mover's Distance (EMD).
+3.54. Define EMD using the lecture wording.
+Answer: A metric for semantic similarity; minimum amount of work required to transform one string/text into another.
+3.55. When does a dataset satisfy t-closeness?
+Answer: When every group's sensitive distribution is within threshold t of the full dataset distribution.
+3.56. Which earlier attacks does the lecture say t-closeness protects against?
+Answer: Homogeneity and background attacks; it also addresses semantic closeness, the key similarity limitation of l-diversity.
+3.57. What t value is reported in the lecture example?
+Answer: Approximately 0.278.
+3.58. What structural change is made in the t-closeness example?
+Answer: The l=3-diverse dataset with 3 QID groups is further anonymised into 2 groups.
+3.59. How does t-closeness affect utility in the example?
+Answer: More generalisation and information loss; age groups reduce from 3 to 2 and more ZIP digits are masked.
+3.60. Why is t-closeness hard to apply?
+Answer: It is difficult to make each class distribution close to the overall distribution while preserving useful detail.
+3.61. How does the privacy-utility trade-off compare for t-closeness?
+Answer: More difficult/challenging than for k-anonymity and l-diversity because stronger resistance generally requires more information loss.
+3.62. What dataset size is t-closeness better suited to?
+Answer: Large datasets, where stronger privacy can be achieved with less relative information loss.
+3.63. Compare k, l and t in one sentence.
+Answer: k hides identity among QID peers; l adds sensitive-value diversity; t additionally controls sensitive-value distributions relative to the whole dataset.
+Calculation and table-reading practice
+
+C1. Calculate H(X) for probabilities 0.5 and 0.5.
+Answer: 1.000 bit.
+C2. Calculate H(X) for 1.0 and 0.0.
+Answer: 0 bit.
+C3. Calculate H(X) for 0.8 and 0.2.
+Answer: ≈0.722 bits.
+C4. Calculate H(X) for 0.6 and 0.4.
+Answer: ≈0.971 bits.
+C5. Calculate Alejandra TM1 entropy from counts 3,6,1.
+Answer: ≈1.295 bits.
+C6. Calculate Alejandra TM2 entropy from counts 5,4,1.
+Answer: ≈1.361 bits.
+C7. Calculate TM3 entropy from printed pair counts 3,3,3,1.
+Answer: ≈1.895 bits.
+C8. In Peter/Pete/Smith, calculate H(X) for 30/20/50.
+Answer: 1.4855 bits.
+C9. For p360, what are conditional probabilities of Peter and Pete?
+Answer: 0.6 and 0.4.
+C10. What is H(X|Y=p360)?
+Answer: ≈0.971 bits.
+C11. What is H(X|Y=s530)?
+Answer: 0 bit.
+C12. What is overall H(X|Y) when p360 and s530 each occur with probability 0.5?
+Answer: 0.4855 bits.
+C13. What is IG?
+Answer: 1.0 bit.
+C14. What is RIG?
+Answer: 0.6732.
+C15. If the smallest QID equivalence class contains 4 records, what maximum k is guaranteed?
+Answer: k=4.
+C16. If every QID class has at least 3 distinct sensitive values, what l is guaranteed?
+Answer: At least l=3.
+C17. A QID class has 5 records but all have Cancer. What attack applies?
+Answer: Homogeneity attack.
+C18. A QID class has Cancer, Heart, Flu but outside knowledge removes Cancer and Heart. What attack applies?
+Answer: Background attack.
+C19. A QID class has Gastric ulcer, Gastritis and Stomach cancer. Which attack?
+Answer: Similarity attack.
+C20. Two anonymised hospital releases are intersected to identify a patient. Which attack?
+Answer: Composition attack.
+LECTURE EXAMPLE TABLES AND FIGURES
+
+Selected lecture pages containing the original example tables and calculations are reproduced here for reference.
+Topic 2 Part 2 - Alejandra Threat Model 1 calculation table.
+Topic 2 Part 2 - Alejandra Threat Model 2 calculation table.
+Topic 2 Part 2 - Alejandra Threat Model 3 calculation table.
+Topic 2 Part 3 - Peter/Pete/Smith original and de-identified datasets.
+Topic 2 Part 3 - H(X) calculation slide.
+Topic 2 Part 3 - conditional entropy calculation slide.
+Topic 2 Part 3 - IG and RIG calculation slide.
+Topic 3 Part 1 - original health dataset.
+Topic 3 Part 1 - k=3 anonymised health dataset.
+Topic 3 Part 1 - k=2 anonymised health dataset.
+Topic 3 Part 1 - external database / linkage discussion page.
+Topic 3 Part 2 - l=3 diversity example.
+Topic 3 Part 2 - l-diversity group details.
+Topic 3 Part 2 - similarity-attack example.
+Topic 3 Part 2 - t-closeness example (t≈0.278).
+GLOSSARY
+
+Term | Meaning | Term | Meaning
+Adversary | Person/group/organisation/government intending harm through cyber activity. | Aggregation | Publishing group statistics instead of individual records.
+Amplification attack | Link public data with anonymised data to gain new information. | Anonymity | An action/data cannot be linked to the real identity.
+Availability | Authorised users can access data/resources when required. | Background attack | Use outside knowledge to narrow candidates and infer a sensitive value.
+Binning | Replace detailed values with ranges/groups. | Composition attack | Combine multiple anonymised releases to infer more.
+Confidentiality | Only appropriately authorised people can access/disclose information. | Correlation | Relationship allowing one attribute to help infer another.
+Direct identifier (DID) | Value that directly/explicitly identifies a person. | Differencing attack | Compare results with/without a target to reveal target information.
+Earth Mover's Distance (EMD) | Lecture metric for semantic closeness; minimum work to transform one representation into another. | Entropy | Information-theory measure of uncertainty/new information, measured in bits.
+Equivalence class | Group of records sharing the same generalised QID values. | Generalisation | Replace precise QID values with broader/less specific values.
+Homogeneity attack | Sensitive values in a k-group lack diversity, revealing the target's value. | Information Gain (IG) | H(X)-H(X|Y); information about original X learned from de-identified Y.
+Indistinguishability | An individual/record cannot be singled out from others in released data. | Inference attack | Learn/predict sensitive information about an individual from data.
+Integrity | Data has not been improperly modified; remains correct/authentic/reliable. | k-anonymity | Every considered QID pattern is shared by at least k records.
+l-diversity | Every QID group contains at least l well-represented sensitive values. | Linkable token | PII-containing token usable to link a record to an individual.
+Man-in-the-middle | Attacker intercepts a connection between parties and can view/modify data. | Perturbation | Modify values using random values/noise.
+Probable privacy | Privacy protection without proof it always holds. | Provable privacy | Privacy guarantee supported by mathematical/theoretical proof.
+Quasi-identifier (QID) | Attribute not necessarily unique alone; combinations can identify. | Reconstruction attack | Rebuild original/detailed information from aggregate/synthetic/anonymised data.
+Re-identification | Identify an individual and learn more about them from data. | Relative Information Gain (RIG) | IG/H(X); normalised comparison scale.
+Similarity attack | Distinct sensitive values are semantically close, enabling approximate inference. | Social engineering | Tricking people into revealing information or taking maliciously useful actions.
+SQL injection | Malicious SQL inserted into application input so the database executes unintended commands. | Suppression | Remove/mask QID values to achieve anonymity.
+Synthetic data | Artificial data that mimics a real-world distribution. | t-closeness | Each group's sensitive-value distribution stays close to the overall distribution within threshold t.
+Threat model | Assumed adversary intent, capability and knowledge. | Uniformity | Consistency/similarity of one individual's values across events/time.
+Uniqueness | Distinguishability of an attribute value or combination from other records. |  | 
+
+Final check list
+
+CIA triad plus anonymity and indistinguishability definitions and preservation methods.
+IS component vulnerabilities, controls and case examples.
+Inference, amplification, differencing and reconstruction attacks.
+DID vs QID vs background knowledge and the ~87% QID fact.
+Uniqueness, uniformity, linkable tokens and correlation.
+Threat models and privacy spectrum.
+Entropy formula and all four binary probability examples.
+Alejandra TM1/TM2/TM3 counts, entropies and interpretation.
+H(X|Y), IG and RIG; Peter/Pete/Smith values.
+Five basic de-identification techniques.
+k-anonymity definition, mechanisms, examples and attacks.
+l-diversity definition, examples, similarity/composition attacks.
+t-closeness definition, EMD, t≈0.278 example and privacy-utility limitations.

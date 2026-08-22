@@ -1,0 +1,256 @@
+Answer: Lack of cybersecurity awareness, susceptibility to phishing/social engineering, weak passwords, malicious links and insider threats. Controls: education, strong authentication, technical controls and vigilant behaviour.
+5. Which of these data are sensitive/confidential: social-networking data, location data, transaction data, web-search history?
+Answer: All four.
+6. Which techniques preserve integrity: hashing, encryption, logs, backup?
+Answer: Hashing and logs.
+7. Given p(apple)=0.6 and p(orange)=0.4, what is entropy?
+Answer: H(X)=-0.6log2(0.6)-0.4log2(0.4)=approximately 0.971 bits.
+8. With an increasing number of quasi-identifiers, which k-anonymity statement is correct?
+Answer: It becomes more difficult to achieve k-anonymity with a larger k while keeping utility loss small. More QIDs make matching patterns more specific.
+9. What can an adversary learn by linking the original health dataset with the external voter-registration dataset?
+Answer: Exact QID matches can re-identify records. The lecture links Alex/G100 to R11 and cancer; Bob/G123 can also be uniquely linked in the original data.
+10. Does l-diversity provide sufficient privacy against every inference attack?
+Answer: No. The lecture explicitly states it still does not prevent probabilistic inference attacks and is vulnerable to similarity and composition attacks.
+11. Which de-identification technique is vulnerable to homogeneity attacks?
+Answer: k-anonymity.
+PRACTICE QUESTIONS AND ANSWERS
+
+Topic 1 practice questions
+
+1.1. What is data security?
+Answer: Protection of data from being stolen, compromised or corrupted, using controls such as encryption, firewalls, access controls, authentication and updates.
+1.2. What is information privacy?
+Answer: Control over who can access personal information and how it is collected, used and disclosed.
+1.3. Why should data collection be transparent and consensual?
+Answer: People should know how and why their data is collected and agree to appropriate collection/use.
+1.4. Why is unnecessary data collection/retention a privacy risk?
+Answer: Holding unnecessary personal data increases exposure and can have serious consequences if misused or breached.
+1.5. Name the CIA triad.
+Answer: Confidentiality, Integrity, Availability.
+1.6. Define confidentiality.
+Answer: Information is disclosed appropriately and only authorised people can access it.
+1.7. Define integrity.
+Answer: Data has not been improperly modified and can be trusted as correct, authentic and reliable.
+1.8. Define availability.
+Answer: Authorised users have timely and reliable access to data/resources when required.
+1.9. Define anonymity.
+Answer: An action/data cannot be linked to the real identity.
+1.10. Define indistinguishability.
+Answer: A person/entity cannot be distinguished from the population/sample and identified.
+1.11. How does anonymity differ from indistinguishability?
+Answer: Anonymity prevents linking identity to action/data; indistinguishability prevents singling one person/record out from others.
+1.12. Which methods preserve confidentiality in the course?
+Answer: Encryption and access controls.
+1.13. Which methods preserve integrity?
+Answer: Hashing and logs.
+1.14. Which method preserves availability?
+Answer: Backups.
+1.15. Which methods preserve anonymity/indistinguishability?
+Answer: De-identification techniques such as k-anonymity and differential privacy.
+1.16. What is hashing?
+Answer: A cryptographic transformation into a hash/message digest; even small input changes can produce a different digest.
+1.17. How can hashing detect modification?
+Answer: Compare current and previous digests; a different digest indicates changed content.
+1.18. What is a firewall?
+Answer: A network security device that separates a private internal network from the Internet and permits/blocks traffic according to policy.
+1.19. What is data at rest?
+Answer: Stored data, e.g. in a database.
+1.20. What is data in transit?
+Answer: Data moving over a network/Internet.
+1.21. What is data in use?
+Answer: Data being processed by software or a device.
+1.22. What is OS/service exploitation?
+Answer: Use of a known vulnerability in an OS/program/service to gain unauthorised access/control.
+1.23. How can OS/service exploitation be reduced?
+Answer: Keep OS/software updated and use a firewall.
+1.24. What is a man-in-the-middle attack?
+Answer: An attacker positions between communicating parties and can view and possibly modify transmitted information.
+1.25. How does the lecture reduce Wi-Fi MITM risk?
+Answer: Encrypt Wi-Fi and allow only trusted/authorised users.
+1.26. What is SQL injection?
+Answer: Insertion of malicious SQL through application input so the database executes unintended commands.
+1.27. What can SQL injection do?
+Answer: Modify data, delete data or retrieve sensitive data.
+1.28. Why are databases attractive attack targets?
+Answer: They store valuable sensitive/confidential information that can be monetised or used for fraud.
+1.29. List database protections named in the lecture.
+Answer: Access controls, encryption, monitoring, secure transfer, strong privacy/de-identification for sharing.
+1.30. List computer protections named in the lecture.
+Answer: Updated antivirus, firewall, OS/software updates and backup strategy.
+1.31. Why are IoT devices vulnerable?
+Answer: Many have inadequate security, default passwords, weak software/communications and are increasingly numerous/connected.
+1.32. List IoT protections from the lecture.
+Answer: Update software, use firewalls, change default passwords, securely store credentials/data, use secure/encrypted communications.
+1.33. What is social engineering?
+Answer: Tricking a person into divulging information or taking actions that enable malicious activity.
+1.34. Why are employees a major cyber vulnerability?
+Answer: Awareness gaps, phishing/social engineering, weak passwords, malicious links and insider threats.
+1.35. What is an insider threat?
+Answer: Risk from a trusted person with legitimate access who intentionally or unintentionally harms the organisation.
+1.36. Summarise the Optus breach cause.
+Answer: An insecure publicly exposed API that did not require authentication.
+1.37. What scale of Optus exposure is stated in the lecture?
+Answer: More than 10 million customer accounts; 10,000 customers' data published on the dark web.
+1.38. Summarise the Medibank breach cause.
+Answer: Stolen employee credentials were used to authenticate and access the database.
+1.39. What scale of Medibank exposure is stated?
+Answer: 200GB of data; up to 9.7 million customers.
+1.40. What did the WannaCry attackers exploit?
+Answer: A Microsoft Windows vulnerability.
+1.41. What did WannaCry do to files?
+Answer: Hijacked/encrypted them and demanded $300 bitcoin ransom for access/key.
+1.42. How did the casino fish-tank attack begin?
+Answer: An Internet-connected thermometer was used as the entry point, then the network was scanned and 10GB was stolen.
+1.43. What makes Edward Snowden a course example of insider risk?
+Answer: He was a trusted NSA contractor/system administrator with top-secret access who downloaded and released classified files.
+1.44. Define re-identification.
+Answer: Identifying an individual and learning more about that individual from the data.
+1.45. Which properties are most associated with re-identification loss in the lecture?
+Answer: Anonymity, indistinguishability and confidentiality.
+1.46. Name the four re-identification attack categories.
+Answer: Inference, amplification, differencing, reconstruction.
+1.47. Define inference attack.
+Answer: Learning or predicting information about an individual from data.
+1.48. Define amplification attack.
+Answer: Linking public data with anonymised data to gain new information.
+1.49. Define differencing attack.
+Answer: Comparing data/query results to isolate the difference caused by a target and reveal target information.
+1.50. Define reconstruction attack.
+Answer: Reconstructing original/detailed information from synthetic, aggregate or anonymised data.
+1.51. What auxiliary knowledge types are listed?
+Answer: Unique/direct identifiers, quasi-identifiers and background knowledge.
+1.52. What is a direct/unique identifier?
+Answer: A value unique to an individual that can directly identify them, e.g. email/phone/medical record number.
+1.53. What is a quasi-identifier?
+Answer: A value not necessarily unique alone but correlated with an individual; combinations can uniquely identify.
+1.54. What is background knowledge?
+Answer: Information the adversary already knows about the target.
+1.55. What is an adversary?
+Answer: A person, group, organisation or government intending harm through cyber activities.
+1.56. What QID combination is associated with the ~87% Sweeney result?
+Answer: Gender + date of birth + 5-digit ZIP code.
+1.57. Why did AOL anonymised search data still allow re-identification?
+Answer: Searches themselves contained identifying/personal details; once a person was distinguished, other queries could be linked/inferred.
+1.58. What is the relationship between a DoS attack and availability?
+Answer: DoS overwhelms a service so legitimate users cannot access it, directly violating availability.
+1.59. What are the key GitHub 2018 DDoS numbers?
+Answer: Peak 1.35 Tbps; 126.9 million packets/s; traffic from over 1,000 autonomous systems.
+Topic 2 practice questions
+
+2.1. Name the four key elements of data privacy risk in Topic 2.
+Answer: Uniqueness, uniformity, linkable tokens, correlation.
+2.2. Define uniqueness.
+Answer: Likelihood that an attribute value or combination is distinguishable from other records.
+2.3. Why is “Jenjira” riskier than “John” in the example?
+Answer: Jenjira is rarer/more unique, so it is easier to distinguish and re-identify.
+2.4. How is k-anonymity related to uniqueness?
+Answer: It reduces uniqueness by requiring each considered QID pattern to be shared by at least k records.
+2.5. What does k=5 mean in the Topic 2 example?
+Answer: Each record must be indistinguishable from at least 4 others with respect to the considered attributes.
+2.6. Define uniformity.
+Answer: Similarity/consistency of an individual's attribute values across events or points in time.
+2.7. Why can high uniformity increase inference confidence?
+Answer: Repeated consistent values strengthen the association between the value/pattern and the same individual.
+2.8. What is the uniformity search example?
+Answer: Repeated consistent searches about a specific medical illness can allow confident re-identification/inference.
+2.9. How is l-diversity presented as the opposite of uniformity?
+Answer: It requires multiple/diverse sensitive values rather than one repeated sensitive value in a QID group.
+2.10. Define linkable tokens.
+Answer: Tokens containing PII that can directly or indirectly link to an individual.
+2.11. Give the free-text linkable-token example.
+Answer: A student email address embedded in anonymised free-text feedback.
+2.12. Define correlation.
+Answer: The relationship by which one known/guessed attribute can help infer another; variables change in relation to each other.
+2.13. Define positive correlation.
+Answer: Variables increase/decrease together.
+2.14. Define negative correlation.
+Answer: One variable increases while the other decreases.
+2.15. Give the education correlation example.
+Answer: Part-time job status is correlated with late-assignment penalties; knowing job status may help infer penalty.
+2.16. How can correlation enable cross-dataset re-identification?
+Answer: Strongly correlated demographic and browsing patterns can link records across datasets even without direct identifiers in one dataset.
+2.17. What four risk elements can anonymisation/de-identification target?
+Answer: Uniqueness, uniformity, linkable tokens and correlation.
+2.18. Define threat model.
+Answer: Assumptions about adversary intent, capabilities and knowledge used to evaluate privacy risk and design protections.
+2.19. What does the single-attribute threat model assume?
+Answer: The adversary knows one attribute value such as postcode.
+2.20. What does the combination-of-attributes threat model assume?
+Answer: The adversary knows multiple values such as postcode and medical code.
+2.21. Why is the combination model generally riskier?
+Answer: More prior knowledge makes records/combinations more unique and gives the adversary more information.
+2.22. What does the direct-identifier threat model assume?
+Answer: The adversary can extract a direct identifier from an attribute, such as a phone number in clinical notes, then link externally.
+2.23. What is absolute privacy on the privacy spectrum?
+Answer: 0.0: adversary cannot re-identify or infer any information.
+2.24. What does 0.25 mean?
+Answer: Low suspicion / low confidence of exposure.
+2.25. What does 0.50 mean?
+Answer: Moderate suspicion / moderate confidence.
+2.26. What does 0.75 mean?
+Answer: High suspicion/high confidence, but exposure is not proved.
+2.27. What does 1.0 mean?
+Answer: Provably exposed: adversary can provably re-identify or infer information.
+2.28. What is entropy measured in?
+Answer: Bits.
+2.29. What does entropy measure?
+Answer: Uncertainty/randomness and the amount of new information provided by a variable.
+2.30. What is the maximum entropy of an equally likely binary variable?
+Answer: 1 bit.
+2.31. What is entropy when the binary outcome is certain?
+Answer: 0 bits.
+2.32. What is H for probabilities 0.8 and 0.2?
+Answer: Approximately 0.722 bits.
+2.33. What is H for probabilities 0.6 and 0.4?
+Answer: Approximately 0.971 bits.
+2.34. State Shannon entropy formula.
+Answer: H(X) = -Σ p(x) log2 p(x).
+2.35. What are the postcode counts in Alejandra TM1?
+Answer: 2015=3, 2016=6, 2017=1.
+2.36. What is Alejandra TM1 entropy?
+Answer: Approximately 1.295 bits.
+2.37. What are the medical-code counts in Alejandra TM2?
+Answer: A=5, B=4, C=1.
+2.38. What is Alejandra TM2 entropy?
+Answer: Approximately 1.361 bits.
+2.39. What pair counts are printed for TM3?
+Answer: (2015,A)=3, (2016,A)=3, (2016,B)=3, (2017,C)=1.
+2.40. What is TM3 entropy using the printed pair counts?
+Answer: Approximately 1.895 bits.
+2.41. Which Alejandra threat model has the highest entropy/risk in the lecture?
+Answer: Threat Model 3.
+2.42. Why does TM3 have the highest risk?
+Answer: The adversary knows two attributes; combined patterns are more unique and provide more information.
+2.43. Why does the lecture say TM1 has slightly better privacy than TM2?
+Answer: TM2 medical-code probabilities are more evenly distributed than TM1 postcodes, giving TM2 greater entropy in the course interpretation.
+2.44. How can entropy be used professionally?
+Answer: Quantify, assess and compare privacy risks so appropriate mitigation/anonymisation can be selected.
+2.45. How can risk reduction after de-identification be assessed?
+Answer: Compare entropy before/after, or calculate IG and RIG.
+2.46. What is X in IG/RIG notation?
+Answer: Original dataset before de-identification.
+2.47. What is Y in IG/RIG notation?
+Answer: Perturbed/anonymised/de-identified version of the dataset.
+2.48. What does Information Gain measure?
+Answer: How much information about original X can be learned when Y is known.
+2.49. What does a lower IG mean?
+Answer: The original dataset is harder for an adversary to infer from the de-identified dataset.
+2.50. What does RIG do?
+Answer: Normalises IG relative to H(X) on a 0-1 scale for comparison.
+2.51. State the IG formula.
+Answer: IG = H(X) - H(X|Y).
+2.52. State the RIG formula.
+Answer: RIG = IG / H(X).
+2.53. What are the original Peter/Pete/Smith counts?
+Answer: Peter=30, Pete=20, Smith=50.
+2.54. How are values encoded in the de-identified example?
+Answer: Peter and Pete -> p360; Smith -> s530.
+2.55. What is H(X) in the Peter/Pete/Smith example?
+Answer: 1.4855 bits.
+2.56. What is H(X|Y) in that example?
+Answer: 0.4855 bits.
+2.57. What is IG?
+Answer: 1.0 bit.
+2.58. What is RIG?
+Answer: 0.6732, approximately 67%.
+2.59. How does the lecture interpret RIG 0.6732?
