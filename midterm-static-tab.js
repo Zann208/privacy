@@ -12,7 +12,18 @@ if(!btn){
 var main=document.getElementById('main'),sec=document.getElementById('midterm');
 if(!sec&&main){
   sec=document.createElement('section');sec.className='tab';sec.id='midterm';
-  sec.innerHTML='<iframe title="Privacy Midterm Master Binder" src="./midterm-pack.html?v=20260821g" style="display:block;width:100%;height:calc(100vh - 50px);min-height:720px;border:0;background:var(--bg)"></iframe>';
+  var frame=document.createElement('iframe');
+  frame.title='Privacy Technologies Midterm Notes';
+  frame.src='./midterm-pack.html?v=20260822openbook';
+  frame.style.cssText='display:block;width:100%;height:calc(100vh - 50px);min-height:720px;border:0;background:var(--bg)';
+  frame.addEventListener('load',function(){
+    try{
+      var d=frame.contentDocument||frame.contentWindow.document;
+      if(!d||d.getElementById('privOpenBookAddon'))return;
+      var s=d.createElement('script');s.id='privOpenBookAddon';s.src='./midterm-downloads.js?v=20260822openbook';s.async=false;(d.body||d.documentElement).appendChild(s);
+    }catch(e){console.error(e);}
+  });
+  sec.appendChild(frame);
   var author=document.getElementById('author');if(author)main.insertBefore(sec,author);else main.appendChild(sec);
 }
 })();
