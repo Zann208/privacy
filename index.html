@@ -14,74 +14,26 @@ a{color:#a78bfa}
 </head>
 <body>
 <div id="boot">LOADING PRIVACY CONSOLE…</div>
-<iframe id="app" title="Privacy Technologies Study Console" src="./legacy.html?v=20260821f"></iframe>
+<iframe id="app" title="Privacy Technologies Study Console" src="./legacy.html?v=20260822openbook"></iframe>
 <script>
 (function(){
   var frame=document.getElementById('app');
   var boot=document.getElementById('boot');
-
-  function inject(doc,src){
-    return new Promise(function(resolve,reject){
-      var s=doc.createElement('script');
-      s.src=src;
-      s.async=false;
-      s.onload=resolve;
-      s.onerror=function(){reject(new Error('Failed to load '+src));};
-      (doc.body||doc.documentElement).appendChild(s);
-    });
-  }
-
+  function inject(doc,src){return new Promise(function(resolve,reject){var s=doc.createElement('script');s.src=src;s.async=false;s.onload=resolve;s.onerror=function(){reject(new Error('Failed to load '+src));};(doc.body||doc.documentElement).appendChild(s);});}
   function activateValidTab(win,doc){
     var saved='home';
-    try{
-      if(typeof win.LSget==='function')saved=win.LSget('privTab','home')||'home';
-      else saved=win.localStorage.getItem('privTab')||'home';
-    }catch(e){saved='home';}
-
-    var target=doc.getElementById(saved);
-    if(!target || !target.classList.contains('tab')) saved='home';
-
-    try{
-      if(typeof win.go==='function')win.go(saved,true);
-      else{
-        doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id===saved);});
-        doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===saved);});
-      }
-    }catch(e){
-      saved='home';
-      doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id==='home');});
-      doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab==='home');});
-    }
-
-    if(!doc.querySelector('section.tab.on')){
-      var home=doc.getElementById('home');if(home)home.classList.add('on');
-      var hb=doc.querySelector('.tabbtn[data-tab="home"]');if(hb)hb.classList.add('on');
-    }
+    try{if(typeof win.LSget==='function')saved=win.LSget('privTab','home')||'home';else saved=win.localStorage.getItem('privTab')||'home';}catch(e){saved='home';}
+    var target=doc.getElementById(saved);if(!target||!target.classList.contains('tab'))saved='home';
+    try{if(typeof win.go==='function')win.go(saved,true);else{doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id===saved);});doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===saved);});}}
+    catch(e){saved='home';doc.querySelectorAll('section.tab').forEach(function(s){s.classList.toggle('on',s.id==='home');});doc.querySelectorAll('.tabbtn[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab==='home');});}
+    if(!doc.querySelector('section.tab.on')){var home=doc.getElementById('home');if(home)home.classList.add('on');var hb=doc.querySelector('.tabbtn[data-tab="home"]');if(hb)hb.classList.add('on');}
   }
-
   frame.addEventListener('load',function(){
-    var doc,win;
-    try{
-      win=frame.contentWindow;
-      doc=frame.contentDocument||win.document;
-    }catch(e){
-      boot.innerHTML='Could not access the Privacy console document.<br><small>'+String(e)+'</small>';
-      return;
-    }
-
-    inject(doc,'./topic3.js?v=20260821f')
-      .then(function(){return inject(doc,'./midterm-static-tab.js?v=20260821f');})
-      .then(function(){
-        activateValidTab(win,doc);
-        frame.style.visibility='visible';
-        boot.style.display='none';
-      })
-      .catch(function(err){
-        try{activateValidTab(win,doc);}catch(e){}
-        frame.style.visibility='visible';
-        boot.style.display='none';
-        console.error(err);
-      });
+    var doc,win;try{win=frame.contentWindow;doc=frame.contentDocument||win.document;}catch(e){boot.innerHTML='Could not access the Privacy console document.<br><small>'+String(e)+'</small>';return;}
+    inject(doc,'./topic3.js?v=20260822openbook')
+      .then(function(){return inject(doc,'./midterm-static-tab.js?v=20260822openbook');})
+      .then(function(){activateValidTab(win,doc);frame.style.visibility='visible';boot.style.display='none';})
+      .catch(function(err){try{activateValidTab(win,doc);}catch(e){}frame.style.visibility='visible';boot.style.display='none';console.error(err);});
   });
 })();
 </script>
