@@ -14,16 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build self-contained entry page
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
           html = Path('legacy.html').read_text(encoding='utf-8')
           scripts = '''
-<script src="./topic3.js?v=20260822openbook"></script>
-<script src="./midterm-static-tab.js?v=20260822openbook"></script>
-'''
+          <script src="./topic3.js?v=20260822openbook"></script>
+          <script src="./midterm-static-tab.js?v=20260822openbook"></script>
+          '''
           html = html.replace('</body>', scripts + '\n</body>')
           Path('index.html').write_text(html, encoding='utf-8')
+          PY
       - name: Add static hosting marker
         run: touch .nojekyll
       - name: Commit stabilized entry
