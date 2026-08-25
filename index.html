@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>PRIV // 269497 Privacy Console</title>
+<title>PRIV Privacy Console</title>
 <meta name="theme-color" content="#0a0b12">
 <style>
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0b12;color:#e9ecf6;font:14px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
@@ -32,6 +32,7 @@ a{color:#a78bfa}
     var doc,win;try{win=frame.contentWindow;doc=frame.contentDocument||win.document;}catch(e){boot.innerHTML='Could not access the Privacy console document.<br><small>'+String(e)+'</small>';return;}
     inject(doc,'./topic3.js?v=20260822openbook')
       .then(function(){return inject(doc,'./midterm-static-tab.js?v=20260822openbook');})
+      .then(function(){return inject(doc,'./course-code-privacy.js?v=20260825');})
       .then(function(){activateValidTab(win,doc);frame.style.visibility='visible';boot.style.display='none';})
       .catch(function(err){try{activateValidTab(win,doc);}catch(e){}frame.style.visibility='visible';boot.style.display='none';console.error(err);});
   });
