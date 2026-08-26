@@ -14,8 +14,11 @@ table{width:100%;border-collapse:collapse;margin-top:9px;font-size:13.5px}th,td{
 @media(max-width:760px){.wrap{padding:18px 13px 70px}.tools{position:static}.tools input{order:-1;width:100%}.two{grid-template-columns:1fr}h2{scroll-margin-top:12px}}
 @media print{html,body{background:#fff!important;color:#000!important;font-size:10.5pt}.wrap{max-width:none;padding:0}.tools{display:none!important}.card,.scope,.sourceNote,.answer,.trap,.note,.prof,.formula{background:#fff!important;color:#000!important;border-color:#aaa!important}.card *,table,th,td,.scope *,.sourceNote *{color:#000!important}.eyebrow,.key{color:#000!important}.pagebreak{break-before:page}h2{break-after:avoid}.card{break-inside:avoid}.hero{break-after:avoid}.navgrid button{background:#fff!important;color:#000!important;border-color:#aaa!important}.hidden{display:block!important}}
 </style>
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v1/study-system.css">
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v1/legacy-console.css">
+<link rel="stylesheet" href="./study-console-adapter.css">
 </head>
-<body>
+<body data-study-console="privacy" data-console-id="privacy" data-console-name="Privacy & Information Security">
 <div class="wrap">
 <header class="hero">
 <div class="eyebrow">// ISNE 269497 · OPEN-BOOK MIDTERM BINDER</div>
@@ -220,5 +223,6 @@ function filter(){var q=(s.value||'').trim().toLowerCase(),n=0;cards.forEach(fun
 s.addEventListener('input',filter);document.getElementById('clear').addEventListener('click',function(){s.value='';filter();s.focus();});document.getElementById('print').addEventListener('click',function(){window.print();});
 })();
 </script>
+<script src="https://zann208.github.io/study/shared/v1/study-system.js"></script>
 </body>
 </html>
