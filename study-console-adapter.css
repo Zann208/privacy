@@ -1,8 +1,14 @@
 body[data-study-console="privacy"]{background-image:none!important}
 body[data-study-console="privacy"] .shell{background:transparent!important}
-body[data-study-console="privacy"] #main{max-width:1120px!important;margin-inline:auto!important}
+body[data-study-console="privacy"] #main{max-width:1200px!important;margin-inline:auto!important}
 body[data-study-console="privacy"] .lesson .top,body[data-study-console="privacy"] .card .top{background:var(--sc-surface-2)!important;border-color:var(--sc-line)!important}
 body[data-study-console="privacy"] .formula{background:var(--sc-surface-2)!important;border-color:var(--sc-line)!important}
 body[data-study-console="privacy"] .note,body[data-study-console="privacy"] .tip{box-shadow:none!important;border-color:var(--sc-line)!important}
 body[data-study-console="privacy"] #pal .palbox{background:var(--sc-surface)!important;border-color:var(--sc-line)!important}
 @media(max-width:760px){body[data-study-console="privacy"] #main{width:100%!important;padding-inline:12px!important}}
+
+/* One horizontal local navigation row, beneath the shared header. */
+body[data-study-console="privacy"] .navin{overflow-x:auto;scrollbar-width:thin;flex-wrap:nowrap}
+
+body[data-study-console="privacy"] .tools{top:var(--sc-header-h);background:var(--sc-surface)}
+body[data-study-console="privacy"] .tools button{min-height:44px;font:600 .875rem var(--sc-sans)}

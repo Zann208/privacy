@@ -1,37 +1,29 @@
-name: Flatten Privacy console
+name: Console source validation
 
 on:
   push:
     paths:
+      - 'index.html'
+      - 'study-console-adapter.css'
       - '.github/workflows/flatten-console.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  flatten:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build self-contained entry page
-        shell: bash
+      - name: Check the maintained entry page
         run: |
-          python - <<'PY'
+          test -f index.html
+          test -f study-console-adapter.css
+          test -f .nojekyll
+          python - <<'PYCODE'
           from pathlib import Path
-          html = Path('legacy.html').read_text(encoding='utf-8')
-          scripts = '''
-          <script src="./topic3.js?v=20260822openbook"></script>
-          <script src="./midterm-static-tab.js?v=20260822openbook"></script>
-          '''
-          html = html.replace('</body>', scripts + '\n</body>')
-          Path('index.html').write_text(html, encoding='utf-8')
-          PY
-      - name: Add static hosting marker
-        run: touch .nojekyll
-      - name: Commit stabilized entry
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html .nojekyll
-          git commit -m "Stabilize Privacy self-contained entry" || exit 0
-          git push
+          html = Path('index.html').read_text()
+          for asset in ('theme-init.js', 'study-system.css', 'study-system.js'):
+              assert 'shared/v2/' + asset in html, asset
+          PYCODE
