@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://zann208.github.io/study/shared/v2/theme-init.js"></script>
-<title>PRIV // 269497 Privacy Console</title>
-<meta name="description" content="Offline study console for ISNE 269497 The Cult of Privacy Technologies — threats, risk quantification, real breach case files, flashcards and a mock exam.">
+<title>PRIV // Privacy Console</title>
+<meta name="description" content="Offline study console for The Cult of Privacy Technologies — threats, risk quantification, real breach case files, flashcards and a mock exam.">
 <meta name="theme-color" content="#0a0b12">
 <style>
 :root{
@@ -316,10 +316,10 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
   color:var(--faint);min-width:118px;padding-top:3px}
 @media(max-width:560px){.kv{flex-direction:column;gap:2px}}
 </style>
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/study-system.css?v=20260909-nav2">
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/study-system.css?v=20260910-layout2">
 <link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/legacy-console.css">
 <link rel="stylesheet" href="./study-console-adapter.css">
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/reading.css?v=20260910-reading1">
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/reading.css?v=20260910-layout2">
 </head>
 <body data-study-console="privacy" data-console-id="privacy" data-console-name="Privacy & Information Security">
 <a class="skip" href="#main">Skip to content</a>
@@ -331,17 +331,17 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
   <div id="csWrap">
     <button id="logoBtn" aria-haspopup="true" aria-expanded="false" title="Switch course">
       <span class="logomk"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0a0b12" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2.2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></span>
-      <span class="logotx"><b>PRIV<i>://269497</i></b><span>by zann</span></span>
+      <span class="logotx"><b>PRIV<i>://STUDY</i></b><span>study console</span></span>
       <span class="caret">▼</span>
     </button>
     <div id="csPop" role="menu">
       <div class="cshead">// switch course</div>
       <a class="csrow" href="https://zann208.github.io/study/"><span class="csmk" style="color:var(--gr)">ALL</span><span style="flex:1"><b>All courses</b><span>semester overview</span></span><span class="csgo">HOME ↗</span></a>
-      <a class="csrow" href="https://zann208.github.io/netdes/"><span class="csmk" style="color:#22d3ee">NET</span><span style="flex:1"><b>Network Design</b><span>261434 · CPE434</span></span><span class="csgo">OPEN ↗</span></a>
-      <a class="csrow" href="https://zann208.github.io/wnet/"><span class="csmk" style="color:#38bdf8">WLN</span><span style="flex:1"><b>Wireless Networks</b><span>269430</span></span><span class="csgo">OPEN ↗</span></a>
-      <a class="csrow" href="https://zann208.github.io/algo/"><span class="csmk" style="color:#f0b429">ALG</span><span style="flex:1"><b>Algorithms for iSNE</b><span>269202 · ISNE</span></span><span class="csgo">OPEN ↗</span></a>
-      <a class="csrow here" id="csSelf" href="#"><span class="csmk" style="color:var(--vi)">PRV</span><span style="flex:1"><b>Privacy Technologies</b><span>269497 · ISNE</span></span><span class="csgo">HERE</span></a>
-      <a class="csrow" href="https://zann208.github.io/os/"><span class="csmk" style="color:#34d399">OS</span><span style="flex:1"><b>Operating Systems</b><span>261305</span></span><span class="csgo">OPEN &#8599;</span></a>
+      <a class="csrow" href="https://zann208.github.io/netdes/"><span class="csmk" style="color:#22d3ee">NET</span><span style="flex:1"><b>Network Design</b><span>Switching &amp; routing</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow" href="https://zann208.github.io/wnet/"><span class="csmk" style="color:#38bdf8">WLN</span><span style="flex:1"><b>Wireless Networks</b><span>Wireless engineering</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow" href="https://zann208.github.io/algo/"><span class="csmk" style="color:#f0b429">ALG</span><span style="flex:1"><b>Algorithms for iSNE</b><span>Algorithms &amp; data structures</span></span><span class="csgo">OPEN ↗</span></a>
+      <a class="csrow here" id="csSelf" href="#"><span class="csmk" style="color:var(--vi)">PRV</span><span style="flex:1"><b>Privacy Technologies</b><span>Privacy &amp; security</span></span><span class="csgo">HERE</span></a>
+      <a class="csrow" href="https://zann208.github.io/os/"><span class="csmk" style="color:#34d399">OS</span><span style="flex:1"><b>Operating Systems</b><span>Systems &amp; scheduling</span></span><span class="csgo">OPEN &#8599;</span></a>
       <div class="csfoot"><a href="https://zann208.github.io" target="_blank" rel="noopener">portfolio ↗</a><a href="https://github.com/Zann208" target="_blank" rel="noopener">github ↗</a></div>
     </div>
   </div>
@@ -352,7 +352,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
   <button class="tabbtn" data-tab="cases">CASES</button>
   <button class="tabbtn" data-tab="drills">DRILLS</button>
   <button class="tabbtn" data-tab="cheat">CHEATSHEET</button>
-  <button class="tabbtn" data-tab="author">AUTHOR</button>
+  <button class="tabbtn" data-tab="author">ABOUT</button>
   <span class="navsp"></span>
   <button class="iconbtn" id="searchBtn"><span>⌕</span><span class="stxt">Search</span><kbd>⌘K</kbd></button>
   <button class="iconbtn" id="themeBtn" title="Light / dark">◑</button>
@@ -373,7 +373,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 <!-- ============ HOME ============ -->
 <section class="tab on" id="home"><div class="wrap">
   <h1><span class="pre">// THE CULT OF PRIVACY TECHNOLOGIES</span>Two topics. Everything you need.</h1>
-  <p class="lede">ISNE <b>269497</b> · Semester 1, 2026 · Chiang Mai University. What can go wrong with personal data, and how to put a number on it. Written in plain words, with the real breaches the exam keeps coming back to.</p>
+  <p class="lede">Semester 1, 2026 · Chiang Mai University. What can go wrong with personal data, and how to put a number on it. Written in plain words, with the real breaches the exam keeps coming back to.</p>
   <div class="chiprow">
     <span class="chip c1">Topic 1 · Threats, Risks &amp; Vulnerabilities</span>
     <span class="chip c2">Topic 2 · Privacy Risk Quantification</span>
@@ -420,7 +420,6 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     <div class="card">
       <h3 style="margin-bottom:10px;">Course facts</h3>
       <ul class="clean" style="font-size:14.5px;">
-        <li>Instructor: Asst. Prof. Jenjira Jaimunk, PhD</li>
         <li>Class: Tue &amp; Fri 13:00–14:30, Room 601 Engineering Bldg.</li>
         <li>Office hours: Monday 09:00–12:00</li>
         <li>Grades: Homework &amp; quizzes <b>30%</b> · Midterm <b>35%</b> · Final <b>35%</b></li>
@@ -563,7 +562,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
       <div class="body">
         <table>
           <tr><th>Element</th><th>Simple meaning</th><th>Example</th></tr>
-          <tr><td><b>Uniqueness</b></td><td>Rare values stand out → easy to re-identify.</td><td>"Jenjira" is rarer than "John" → higher risk.</td></tr>
+          <tr><td><b>Uniqueness</b></td><td>Rare values stand out → easy to re-identify.</td><td>"RareName" is rarer than "John" → higher risk.</td></tr>
           <tr><td><b>Uniformity</b></td><td>The same value repeating for one person across time → easy to infer.</td><td>Someone keeps searching the same illness → the illness is clearly theirs.</td></tr>
           <tr><td><b>Linkable tokens</b></td><td>Values holding personal info (PII) that can link to a person.</td><td>An email address left inside free-text feedback.</td></tr>
           <tr><td><b>Correlation</b></td><td>Knowing one attribute lets you guess another. Also links records <b>across datasets</b>.</td><td>Part-time job ↔ late-submission penalty.</td></tr>
@@ -580,7 +579,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
           <tr><td><b>k-anonymity</b></td><td>Uniqueness</td><td>Every value (or combo of values) must appear in at least <b>k</b> records → each record hides among at least <b>k−1</b> look-alikes.</td></tr>
           <tr><td><b>l-diversity</b></td><td>Uniformity</td><td>Each group of similar records must hold at least <b>l different</b> sensitive values.</td></tr>
         </table>
-        <p><b>k example:</b> k = 5 → at least 5 records share the value "Jenjira", so every record looks like at least 4 others. Harder (not impossible!) to single anyone out.</p>
+        <p><b>k example:</b> k = 5 → at least 5 records share the value "RareName", so every record looks like at least 4 others. Harder (not impossible!) to single anyone out.</p>
         <p><b>l example:</b> a patient has 10 visits all saying "chest pain". With l = 3, the records must be changed so the group shows at least 3 values, e.g. "chest pain", "headache", "fever".</p>
       </div>
     </details>
@@ -1095,7 +1094,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     <h3><span class="badge b2">T2</span> 4 risky elements → defence models</h3>
     <div class="card">
       <table>
-        <tr><td><b>Uniqueness</b></td><td>Rare values stand out (Jenjira vs John)</td><td>→ <b>k-anonymity</b>: each value combo shared by ≥ k records</td></tr>
+        <tr><td><b>Uniqueness</b></td><td>Rare values stand out (RareName vs John)</td><td>→ <b>k-anonymity</b>: each value combo shared by ≥ k records</td></tr>
         <tr><td><b>Uniformity</b></td><td>Repeated values reveal a person</td><td>→ <b>l-diversity</b>: ≥ l different sensitive values per group</td></tr>
         <tr><td><b>Linkable tokens</b></td><td>PII hiding in the data (emails in free text)</td><td>→ remove/mask direct identifiers</td></tr>
         <tr><td><b>Correlation</b></td><td>One attribute predicts another; links datasets</td><td>→ break correlations, perturb values</td></tr>
@@ -1156,25 +1155,14 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ AUTHOR ============ -->
 <section class="tab" id="author"><div class="wrap">
-  <h1><span class="pre">// WHO BUILT THIS</span>Zann</h1>
+  <h1><span class="pre">// ABOUT</span>Study Console</h1>
   <p class="lede">One of four course consoles I built for this semester. Same shell, same keyboard shortcuts, same offline-first rule — open the file and it works, with the Wi-Fi off.</p>
 
-  <div class="panel">
-    <h3>Author</h3>
-    <div class="kv"><b>Name</b><span>Thu Htoo Zan — <b>Zann</b></span></div>
-    <div class="kv"><b>Student ID</b><span>670615524</span></div>
-    <div class="kv"><b>Programme</b><span>Information Systems &amp; Network Engineering (ISNE)</span></div>
-    <div class="kv"><b>Faculty</b><span>Faculty of Engineering, Chiang Mai University</span></div>
-    <div class="kv"><b>Email</b><span><a href="mailto:thuhtoozan_1@cmu.ac.th">thuhtoozan_1@cmu.ac.th</a></span></div>
-    <div class="kv"><b>Links</b><span><a href="https://zann208.github.io" target="_blank" rel="noopener">portfolio</a> · <a href="https://github.com/Zann208" target="_blank" rel="noopener">github</a> · <a href="https://zann208.github.io/study/" target="_blank" rel="noopener">all courses</a></span></div>
-  </div>
 
   <div class="panel pc">
     <h3>This course</h3>
-    <div class="kv"><b>Code</b><span>ISNE 269497</span></div>
     <div class="kv"><b>Title</b><span>The Cult of Privacy Technologies</span></div>
     <div class="kv"><b>Term</b><span>Semester 1, 2026</span></div>
-    <div class="kv"><b>Instructor</b><span>Asst. Prof. Jenjira Jaimunk, PhD</span></div>
     <div class="kv"><b>Class</b><span>Tue &amp; Fri 13:00–14:30 · Room 601, Engineering Building</span></div>
     <div class="kv"><b>Office hours</b><span>Monday 09:00–12:00</span></div>
     <div class="kv"><b>Assessment</b><span>Homework &amp; quizzes 30% · Midterm 35% · Final 35%</span></div>
@@ -1189,10 +1177,10 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 </div></section>
 
 </main>
-<div class="footer">ISNE 269497 · The Cult of Privacy Technologies · built by ZANN · runs entirely offline</div>
+<div class="footer">The Cult of Privacy Technologies · runs entirely offline</div>
 </div>
 
-<div id="wm"><i>Z</i>ZANN</div>
+<div id="wm">STUDY</div>
 
 <div id="pal" role="dialog" aria-modal="true" aria-label="Search">
   <div class="palbox">
@@ -1384,7 +1372,7 @@ var CARDS = [
  {t:1,q:"Reconstruction attack",a:"Rebuilding the original data from synthetic, aggregated or anonymised data — e.g. mobility paths from aggregates."},
  {t:1,q:"Quasi-identifiers",a:"Not unique alone, unique when combined. Gender + date of birth + 5-digit ZIP identifies ~87% of the US population."},
  {t:1,q:"Adversary",a:"A person, group, organisation or government that intends to cause harm through cyber activities (NIST)."},
- {t:2,q:"Uniqueness",a:"How much a value stands out. Rare values ('Jenjira') are riskier than common ones ('John'). Countered by k-anonymity."},
+ {t:2,q:"Uniqueness",a:"How much a value stands out. Rare values ('RareName') are riskier than common ones ('John'). Countered by k-anonymity."},
  {t:2,q:"Uniformity",a:"The same value repeating for one person across events → easy to infer it belongs to them. Countered by l-diversity."},
  {t:2,q:"Linkable tokens",a:"Values containing PII that can link to a person, directly or indirectly — like an email address inside free text."},
  {t:2,q:"Correlation",a:"Knowing one attribute lets you guess another (part-time job ↔ late penalty). Can also link records across datasets."},
@@ -1600,7 +1588,7 @@ var IDX=[];
   CARDS.forEach(function(c,i){ IDX.push({k:'CARD',t:c.q,s:c.a.slice(0,130),tab:'drills',id:'flash',card:i}); });
   IDX.push({k:'GO',t:'Home',s:'course overview',tab:'home',id:''});
   IDX.push({k:'GO',t:'Mock exam',s:'20 questions',tab:'drills',id:'quiz'});
-  IDX.push({k:'GO',t:'Author',s:'who built this',tab:'author',id:''});
+  IDX.push({k:'GO',t:'About',s:'about this console',tab:'author',id:''});
 })();
 var palSel=0, palHits=[];
 function palRender(q){
@@ -1704,10 +1692,10 @@ document.addEventListener('keydown',function(e){
 go(LSget('privTab','home'),true);
 </script>
 
-<script src="./topic3.js?v=20260822openbook"></script>
+<script src="./topic3.js?v=20260910-identity"></script>
 <script src="./midterm-static-tab.js?v=20260822openbook"></script>
 
-<script src="https://zann208.github.io/study/shared/v2/study-system.js?v=20260909-nav2"></script>
+<script src="https://zann208.github.io/study/shared/v2/study-system.js?v=20260910-layout2"></script>
 <script src="https://zann208.github.io/study/shared/v2/reading.js?v=20260910-reading1" defer></script>
 </body>
 </html>

@@ -1,8 +1,5 @@
 Privacy Technologies
 Midterm Notes - Topics 1-3
-ISNE 269497
-Name: ________________________________
-Student ID: ___________________________
 Topics covered: Threats, Risks & Vulnerabilities | Privacy Risk Quantification & Evaluation | De-identification Methods
 QUICK INDEX
 
@@ -161,7 +158,7 @@ TOPIC 2 - PRIVACY RISK QUANTIFICATION AND EVALUATION
 Four key elements of data privacy risk
 
 Element | Definition | Lecture example / implication
-Uniqueness | Likelihood that an attribute value or combination is distinguishable from other records. | Rare name “Jenjira” has greater re-identification risk than common “John”. More unique values increase re-ID/inference risk.
+Uniqueness | Likelihood that an attribute value or combination is distinguishable from other records. | Rare name “RareName” has greater re-identification risk than common “John”. More unique values increase re-ID/inference risk.
 Uniformity | How similar an individual's attribute values are across different events or times. | Repeated consistent searches about one medical illness increase inference confidence.
 Linkable tokens | Tokens containing personally identifiable information that can directly or indirectly link records to an individual. | Email address appearing in free-text feedback in an otherwise anonymised education dataset.
 Correlation | Likelihood of inferring one attribute from another known/guessed attribute; measures how variables change in relation to each other. | Part-time job status correlated with late-submission penalties; demographic dataset correlated with browsing-history dataset.

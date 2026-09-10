@@ -141,8 +141,8 @@ Topic 2 practice questions
 Answer: Uniqueness, uniformity, linkable tokens, correlation.
 2.2. Define uniqueness.
 Answer: Likelihood that an attribute value or combination is distinguishable from other records.
-2.3. Why is “Jenjira” riskier than “John” in the example?
-Answer: Jenjira is rarer/more unique, so it is easier to distinguish and re-identify.
+2.3. Why is “RareName” riskier than “John” in the example?
+Answer: RareName is rarer/more unique, so it is easier to distinguish and re-identify.
 2.4. How is k-anonymity related to uniqueness?
 Answer: It reduces uniqueness by requiring each considered QID pattern to be shared by at least k records.
 2.5. What does k=5 mean in the Topic 2 example?

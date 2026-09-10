@@ -1,6 +1,6 @@
 # PRIV — Privacy Technologies Study Console
 
-An offline-first, single-file study console for **ISNE 269497 · The Cult of Privacy Technologies** at Chiang Mai University.
+An offline-first, single-file study console for **The Cult of Privacy Technologies** at Chiang Mai University.
 
 **→ [Live demo](https://zann208.github.io/privacy/)**
 
@@ -60,5 +60,4 @@ The notes are my own restatement of course concepts, written for comprehension r
 
 ---
 
-Built by **Zann** — Information Systems & Network Engineering, Chiang Mai University
-[Portfolio](https://zann208.github.io) · [All courses](https://zann208.github.io/study/) · [Email](mailto:thuhtoozan_1@cmu.ac.th)
+[Study Console](https://zann208.github.io/study/)

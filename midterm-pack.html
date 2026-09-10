@@ -15,15 +15,15 @@ table{width:100%;border-collapse:collapse;margin-top:9px;font-size:13.5px}th,td{
 @media(max-width:760px){.wrap{padding:18px 13px 70px}.tools{position:static}.tools input{order:-1;width:100%}.two{grid-template-columns:1fr}h2{scroll-margin-top:12px}}
 @media print{html,body{background:#fff!important;color:#000!important;font-size:10.5pt}.wrap{max-width:none;padding:0}.tools{display:none!important}.card,.scope,.sourceNote,.answer,.trap,.note,.prof,.formula{background:#fff!important;color:#000!important;border-color:#aaa!important}.card *,table,th,td,.scope *,.sourceNote *{color:#000!important}.eyebrow,.key{color:#000!important}.pagebreak{break-before:page}h2{break-after:avoid}.card{break-inside:avoid}.hero{break-after:avoid}.navgrid button{background:#fff!important;color:#000!important;border-color:#aaa!important}.hidden{display:block!important}}
 </style>
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/study-system.css?v=20260909-nav2">
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/study-system.css?v=20260910-layout2">
 <link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/legacy-console.css">
 <link rel="stylesheet" href="./study-console-adapter.css">
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/reading.css?v=20260910-reading1">
+<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/reading.css?v=20260910-layout2">
 </head>
 <body data-study-console="privacy" data-console-id="privacy" data-console-name="Privacy & Information Security">
 <div class="wrap">
 <header class="hero">
-<div class="eyebrow">// ISNE 269497 · OPEN-BOOK MIDTERM BINDER</div>
+<div class="eyebrow">// OPEN-BOOK MIDTERM BINDER</div>
 <h1>Privacy Technologies — Midterm Master Binder</h1>
 <p class="lede">A source-grounded, searchable, print-ready reference built from the professor’s Topic 1–3 lecture materials. It is designed for fast lookup during an open-book exam: identify the keyword, jump to the section, and use the ready answer structure.</p>
 <div class="scope"><b>Confirmed exam scope used here: Topic 1–3 only.</b><br>Topic 1 · Threats, Risks &amp; Vulnerabilities · Topic 2 · Privacy Risk Quantification &amp; Evaluation · Topic 3 · De-identification Methods.</div>
@@ -124,7 +124,7 @@ table{width:100%;border-collapse:collapse;margin-top:9px;font-size:13.5px}th,td{
 <section id="t2" class="pagebreak">
 <h2>Topic 2 — Privacy Risk Quantification &amp; Evaluation</h2>
 <section id="t2-risk">
-<div class="card searchable"><h3>Four key elements of data privacy risk</h3><table><tr><th>Element</th><th>Lecture meaning</th><th>Example</th></tr><tr><td><b>Uniqueness</b></td><td>Likelihood that an attribute value or combination is distinguishable from other records. More unique → more re-ID risk.</td><td>“Jenjira” is rarer/more identifiable than “John”.</td></tr><tr><td><b>Uniformity</b></td><td>How similar/consistent an individual’s values are over different events/times. Repeated same values increase inference confidence.</td><td>Repeated consistent searches about one medical illness.</td></tr><tr><td><b>Linkable tokens</b></td><td>Tokens containing PII usable to link directly/indirectly to an individual.</td><td>Email in free-text student feedback.</td></tr><tr><td><b>Correlation</b></td><td>Likelihood of inferring another attribute from a known/guessed attribute; variables change in relation to one another.</td><td>Part-time work correlated with late-submission penalties.</td></tr></table></div>
+<div class="card searchable"><h3>Four key elements of data privacy risk</h3><table><tr><th>Element</th><th>Lecture meaning</th><th>Example</th></tr><tr><td><b>Uniqueness</b></td><td>Likelihood that an attribute value or combination is distinguishable from other records. More unique → more re-ID risk.</td><td>“RareName” is rarer/more identifiable than “John”.</td></tr><tr><td><b>Uniformity</b></td><td>How similar/consistent an individual’s values are over different events/times. Repeated same values increase inference confidence.</td><td>Repeated consistent searches about one medical illness.</td></tr><tr><td><b>Linkable tokens</b></td><td>Tokens containing PII usable to link directly/indirectly to an individual.</td><td>Email in free-text student feedback.</td></tr><tr><td><b>Correlation</b></td><td>Likelihood of inferring another attribute from a known/guessed attribute; variables change in relation to one another.</td><td>Part-time work correlated with late-submission penalties.</td></tr></table></div>
 <div class="card searchable"><h3>Direct identifiers vs QIDs</h3><table><tr><th>Type</th><th>Examples</th><th>Why risky</th></tr><tr><td><b>Direct identifiers (DIDs)</b></td><td>Name, email, telephone, unique medical record number.</td><td>Directly and explicitly identify a person.</td></tr><tr><td><b>Quasi-identifiers (QIDs)</b></td><td>Date of birth, gender, postcode.</td><td>May not identify alone, but combined values can become unique.</td></tr></table></div>
 <div class="card searchable"><h3>Correlation details</h3><p><b>Positive correlation:</b> variables increase/decrease together. <b>Negative correlation:</b> one increases while the other decreases. Highly correlated attributes are more likely to be inferred from one another.</p><p>Cross-dataset lecture example: Dataset A has demographics (age, gender, postal code), Dataset B has browsing history (websites, time). Strong correlation can help link a person across the datasets, even if one dataset lacks a direct identifier.</p></div>
 </section>
@@ -225,7 +225,7 @@ function filter(){var q=(s.value||'').trim().toLowerCase(),n=0;cards.forEach(fun
 s.addEventListener('input',filter);document.getElementById('clear').addEventListener('click',function(){s.value='';filter();s.focus();});document.getElementById('print').addEventListener('click',function(){window.print();});
 })();
 </script>
-<script src="https://zann208.github.io/study/shared/v2/study-system.js?v=20260909-nav2"></script>
+<script src="https://zann208.github.io/study/shared/v2/study-system.js?v=20260910-layout2"></script>
 <script src="https://zann208.github.io/study/shared/v2/reading.js?v=20260910-reading1" defer></script>
 </body>
 </html>
