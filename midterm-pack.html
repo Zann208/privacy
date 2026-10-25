@@ -3,22 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<script src="https://zann208.github.io/study/shared/v2/theme-init.js"></script>
+<script src="https://zann208.github.io/study/shared/v3/boot.js?v=20261025-1" data-console="privacy" data-v2="midterm-pack.v2.html"></script>
 <title>Privacy Midterm Master Binder · Topics 1–3</title>
 <meta name="theme-color" content="#090b13">
 <style>
-:root{--bg:#090b13;--p:#111522;--p2:#171c2b;--p3:#1d2437;--ink:#edf0f8;--dim:#a6aec3;--faint:#6f7891;--vi:#a78bfa;--cy:#38bdf8;--gr:#34d399;--am:#fbbf24;--rd:#fb7185;--line:#252c42;--mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 *{box-sizing:border-box}html{background:var(--bg);scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6}.wrap{max-width:1180px;margin:auto;padding:26px 20px 90px}.eyebrow{font:800 10px var(--mono);letter-spacing:2px;color:var(--vi);text-transform:uppercase}.hero{padding:8px 0 4px}h1{margin:6px 0 8px;font-size:clamp(30px,5vw,48px);line-height:1.04}h2{font-size:27px;line-height:1.15;margin:42px 0 8px;scroll-margin-top:94px}h3{font-size:18px;line-height:1.25;margin:0 0 8px}h4{font-size:14px;margin:14px 0 5px}.lede{max-width:900px;color:var(--dim);font-size:16px}.scope,.sourceNote{margin-top:14px;padding:13px 15px;border-radius:0 10px 10px 0;background:var(--p);border-left:3px solid var(--gr)}.sourceNote{border-left-color:var(--cy);color:var(--dim)}.scope b{color:var(--gr)}
-.tools{position:sticky;top:0;z-index:30;margin:18px 0 22px;padding:8px;background:rgba(9,11,19,.94);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:11px;display:flex;gap:6px;flex-wrap:wrap}.tools button{border:1px solid var(--line);background:var(--p);color:var(--dim);border-radius:7px;padding:8px 10px;font:800 10px var(--mono);cursor:pointer}.tools button:hover{color:var(--vi);border-color:var(--vi)}.tools input{flex:1;min-width:220px;border:1px solid var(--line);background:var(--p);color:var(--ink);border-radius:7px;padding:8px 10px;font:12px var(--mono);outline:0}.tools input:focus{border-color:var(--vi)}.count{align-self:center;font:10px var(--mono);color:var(--faint);padding:0 5px}
+.tools{position:sticky;top:var(--sc-sticky-top,0px);z-index:30;margin:18px 0 22px;padding:8px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:11px;display:flex;gap:6px;flex-wrap:wrap}.tools button{border:1px solid var(--line);background:var(--p);color:var(--dim);border-radius:7px;padding:8px 10px;font:800 10px var(--mono);cursor:pointer}.tools button:hover{color:var(--vi);border-color:var(--vi)}.tools input{flex:1;min-width:220px;border:1px solid var(--line);background:var(--p);color:var(--ink);border-radius:7px;padding:8px 10px;font:12px var(--mono);outline:0}.tools input:focus{border-color:var(--vi)}.count{align-self:center;font:10px var(--mono);color:var(--faint);padding:0 5px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:11px}.card{background:var(--p);border:1px solid var(--line);border-radius:11px;padding:15px 16px;margin-top:11px;break-inside:avoid}.grid>.card{margin-top:0}.card.compact{padding:12px 14px}.key{display:block;font:800 9px var(--mono);letter-spacing:1.25px;color:var(--vi);text-transform:uppercase;margin-bottom:4px}.answer,.trap,.note,.prof{margin-top:10px;padding:9px 11px;border-left:3px solid var(--gr);border-radius:0 7px 7px 0;background:rgba(52,211,153,.06)}.trap{border-left-color:var(--am);background:rgba(251,191,36,.07)}.note{border-left-color:var(--cy);background:rgba(56,189,248,.06)}.prof{border-left-color:var(--vi);background:rgba(167,139,250,.07)}.prof b{color:var(--vi)}.formula{margin-top:10px;padding:10px 12px;background:var(--p3);border:1px solid var(--line);border-radius:8px;font:13px/1.8 var(--mono);overflow:auto}.bigformula{font-size:15px}.tag{display:inline-block;padding:2px 6px;margin:2px;border:1px solid var(--line);border-radius:999px;font:800 9px var(--mono);color:var(--dim)}.good{color:var(--gr)}.warn{color:var(--am)}.bad{color:var(--rd)}.muted{color:var(--dim)}
 table{width:100%;border-collapse:collapse;margin-top:9px;font-size:13.5px}th,td{text-align:left;vertical-align:top;padding:8px 9px;border-bottom:1px solid var(--line)}th{font:800 9px var(--mono);letter-spacing:1px;text-transform:uppercase;color:var(--vi);background:rgba(167,139,250,.06)}tr:last-child td{border-bottom:0}ul,ol{margin:7px 0 0 20px;padding:0}li{margin:5px 0}.navgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:8px;margin-top:12px}.navgrid button{border:1px solid var(--line);background:var(--p2);color:var(--ink);border-radius:9px;padding:11px;text-align:left;cursor:pointer}.navgrid b{display:block;color:var(--vi);font:800 10px var(--mono);margin-bottom:3px}.navgrid span{font-size:12px;color:var(--dim)}.q{font-weight:700}.a{color:var(--gr);font-weight:700}.hidden{display:none!important}.divider{border:0;border-top:1px solid var(--line);margin:28px 0 0}.mini{font-size:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}.pagebreak{break-before:page}.toc-num{color:var(--vi);font:800 10px var(--mono)}
 @media(max-width:760px){.wrap{padding:18px 13px 70px}.tools{position:static}.tools input{order:-1;width:100%}.two{grid-template-columns:1fr}h2{scroll-margin-top:12px}}
 @media print{html,body{background:#fff!important;color:#000!important;font-size:10.5pt}.wrap{max-width:none;padding:0}.tools{display:none!important}.card,.scope,.sourceNote,.answer,.trap,.note,.prof,.formula{background:#fff!important;color:#000!important;border-color:#aaa!important}.card *,table,th,td,.scope *,.sourceNote *{color:#000!important}.eyebrow,.key{color:#000!important}.pagebreak{break-before:page}h2{break-after:avoid}.card{break-inside:avoid}.hero{break-after:avoid}.navgrid button{background:#fff!important;color:#000!important;border-color:#aaa!important}.hidden{display:block!important}}
 </style>
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/study-system.css?v=20260911-width1">
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/legacy-console.css">
-<link rel="stylesheet" href="./study-console-adapter.css">
-<link rel="stylesheet" href="https://zann208.github.io/study/shared/v2/reading.css?v=20260910-layout2">
 </head>
 <body data-study-console="privacy" data-console-id="privacy" data-console-name="Privacy & Information Security">
 <div class="wrap">
@@ -225,7 +220,20 @@ function filter(){var q=(s.value||'').trim().toLowerCase(),n=0;cards.forEach(fun
 s.addEventListener('input',filter);document.getElementById('clear').addEventListener('click',function(){s.value='';filter();s.focus();});document.getElementById('print').addEventListener('click',function(){window.print();});
 })();
 </script>
-<script src="https://zann208.github.io/study/shared/v2/study-system.js?v=20260910-layout2"></script>
-<script src="https://zann208.github.io/study/shared/v2/reading.js?v=20260910-reading1" defer></script>
+<script>
+/* Study Console v3: standalone midterm pack in the PRV frame (exam menu). Inside the main
+   console this page is embedded in an iframe; boot.js then skips the frame. */
+(function () {
+  (window.StudyConsole = window.StudyConsole || []).push({
+    id: 'privacy-midterm-pack', kind: 'exam', parent: 'privacy',
+    title: 'Midterm pack', subtitle: 'Open-book reference',
+    docTitle: 'Privacy midterm pack',
+    content: 'body > .wrap',
+    defaultView: 'pack',
+    router: { show: function () {} },
+    groups: [{ label: 'Sections', views: [{ id: 'pack', title: 'Midterm pack', track: false, children: [{"id": "fast", "title": "30-Second Exam Lookup Map"}, {"id": "discussion", "title": "Professor Discussion Questions — Ready Answers"}, {"id": "t1", "title": "Topic 1 — Threats, Risks & Vulnerabilities"}, {"id": "t2", "title": "Topic 2 — Privacy Risk Quantification & Evaluation"}, {"id": "calc", "title": "Calculation Master Section"}, {"id": "t3", "title": "Topic 3 — De-identification Methods"}, {"id": "compare", "title": "Master Comparison & Scenario Decoder"}, {"id": "cases", "title": "Lecture Case File — Exact Facts to Recognise"}, {"id": "templates", "title": "Answer Templates — What to Write"}, {"id": "glossary", "title": "Glossary — Fast Definitions"}] }] }]
+  });
+})();
+</script>
 </body>
 </html>

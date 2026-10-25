@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - 'index.html'
-      - 'study-console-adapter.css'
+      - 'midterm-pack.html'
+      - '*.js'
       - '.github/workflows/flatten-console.yml'
   workflow_dispatch:
 
@@ -16,14 +17,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check the maintained entry page
+      - name: Check the maintained entry pages
         run: |
           test -f index.html
-          test -f study-console-adapter.css
+          test -f midterm-pack.html
           test -f .nojekyll
-          python - <<'PYCODE'
-          from pathlib import Path
-          html = Path('index.html').read_text()
-          for asset in ('theme-init.js', 'study-system.css', 'study-system.js'):
-              assert 'shared/v2/' + asset in html, asset
-          PYCODE
+          for f in *.js; do node --check "$f"; done
+      - name: Verify Study Console v3 wiring and v2 rollback pages
+        run: |
+          for p in index midterm-pack; do
+            test -f "$p.v2.html"
+            grep -q 'study/shared/v3/boot.js' "$p.html"
+            grep -q "data-v2=\"$p.v2.html\"" "$p.html"
+            grep -q 'StudyConsole' "$p.html"
+            if grep -q 'shared/v2/' "$p.html"; then echo "$p.html still loads v2"; exit 1; fi
+          done
