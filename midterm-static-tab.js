@@ -14,13 +14,16 @@ if(!sec&&main){
   sec=document.createElement('section');sec.className='tab';sec.id='midterm';
   var frame=document.createElement('iframe');
   frame.title='Privacy Technologies Midterm Notes';
-  frame.src='./midterm-pack.html?v=20260822openbook';
+  // Loaded the first time the tab is shown, not with the console.
+  var load=function(){if(!frame.src&&sec.classList.contains('on'))frame.src='./midterm-pack.html?v=20260822openbook';};
+  new MutationObserver(load).observe(sec,{attributes:true,attributeFilter:['class']});
   frame.style.cssText='display:block;width:100%;height:calc(100vh - 50px);min-height:720px;border:0;background:var(--bg)';
   frame.addEventListener('load',function(){
+    if(!frame.src)return;  // the empty frame fires load before the pack is requested
     try{
       var d=frame.contentDocument||frame.contentWindow.document;
       if(!d||d.getElementById('privOpenBookAddon'))return;
-      var s=d.createElement('script');s.id='privOpenBookAddon';s.src='./midterm-downloads.js?v=20260822openbook';s.async=false;(d.body||d.documentElement).appendChild(s);
+      var s=d.createElement('script');s.id='privOpenBookAddon';s.src='./midterm-downloads.js?v=20261026-1';s.async=false;(d.body||d.documentElement).appendChild(s);
     }catch(e){console.error(e);}
   });
   sec.appendChild(frame);

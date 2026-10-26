@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://zann208.github.io/study/shared/v3/boot.js?v=20261025-2" data-console="privacy" data-v2="index.v2.html"></script>
-<title>PRIV // Privacy Console</title>
+<script src="https://zann208.github.io/study/shared/v3/boot.js?v=20261026-1" data-console="privacy" data-v2="index.v2.html"></script>
+<title>Privacy &amp; Information Security</title>
 <meta name="description" content="Offline study console for The Cult of Privacy Technologies — threats, risk quantification, real breach case files, flashcards and a mock exam.">
 <meta name="theme-color" content="#0a0b12">
 <style>
@@ -217,33 +217,28 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ HOME ============ -->
 <section class="tab on" id="home"><div class="wrap">
-  <h1><span class="pre">// THE CULT OF PRIVACY TECHNOLOGIES</span>Two topics. Everything you need.</h1>
-  <p class="lede">Semester 1, 2026 · Chiang Mai University. What can go wrong with personal data, and how to put a number on it. Written in plain words, with the real breaches the exam keeps coming back to.</p>
+  <h1>Privacy Technologies</h1>
+  <p class="lede">Semester 1, 2026 · Topic 1 Threats, Risks &amp; Vulnerabilities · Topic 2 Privacy Risk Quantification.</p>
   <div class="chiprow">
     <span class="chip c1">Topic 1 · Threats, Risks &amp; Vulnerabilities</span>
     <span class="chip c2">Topic 2 · Privacy Risk Quantification</span>
-    <span class="chip">36 cards</span>
-    <span class="chip">20-question mock exam</span>
-    <span class="chip">11 case files</span>
-    <span class="chip">worked calculations</span>
-    <span class="chip">works offline</span>
   </div>
 
 <div class="grid2">
     <div class="card">
       <span class="badge b1">Topic 1</span>
       <h3 style="margin-bottom:8px;">Threats, Risks &amp; Vulnerabilities</h3>
-      <p style="font-size:14.5px;">What can go wrong. You learn the 5 properties that keep data safe, the attacks that break them, the weak points in a network, and how people get re-identified from "anonymous" data.</p>
+      <p style="font-size:14.5px;">The five data properties, attacks against them, network weak points, re-identification of anonymised data.</p>
     </div>
     <div class="card">
       <span class="badge b2">Topic 2</span>
       <h3 style="margin-bottom:8px;">Privacy Risk Quantification</h3>
-      <p style="font-size:14.5px;">How much can go wrong — as a number. You learn what makes data risky, how to measure risk with entropy, and how to check if de-identification actually worked (IG &amp; RIG).</p>
+      <p style="font-size:14.5px;">Risky data elements, entropy as a risk measure, information gain (IG) and relative information gain (RIG) after de-identification.</p>
     </div>
   </div>
 
   <div class="card" style="margin-top:16px;">
-    <h3 style="margin-bottom:10px;">The map — 4 steps</h3>
+    <h3 style="margin-bottom:10px;">Overview</h3>
     <table>
       <tr><td><b>1 · Protect</b></td><td>Data has 5 properties to defend: confidentiality, integrity, availability, anonymity, indistinguishability.</td></tr>
       <tr><td><b>2 · Attack</b></td><td>Attackers break these properties: ransomware, DoS, SQL injection, phishing, re-identification.</td></tr>
@@ -252,16 +247,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     </table>
   </div>
 
-  <div class="grid2" style="margin-top:16px;">
-    <div class="card">
-      <h3 style="margin-bottom:10px;">How to use this page</h3>
-      <ul class="clean" style="font-size:14.5px;">
-        <li><b>Notes</b> — read each topic. Short and plain.</li>
-        <li><b>Case Files</b> — real breaches. Exams love these.</li>
-        <li><b>Drills</b> — 36 flashcards, then a 20-question mock exam with every answer explained.</li>
-        <li><b>Cheat Sheet</b> — one last look before the exam.</li>
-      </ul>
-    </div>
+  <div style="margin-top:16px;">
     <div class="card">
       <h3 style="margin-bottom:10px;">Course facts</h3>
       <ul class="clean" style="font-size:14.5px;">
@@ -272,13 +258,11 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
     </div>
   </div>
 
-  <div class="tip t-info" style="margin-top:16px;"><b>Exam tip:</b> the discussion questions from the slides are inside the Quiz tab — practice them first, they are the most likely exam questions.</div>
 </div></section>
 
 <!-- ============ NOTES ============ -->
 <section class="tab" id="notes"><div class="wrap">
-  <h1><span class="pre">// LEARN</span>Notes</h1>
-  <p class="lede">Pick a topic, open one box at a time. Every box is one idea, and every idea earns its place on the exam.</p>
+  <h1>Notes</h1>
 <div class="switch">
     <button class="sw on1" id="swT1">Topic 1 · Threats &amp; Risks</button>
     <button class="sw" id="swT2">Topic 2 · Measuring Risk</button>
@@ -568,11 +552,10 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ CALC ============ -->
 <section class="tab" id="calc"><div class="wrap">
-  <h1><span class="pre">// SHOW YOUR WORKING</span>Calculations</h1>
-  <p class="lede">Every number this course asks you to produce, with every line of working. The exam gives marks for the steps, not just the answer — so these are laid out the way you should write them on paper.</p>
+  <h1>Calculations</h1>
 
-  <div class="box wild"><b>The six things you can be asked to compute</b>
-  <b>H(X)</b> entropy · <b>H(X,Y)</b> joint entropy · <b>H(X|Y)</b> conditional entropy · <b>IG</b> information gain · <b>RIG</b> relative information gain · <b>k</b> and <b>l</b> from a table. Everything else is reading a definition.</div>
+  <div class="box wild"><b>Calculations covered</b>
+  <b>H(X)</b> entropy · <b>H(X,Y)</b> joint entropy · <b>H(X|Y)</b> conditional entropy · <b>IG</b> information gain · <b>RIG</b> relative information gain · <b>k</b> and <b>l</b> from a table.</div>
 
   <details class="note" open>
     <summary><span class="num n2">1</span> The log₂ toolkit — no calculator needed</summary>
@@ -775,8 +758,8 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ CASES ============ -->
 <section class="tab" id="cases"><div class="wrap">
-  <h1><span class="pre">// REAL WORLD</span>Case Files</h1>
-  <p class="lede">Eleven breaches straight from the slides. For each one know three things: what happened, which property broke, and the lesson. Exam questions are usually one of those three.</p>
+  <h1>Case Files</h1>
+  <p class="lede">Eleven cases: what happened, which property broke, the lesson.</p>
 <div class="cases">
 
     <div class="case">
@@ -861,8 +844,8 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ DRILLS ============ -->
 <section class="tab" id="drills"><div class="wrap">
-  <h1><span class="pre">// TRAINING</span>Drills</h1>
-  <p class="lede">Thirty-six cards to make the definitions automatic, then a twenty-question mock exam that explains every answer — including the discussion questions lifted straight from the slides.</p>
+  <h1>Drills</h1>
+  <p class="lede">36 flashcards and a 20-question mock exam.</p>
 
   <div class="panel" id="flash">
     <h2 class="title" style="font-size:21px">Flashcards</h2>
@@ -898,8 +881,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ CHEATSHEET ============ -->
 <section class="tab" id="cheat"><div class="wrap">
-  <h1><span class="pre">// LAST LOOK</span>Cheat Sheet</h1>
-  <p class="lede">Everything squeezed onto one screen. This is the page to read in the ten minutes before you walk in.</p>
+  <h1>Cheat Sheet</h1>
 <div class="cheat">
 
     <h3><span class="badge b1">T1</span> The 5 properties</h3>
@@ -1000,8 +982,7 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
 <!-- ============ AUTHOR ============ -->
 <section class="tab" id="author"><div class="wrap">
-  <h1><span class="pre">// ABOUT</span>Study Console</h1>
-  <p class="lede">One of four course consoles I built for this semester. Same shell, same keyboard shortcuts, same offline-first rule — open the file and it works, with the Wi-Fi off.</p>
+  <h1>About</h1>
 
 
   <div class="panel pc">
@@ -1017,11 +998,11 @@ ol li::marker{font-family:var(--mono);color:var(--vi);font-size:12.5px}
 
   <div class="panel pg">
     <h3>Built with</h3>
-    <p>Vanilla HTML, CSS and JavaScript. No framework, no build step, no dependencies, no network calls — one file you can open from a USB stick. Progress, theme and your place in each section are stored in <code>localStorage</code> on your own device and nowhere else.</p>
+    <p>HTML, CSS and JavaScript. Progress and settings are stored in this browser.</p>
   </div>
 </div></section>
 
-<div class="footer">The Cult of Privacy Technologies · runs entirely offline</div>
+<div class="footer">Privacy Technologies</div>
 </main>
 
 
@@ -1359,8 +1340,8 @@ document.addEventListener('keydown',function(e){
 go(LSget('privTab','home'),true);
 </script>
 
-<script src="./topic3.js?v=20260910-identity"></script>
-<script src="./midterm-static-tab.js?v=20260822openbook"></script>
+<script src="./topic3.js?v=20261026-1"></script>
+<script src="./midterm-static-tab.js?v=20261026-1"></script>
 
 <script>
 /* Study Console v3: this console's manifest. The frame (header, menu, sections, search,
